@@ -105,16 +105,16 @@ function RotatingGreetingsSection() {
 
   return (
     <Box
-      py={10} // Vertical padding
-      px={4} // Horizontal padding
-      bg={containerBg} // Background color based on theme
-      textAlign="center" // Center content horizontally
-      borderRadius="lg" // Rounded corners
-      boxShadow="lg" // Subtle shadow
-      maxW="container.md" // Maximum width
-      mx="auto" // Center the box horizontally
-      mt={12} // Margin top to space it from the section above
-      mb={12} // Margin bottom to space it from the section below
+      py={10}
+      px={4}
+      bg={containerBg}
+      textAlign="center"
+      borderRadius="full"
+      boxShadow="lg"
+      maxW="container.md"
+      mx="auto"
+      mt={12}
+      mb={12}
       backdropFilter="blur(10px)"
     >
       <VStack spacing={4}>
@@ -391,7 +391,7 @@ function LandingPage() {
                   key={index}
                   p={8}
                   bg={cardBg}
-                  borderRadius="lg"
+                  borderRadius="full"
                   boxShadow="md"
                   borderWidth="1px"
                   borderColor={cardBorderColor}
@@ -455,7 +455,7 @@ function LandingPage() {
                   key={`duplicate-${index}`}
                   p={8}
                   bg={cardBg}
-                  borderRadius="lg"
+                  borderRadius="full"
                   boxShadow="md"
                   borderWidth="1px"
                   borderColor={cardBorderColor}
@@ -588,8 +588,19 @@ function LandingPage() {
                 ) : (
                   <Avatar size="xl" name={dev.name} />
                 )}
-                <Text fontWeight="bold" fontSize="lg" color={headingColor}>{dev.name}</Text>
-                <Text fontSize="md" color={textColor}>{dev.role}</Text>
+                <Text 
+                  fontWeight="bold" 
+                  fontSize="lg" 
+                  color={headingColor}
+                >
+                  {dev.name}
+                </Text>
+                <Text 
+                  fontSize="md" 
+                  color={textColor}
+                >
+                  {dev.role}
+                </Text>
                 <Text 
                   fontSize="sm" 
                   color={descriptionColor}
@@ -612,6 +623,9 @@ function LandingPage() {
         bg="rgba(0, 0, 0, 0.8)"
         position="relative"
         zIndex="2"
+        borderRadius="full"
+        mx={4}
+        mb={4}
       >
         <Container maxW="container.xl">
           <Flex
