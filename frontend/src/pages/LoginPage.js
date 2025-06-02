@@ -90,9 +90,16 @@ function LoginPage() {
     }
   };
 
-   // Update color mode values for better contrast against the background
-   const formBg = useColorModeValue('rgba(255, 255, 255, 0.9)', 'rgba(26, 32, 44, 0.9)');
-   const textColor = useColorModeValue('white', 'white');
+  // Update color mode values for glassmorphism effect
+  const formBg = useColorModeValue(
+    'rgba(255, 255, 255, 0.15)',
+    'rgba(26, 32, 44, 0.15)'
+  );
+  const textColor = useColorModeValue('white', 'white');
+  const borderColor = useColorModeValue(
+    'rgba(255, 255, 255, 0.2)',
+    'rgba(255, 255, 255, 0.1)'
+  );
 
   return (
     <Flex 
@@ -117,69 +124,123 @@ function LoginPage() {
         zIndex="1"
       />
 
-      {/* Form container with updated styling */}
+      {/* Form container with enhanced glassmorphism styling */}
       <Box
         maxW="md"
         w="full"
         bg={formBg}
-        boxShadow="xl"
-        borderRadius="lg"
+        boxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)"
+        borderRadius="xl"
         p={8}
         textAlign="center"
         position="relative"
         zIndex="2"
-        backdropFilter="blur(10px)"
+        backdropFilter="blur(16px)"
+        border="1px solid"
+        borderColor={borderColor}
+        _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: 'xl',
+          padding: '2px',
+          background: 'linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+        }}
       >
-        <Heading as="h2" size="xl" mb={6} color={textColor}>
+        <Heading 
+          as="h2" 
+          size="xl" 
+          mb={6} 
+          color={textColor}
+          textShadow="0 2px 4px rgba(0,0,0,0.2)"
+        >
           Login
         </Heading>
-         {/* VStack for vertical stacking of form controls */}
         <VStack as="form" spacing={4} onSubmit={handleSubmit} noValidate>
-          {/* Form Control for Email */}
-          <FormControl id="login-email" isInvalid={!!errors.email}> {/* Use a unique ID */}
-            <FormLabel>Email address</FormLabel>
+          {/* Form controls with glassmorphism styling */}
+          <FormControl id="login-email" isInvalid={!!errors.email}>
+            <FormLabel color={textColor}>Email address</FormLabel>
             <Input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
-             {/* Display error message if validation fails */}
-             <FormErrorMessage>{errors.email}</FormErrorMessage>
+            <FormErrorMessage>{errors.email}</FormErrorMessage>
           </FormControl>
 
-          {/* Form Control for Password */}
-          <FormControl id="login-password" isInvalid={!!errors.password}> {/* Use a unique ID */}
-            <FormLabel>Password</FormLabel>
+          <FormControl id="login-password" isInvalid={!!errors.password}>
+            <FormLabel color={textColor}>Password</FormLabel>
             <Input
               type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
-             <FormErrorMessage>{errors.password}</FormErrorMessage>
+            <FormErrorMessage>{errors.password}</FormErrorMessage>
           </FormControl>
 
-          {/* Submit Button */}
           <Button
             type="submit"
-            colorScheme="blue" // Use blue color scheme
-            size="lg" // Large button size
-            fontSize="md" // Medium font size
-            isLoading={loading} // Show loading spinner when submitting
+            colorScheme="blue"
+            size="lg"
+            fontSize="md"
+            isLoading={loading}
             loadingText="Logging in..."
-            w="full" // Button takes full width
-            mt={4} // Margin top
+            w="full"
+            mt={4}
+            bg="rgba(66, 153, 225, 0.8)"
+            _hover={{
+              bg: 'rgba(66, 153, 225, 0.9)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }}
+            _active={{
+              bg: 'rgba(66, 153, 225, 1)',
+              transform: 'translateY(0)',
+            }}
           >
             Login
           </Button>
         </VStack>
 
-        {/* Link to Register page */}
         <Text mt={6} color={textColor}>
           Don't have an account?{' '}
-           {/* Use ChakraLink as ReactRouterLink for navigation */}
-          <ChakraLink as={ReactRouterLink} to="/register" color="blue.400">
+          <ChakraLink 
+            as={ReactRouterLink} 
+            to="/register" 
+            color="blue.200"
+            _hover={{
+              color: 'blue.100',
+              textDecoration: 'underline',
+            }}
+          >
             Register here
           </ChakraLink>
         </Text>
