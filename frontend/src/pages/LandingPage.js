@@ -24,7 +24,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
-import lihleProfile from '../assets/images/Lihle.png';
+import lihleProfile from '../assets/images/LIHLE.png';
 
 // Create motion components
 const MotionBox = motion(Box);
