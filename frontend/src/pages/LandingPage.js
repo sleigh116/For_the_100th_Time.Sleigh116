@@ -23,6 +23,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
+import mphoProfile from '../assets/images/Mpho.png';
 
 function RotatingGreetingsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -387,6 +388,15 @@ function LandingPage() {
                 ) : dev.name === 'Okuhle Gadla' ? (
                   <Image
                     src={okuhleProfile}
+                    alt={dev.name}
+                    width="300px"
+                    height="300px"
+                    borderRadius="lg"
+                    objectFit="cover"
+                  />
+                ) : dev.name === 'Mpho Ramokhoase' ? (
+                  <Image
+                    src={mphoProfile}
                     alt={dev.name}
                     width="300px"
                     height="300px"
