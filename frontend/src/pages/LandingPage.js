@@ -132,6 +132,7 @@ function LandingPage() {
   const cardBorderColor = useColorModeValue('gray.200', 'gray.700');
   const developerSectionBg = useColorModeValue('gray.50', 'gray.800');
   const developerCardBg = useColorModeValue('white', 'gray.700');
+  const descriptionColor = useColorModeValue('gray.500', 'gray.400');
 
   // Define and memoize the rotating messages
   const messages = useMemo(() => [
@@ -207,11 +208,31 @@ function LandingPage() {
 
   // Developer data
   const developers = useMemo(() => [
-    { name: 'Kgothatso Mokgashi', role: 'Backend' },
-    { name: 'Okuhle Gadla', role: 'Backend' },
-    { name: 'Thembelihle Zulu', role: 'Database' },
-    { name: 'Mpho Ramokhoase', role: 'Frontend' },
-    { name: 'Nkosinathi Radebe', role: 'Frontend' },
+    { 
+      name: 'Kgothatso Mokgashi', 
+      role: 'Backend',
+      description: "Builds secure, scalable APIs that connect frontend brilliance to solid server logic."
+    },
+    { 
+      name: 'Okuhle Gadla', 
+      role: 'Backend',
+      description: "Builds secure, scalable APIs that connect frontend brilliance to solid server logic."
+    },
+    { 
+      name: 'Thembelihle Zulu', 
+      role: 'Database',
+      description: "Ensures reliable data structures and optimized queries that keep the app's engine running strong."
+    },
+    { 
+      name: 'Mpho Ramokhoase', 
+      role: 'Frontend',
+      description: "Crafts seamless, user-friendly interfaces with an eye for responsive design and smooth interactions."
+    },
+    { 
+      name: 'Nkosinathi Radebe', 
+      role: 'Frontend',
+      description: "Brings UI designs to life with pixel-perfect precision and a deep focus on performance."
+    },
   ], []);
 
   return (
@@ -468,6 +489,14 @@ function LandingPage() {
                 )}
                 <Text fontWeight="bold" fontSize="lg" color={headingColor}>{dev.name}</Text>
                 <Text fontSize="md" color={textColor}>{dev.role}</Text>
+                <Text 
+                  fontSize="sm" 
+                  color={descriptionColor}
+                  textAlign="center"
+                  px={2}
+                >
+                  {dev.description}
+                </Text>
               </VStack>
             ))}
           </SimpleGrid>
