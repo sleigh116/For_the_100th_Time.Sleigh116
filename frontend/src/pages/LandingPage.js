@@ -24,6 +24,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
+import lihleProfile from '../assets/images/Lihle.png';
 
 // Create motion components
 const MotionBox = motion(Box);
@@ -478,6 +479,15 @@ function LandingPage() {
                 ) : dev.name === 'Mpho Ramokhoase' ? (
                   <Image
                     src={mphoProfile}
+                    alt={dev.name}
+                    width="300px"
+                    height="300px"
+                    borderRadius="lg"
+                    objectFit="cover"
+                  />
+                ) : dev.name === 'Thembelihle Zulu' ? (
+                  <Image
+                    src={lihleProfile}
                     alt={dev.name}
                     width="300px"
                     height="300px"
