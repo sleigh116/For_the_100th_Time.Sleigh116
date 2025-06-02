@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
 import gridXBackground from '../assets/images/GridX-IMG.jpg';
+import { FcGoogle } from 'react-icons/fc';
 
 // Import Chakra UI Components
 import {
@@ -13,7 +14,6 @@ import {
   Input,
   Button,
   Text,
-  Link as ChakraLink, // Alias Link from Chakra UI
   VStack,
   useToast, // For displaying messages
   useColorModeValue, // For light/dark mode styling
@@ -228,21 +228,56 @@ function LoginPage() {
           >
             Login
           </Button>
+
+          {/* Add divider */}
+          <Flex w="full" align="center" my={4}>
+            <Box flex="1" h="1px" bg={borderColor} />
+            <Text px={4} color={textColor} fontSize="sm">or</Text>
+            <Box flex="1" h="1px" bg={borderColor} />
+          </Flex>
+
+          {/* Gmail Button */}
+          <Button
+            w="full"
+            size="lg"
+            variant="outline"
+            leftIcon={<FcGoogle size="20px" />}
+            onClick={() => navigate('/auth/google')}
+            bg="rgba(255, 255, 255, 0.1)"
+            borderColor={borderColor}
+            color={textColor}
+            _hover={{
+              bg: 'rgba(255, 255, 255, 0.2)',
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }}
+            _active={{
+              bg: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(0)',
+            }}
+          >
+            Continue with Gmail
+          </Button>
         </VStack>
 
+        {/* Link to Register page */}
         <Text mt={6} color={textColor}>
           Don't have an account?{' '}
-          <ChakraLink 
-            as={ReactRouterLink} 
-            to="/register" 
+          <Button
+            variant="link"
             color="blue.200"
             _hover={{
               color: 'blue.100',
               textDecoration: 'underline',
             }}
+            onClick={() => {
+              console.log('Navigating to register...'); // Debug log
+              navigate('/register', { replace: true });
+            }}
           >
             Register here
-          </ChakraLink>
+          </Button>
         </Text>
       </Box>
     </Flex>
