@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
+import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Import Chakra UI Components
 import {
@@ -99,23 +100,46 @@ function RegisterPage() {
   };
 
    // Chakra UI hook for dynamic colors based on color mode
-   const bgColor = useColorModeValue('gray.50', 'gray.800');
-   const formBg = useColorModeValue('white', 'gray.700');
-   const textColor = useColorModeValue('gray.700', 'gray.200');
+   const formBg = useColorModeValue('rgba(255, 255, 255, 0.9)', 'rgba(26, 32, 44, 0.9)');
+   const textColor = useColorModeValue('white', 'white');
 
 
   return (
     // Use Flex for centering the form vertically and horizontally
-    <Flex minH="100vh" align="center" justify="center" bg={bgColor} p={4}>
-      {/* Box to contain the form with styling */}
+    <Flex 
+      minH="100vh" 
+      align="center" 
+      justify="center" 
+      p={4}
+      position="relative"
+      backgroundImage={`url(${gridXBackground})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+    >
+      {/* Add overlay for better readability */}
       <Box
-        maxW="md" // Max width for the form container
-        w="full" // Take full width up to maxW
-        bg={formBg} // Background color
-        boxShadow="md" // Shadow effect
-        borderRadius="lg" // Rounded corners
-        p={6} // Padding
-        textAlign="center" // Center text inside the box
+        position="absolute"
+        top="0"
+        left="0"
+        right="0"
+        bottom="0"
+        bg="rgba(0, 0, 0, 0.5)"
+        zIndex="1"
+      />
+
+      {/* Form container with updated styling */}
+      <Box
+        maxW="md"
+        w="full"
+        bg={formBg}
+        boxShadow="xl"
+        borderRadius="lg"
+        p={8}
+        textAlign="center"
+        position="relative"
+        zIndex="2"
+        backdropFilter="blur(10px)"
       >
         <Heading as="h2" size="xl" mb={6} color={textColor}>
           Register
@@ -190,7 +214,7 @@ function RegisterPage() {
         <Text mt={6} color={textColor}>
           Already have an account?{' '}
            {/* Use ChakraLink as ReactRouterLink for navigation */}
-          <ChakraLink as={ReactRouterLink} to="/login" color="teal.500">
+          <ChakraLink as={ReactRouterLink} to="/login" color="blue.400">
             Login here
           </ChakraLink>
         </Text>
