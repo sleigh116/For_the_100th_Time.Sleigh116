@@ -8,24 +8,35 @@ from datetime import timedelta, datetime
 import secrets
 import os
 from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import Optional
+import threading
+import uvicorn
 
 # Load environment variables (same as support.py)
 load_dotenv()
 
-app = Flask(__name__)
-
 # Configuration (use environment variables for secrets in production)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(32))
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', secrets.token_hex(32))
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
-app.config['JWT_ERROR_MESSAGE_KEY'] = 'message'
+SECRET_KEY = os.getenv('SECRET_KEY', secrets.token_hex(32))
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', secrets.token_hex(32))
+
+# ================= FLASK APP =================
+# Rename existing app to flask_app
+flask_app = Flask(__name__)
+flask_app.config['SECRET_KEY'] = SECRET_KEY
+flask_app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
+flask_app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+flask_app.config['JWT_ERROR_MESSAGE_KEY'] = 'message'
 
 # Initialize extensions
-CORS(app, resources={r"/api/*": {
+CORS(flask_app, resources={r"/api/*": {
     "origins": "*",  # Allow all origins for testing
     "supports_credentials": True
 }})
-jwt = JWTManager(app)
+jwt = JWTManager(flask_app)
 
 # Database connection helper (PostgreSQL)
 def get_db():
@@ -43,8 +54,8 @@ def get_db():
         return None
 
 # Auth routes (updated for PostgreSQL)
-@app.route('/api/auth/register', methods=['POST'])
-def register():
+@flask_app.route('/api/auth/register', methods=['POST'])
+def flask_register():
     conn = None
     try:
         data = request.get_json()
@@ -91,8 +102,8 @@ def register():
     finally:
         if conn: conn.close()
 
-@app.route('/api/auth/login', methods=['POST'])
-def login():
+@flask_app.route('/api/auth/login', methods=['POST'])
+def flask_login():
     conn = None
     try:
         data = request.get_json()
@@ -136,40 +147,131 @@ def login():
         if conn:
             conn.close()
 
-@app.route('/api/solar/systems', methods=['POST'])
+@flask_app.route('/api/solar/systems', methods=['POST'])
 @jwt_required()
-def create_solar_system():
+def flask_create_solar_system():
     """Handle solar system installations"""
     current_user = get_jwt_identity()
     data = request.get_json()
     # Add validation and call support.py's add_solar_system()
     # ... implementation ...
 
-@app.route('/api/contracts', methods=['POST'])
+@flask_app.route('/api/contracts', methods=['POST'])
 @jwt_required()
-def create_solar_contract():
+def flask_create_solar_contract():
     """Handle contract creation"""
     current_user = get_jwt_identity()
     data = request.get_json()
     # Add validation and call support.py's create_contract()
     # ... implementation ...
 
-@app.route('/api/payments', methods=['POST'])
+@flask_app.route('/api/payments', methods=['POST'])
 @jwt_required()
-def record_payment():
+def flask_record_payment():
     """Handle payment processing"""
     current_user = get_jwt_identity()
     data = request.get_json()
     # Add validation and call support.py's record_payment()
     # ... implementation ...
 
-@app.route('/api/contracts', methods=['GET'])
+@flask_app.route('/api/contracts', methods=['GET'])
 @jwt_required()
-def get_contracts():
+def flask_get_contracts():
     """Get user's solar contracts"""
     current_user = get_jwt_identity()
     # Add authorization and call support.py's get_user_contracts()
     # ... implementation ...
 
+# ================= FASTAPI APP =================
+fastapi_app = FastAPI(title="Lumina Solar FastAPI")
+
+# CORS (match Flask's config)
+fastapi_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# JWT (compatible with Flask's tokens)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/fastapi/auth/login")
+
+# --- FastAPI Models ---
+class UserRegister(BaseModel):
+    name: str
+    email: str
+    password: str
+    phone: Optional[str] = None
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+# --- FastAPI Routes ---
+@fastapi_app.post("/fastapi/auth/register")
+async def fastapi_register(user: UserRegister):
+    """FastAPI version of /api/auth/register"""
+    conn = None
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute("SELECT id FROM users WHERE email = %s", (user.email,))
+            if cur.fetchone():
+                raise HTTPException(status_code=400, detail="Email exists")
+
+            hashed_pw = generate_password_hash(user.password)
+            cur.execute(
+                """INSERT INTO users (email, password_hash, full_name, phone)
+                VALUES (%s, %s, %s, %s) RETURNING id, email, full_name""",
+                (user.email, hashed_pw, user.name, user.phone)
+            )
+            user_data = cur.fetchone()
+            conn.commit()
+
+        return {
+            "success": True,
+            "user": {"id": user_data[0], "email": user_data[1], "name": user_data[2]}
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn: conn.close()
+
+@fastapi_app.post("/fastapi/auth/login")
+async def fastapi_login(user: UserLogin):
+    """FastAPI version of /api/auth/login"""
+    conn = None
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(
+                'SELECT id, email, password_hash, full_name FROM users WHERE email = %s',
+                (user.email,)
+            )
+            db_user = cur.fetchone()
+
+            if db_user and check_password_hash(db_user[2], user.password):
+                token = create_access_token(identity=db_user[0])
+                return {
+                    "success": True,
+                    "token": token,
+                    "user": {"id": db_user[0], "name": db_user[3], "email": db_user[1]}
+                }
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn: conn.close()
+
+# ================= RUN BOTH APPS =================
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Start Flask in a thread
+    flask_thread = threading.Thread(
+        target=lambda: flask_app.run(port=5000, debug=True, use_reloader=False)
+    )
+    flask_thread.daemon = True
+    flask_thread.start()
+
+    # Start FastAPI
+    uvicorn.run(fastapi_app, host="0.0.0.0", port=8000)
