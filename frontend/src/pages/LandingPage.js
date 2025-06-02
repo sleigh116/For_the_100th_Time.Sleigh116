@@ -13,7 +13,7 @@ import {
   useColorModeValue,
   Avatar,
   VStack,
-  HStack,
+  Image,
 } from '@chakra-ui/react';
 import {
   FaSun,
@@ -21,6 +21,8 @@ import {
   FaBolt,
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import nathiProfile from '../assets/images/IMG Nathii.jpg';
+import okuhleProfile from '../assets/images/sleigh.png';
 
 function RotatingGreetingsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -197,7 +199,7 @@ function LandingPage() {
               color={headingColor}
               fontWeight="bold"
             >
-              Welcome to Solar Fintech
+              Welcome to GridX
             </Heading>
             <Text
               fontSize="xl"
@@ -364,15 +366,36 @@ function LandingPage() {
               <VStack
                 key={index}
                 spacing={3}
-                p={6}
+                p={4}
                 bg={developerCardBg}
                 borderRadius="lg"
                 boxShadow="md"
                 borderWidth="1px"
                 borderColor={cardBorderColor}
                 textAlign="center"
+                width="100%"
               >
-                <Avatar size="xl" name={dev.name} />
+                {dev.name === 'Nkosinathi Radebe' ? (
+                  <Image
+                    src={nathiProfile}
+                    alt={dev.name}
+                    width="300px"
+                    height="300px"
+                    borderRadius="lg"
+                    objectFit="cover"
+                  />
+                ) : dev.name === 'Okuhle Gadla' ? (
+                  <Image
+                    src={okuhleProfile}
+                    alt={dev.name}
+                    width="300px"
+                    height="300px"
+                    borderRadius="lg"
+                    objectFit="cover"
+                  />
+                ) : (
+                  <Avatar size="xl" name={dev.name} />
+                )}
                 <Text fontWeight="bold" fontSize="lg" color={headingColor}>{dev.name}</Text>
                 <Text fontSize="md" color={textColor}>{dev.role}</Text>
               </VStack>
@@ -395,7 +418,7 @@ function LandingPage() {
             color={textColor}
           >
             <Text>
-              © {new Date().getFullYear()} Solar Fintech. All rights reserved.
+              © {new Date().getFullYear()} GridX. All rights reserved.
             </Text>
           </Flex>
         </Container>
