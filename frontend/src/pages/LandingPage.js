@@ -16,14 +16,17 @@ import {
   Image,
 } from '@chakra-ui/react';
 import {
-  FaSun,
-  FaMoneyBillWave,
-  FaBolt,
+  FaSolarPanel,
+  FaChartLine,
+  FaLeaf,
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
+
+// Create motion components
+const MotionBox = motion(Box);
 
 function RotatingGreetingsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -153,21 +156,52 @@ function LandingPage() {
     return () => clearInterval(interval);
   }, [messages]);
 
+  // Enhanced features with animations and icons
   const features = useMemo(() => [
     {
-      icon: FaSun,
+      icon: FaSolarPanel,
       title: 'Solar Power Management',
       description: 'Monitor and optimize your solar energy usage in real-time',
+      animation: {
+        hover: {
+          scale: 1.05,
+          rotate: 2,
+          transition: {
+            duration: 0.3,
+            ease: "easeInOut"
+          }
+        }
+      }
     },
     {
-      icon: FaMoneyBillWave,
+      icon: FaChartLine,
       title: 'Smart Financial Tools',
       description: 'Track expenses, manage payments, and save on energy costs',
+      animation: {
+        hover: {
+          scale: 1.05,
+          rotate: -2,
+          transition: {
+            duration: 0.3,
+            ease: "easeInOut"
+          }
+        }
+      }
     },
     {
-      icon: FaBolt,
+      icon: FaLeaf,
       title: 'Energy Efficiency',
       description: 'Get insights and recommendations to improve your energy consumption',
+      animation: {
+        hover: {
+          scale: 1.05,
+          rotate: 2,
+          transition: {
+            duration: 0.3,
+            ease: "easeInOut"
+          }
+        }
+      }
     },
   ], []);
 
@@ -239,7 +273,7 @@ function LandingPage() {
       {/* New/Updated Rotating Greetings Section */}
       <RotatingGreetingsSection />
 
-      {/* Features Section with Animation */}
+      {/* Features Section with Enhanced Animation */}
       <Container maxW="container.xl" py={20} px={4}>
         <Box
           position="relative"
@@ -271,7 +305,7 @@ function LandingPage() {
               flexShrink={0}
             >
               {features.map((feature, index) => (
-                <Box
+                <MotionBox
                   key={index}
                   p={8}
                   bg={cardBg}
@@ -280,31 +314,44 @@ function LandingPage() {
                   borderWidth="1px"
                   borderColor={cardBorderColor}
                   textAlign="center"
-                  transition="all 0.3s ease"
+                  whileHover="hover"
+                  variants={feature.animation}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  transition={{ duration: 0.3 }}
                   _hover={{
-                    transform: 'scale(1.05)',
                     boxShadow: 'lg',
                   }}
                 >
                   <Icon
                     as={feature.icon}
-                    w={10}
-                    h={10}
+                    w={12}
+                    h={12}
                     color="blue.500"
                     mb={4}
+                    transition="all 0.3s ease"
+                    _hover={{
+                      transform: 'scale(1.1)',
+                      color: 'blue.600',
+                    }}
                   />
                   <Heading
                     as="h3"
                     size="md"
                     color={headingColor}
                     mb={4}
+                    transition="all 0.3s ease"
                   >
                     {feature.title}
                   </Heading>
-                  <Text color={textColor}>
+                  <Text 
+                    color={textColor}
+                    transition="all 0.3s ease"
+                  >
                     {feature.description}
                   </Text>
-                </Box>
+                </MotionBox>
               ))}
             </SimpleGrid>
 
@@ -316,7 +363,7 @@ function LandingPage() {
               flexShrink={0}
             >
               {features.map((feature, index) => (
-                <Box
+                <MotionBox
                   key={`duplicate-${index}`}
                   p={8}
                   bg={cardBg}
@@ -325,31 +372,44 @@ function LandingPage() {
                   borderWidth="1px"
                   borderColor={cardBorderColor}
                   textAlign="center"
-                  transition="all 0.3s ease"
+                  whileHover="hover"
+                  variants={feature.animation}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  transition={{ duration: 0.3 }}
                   _hover={{
-                    transform: 'scale(1.05)',
                     boxShadow: 'lg',
                   }}
                 >
                   <Icon
                     as={feature.icon}
-                    w={10}
-                    h={10}
+                    w={12}
+                    h={12}
                     color="blue.500"
                     mb={4}
+                    transition="all 0.3s ease"
+                    _hover={{
+                      transform: 'scale(1.1)',
+                      color: 'blue.600',
+                    }}
                   />
                   <Heading
                     as="h3"
                     size="md"
                     color={headingColor}
                     mb={4}
+                    transition="all 0.3s ease"
                   >
                     {feature.title}
                   </Heading>
-                  <Text color={textColor}>
+                  <Text 
+                    color={textColor}
+                    transition="all 0.3s ease"
+                  >
                     {feature.description}
                   </Text>
-                </Box>
+                </MotionBox>
               ))}
             </SimpleGrid>
           </Flex>
