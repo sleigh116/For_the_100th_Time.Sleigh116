@@ -29,6 +29,30 @@ import lihleProfile from '../assets/images/LIHLE.png';
 // Create motion components
 const MotionBox = motion(Box);
 
+// Add these animation variants at the top of the file, after the imports
+const textVariants = {
+  initial: { 
+    opacity: 0,
+    y: 20
+  },
+  animate: { 
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  },
+  exit: { 
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.3,
+      ease: "easeIn"
+    }
+  }
+};
+
 function RotatingGreetingsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -105,7 +129,6 @@ function RotatingGreetingsSection() {
                 animate="animate"
                 exit="exit"
                 variants={textVariants}
-                transition={{ duration: 0.5 }} // Animation duration
             >
                 {/* Only display the greeting word */}
                 <Text fontSize={{ base: 'xl', md: '2xl' }} fontWeight="bold" color={greetingColor}>
@@ -258,28 +281,24 @@ function LandingPage() {
             >
               Welcome to GridX
             </Heading>
-            <Text
-              fontSize="xl"
-              color={textColor}
-              maxW="2xl"
-              minH="80px"
-              transition="all 0.5s ease-in-out"
-              opacity={1}
-              transform="translateY(0)"
-              sx={{
-                '&.fade-enter': {
-                  opacity: 0,
-                  transform: 'translateY(10px)',
-                },
-                '&.fade-enter-active': {
-                  opacity: 1,
-                  transform: 'translateY(0)',
-                },
-              }}
-              key={currentMessageIndex}
-            >
-              {messages[currentMessageIndex]}
-            </Text>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentMessageIndex}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={textVariants}
+              >
+                <Text
+                  fontSize="xl"
+                  color={textColor}
+                  maxW="2xl"
+                  minH="80px"
+                >
+                  {messages[currentMessageIndex]}
+                </Text>
+              </motion.div>
+            </AnimatePresence>
             <Button
               size="lg"
               colorScheme="blue"
@@ -367,12 +386,18 @@ function LandingPage() {
                   >
                     {feature.title}
                   </Heading>
-                  <Text 
-                    color={textColor}
-                    transition="all 0.3s ease"
+                  <motion.div
+                    initial="initial"
+                    animate="animate"
+                    variants={textVariants}
                   >
-                    {feature.description}
-                  </Text>
+                    <Text 
+                      color={textColor}
+                      transition="all 0.3s ease"
+                    >
+                      {feature.description}
+                    </Text>
+                  </motion.div>
                 </MotionBox>
               ))}
             </SimpleGrid>
@@ -425,12 +450,18 @@ function LandingPage() {
                   >
                     {feature.title}
                   </Heading>
-                  <Text 
-                    color={textColor}
-                    transition="all 0.3s ease"
+                  <motion.div
+                    initial="initial"
+                    animate="animate"
+                    variants={textVariants}
                   >
-                    {feature.description}
-                  </Text>
+                    <Text 
+                      color={textColor}
+                      transition="all 0.3s ease"
+                    >
+                      {feature.description}
+                    </Text>
+                  </motion.div>
                 </MotionBox>
               ))}
             </SimpleGrid>
