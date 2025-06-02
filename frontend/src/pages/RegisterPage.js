@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
 import gridXBackground from '../assets/images/GridX-IMG.jpg';
+import { FcGoogle } from 'react-icons/fc';
 
 // Import Chakra UI Components
 import {
@@ -13,7 +14,6 @@ import {
   Input,
   Button,
   Text,
-  Link as ChakraLink, // Alias Link from Chakra UI to avoid conflict with react-router-dom
   VStack,
   useToast, // For displaying messages
   useColorModeValue, // For light/dark mode styling
@@ -67,46 +67,52 @@ function RegisterPage() {
 
   // Handler for form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default browser form submission
+    e.preventDefault();
 
     if (!validateForm()) {
-        return; // Stop submission if validation fails
+      return;
     }
 
-    setLoading(true); // Set loading state
-    setErrors({}); // Clear previous errors
+    setLoading(true);
+    setErrors({});
 
     try {
-      const response = await auth.register(name, email, password); // Call backend API
+      console.log('Attempting registration with:', { name, email, password }); // Debug log
+      const response = await auth.register(name, email, password);
+      console.log('Registration response:', response); // Debug log
       if (response.success) {
-        toast({ // Show success message using Chakra toast
-            title: 'Registration Successful!',
-            description: 'You can now log in.',
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
+        toast({
+          title: 'Registration Successful!',
+          description: 'You can now log in.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
         });
-        navigate('/login'); // Redirect to login page
+        navigate('/login');
       } else {
-         toast({ // Show error message from backend
-            title: 'Registration Failed.',
-            description: response.message || 'An unexpected error occurred.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
+        toast({
+          title: 'Registration Failed.',
+          description: response.message || 'An unexpected error occurred.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
         });
       }
     } catch (error) {
-        console.error('Registration error:', error);
-         toast({ // Handle network errors or other exceptions
-            title: 'An error occurred.',
-            description: error.message || 'Could not connect to the server.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-        });
+      console.error('Registration error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      }); // Enhanced error logging
+      toast({
+        title: 'An error occurred.',
+        description: error.message || 'Could not connect to the server.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -286,23 +292,56 @@ function RegisterPage() {
           >
             Register
           </Button>
+
+          {/* Add divider */}
+          <Flex w="full" align="center" my={4}>
+            <Box flex="1" h="1px" bg={borderColor} />
+            <Text px={4} color={textColor} fontSize="sm">or</Text>
+            <Box flex="1" h="1px" bg={borderColor} />
+          </Flex>
+
+          {/* Gmail Button */}
+          <Button
+            w="full"
+            size="lg"
+            variant="outline"
+            leftIcon={<FcGoogle size="20px" />}
+            onClick={() => navigate('/auth/google')}
+            bg="rgba(255, 255, 255, 0.1)"
+            borderColor={borderColor}
+            color={textColor}
+            _hover={{
+              bg: 'rgba(255, 255, 255, 0.2)',
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }}
+            _active={{
+              bg: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(0)',
+            }}
+          >
+            Continue with Gmail
+          </Button>
         </VStack>
 
         {/* Link to Login page */}
         <Text mt={6} color={textColor}>
           Already have an account?{' '}
-           {/* Use ChakraLink as ReactRouterLink for navigation */}
-          <ChakraLink 
-            as={ReactRouterLink} 
-            to="/login" 
+          <Button
+            variant="link"
             color="blue.200"
             _hover={{
               color: 'blue.100',
               textDecoration: 'underline',
             }}
+            onClick={() => {
+              console.log('Navigating to login...'); // Debug log
+              navigate('/login', { replace: true });
+            }}
           >
             Login here
-          </ChakraLink>
+          </Button>
         </Text>
       </Box>
     </Flex>
