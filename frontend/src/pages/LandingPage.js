@@ -57,7 +57,7 @@ const textVariants = {
 function RotatingGreetingsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Define greetings using useMemo with the new list (only greetings)
+  // Define greetings using useMemo
   const southAfricanGreetings = useMemo(() => [
     'Hello',
     'Hallo',
@@ -70,37 +70,31 @@ function RotatingGreetingsSection() {
     'Dumela',
     'Avuxeni',
     'Ndaa',
-  ], []); // Empty dependency array means this runs once on mount
+  ], []);
 
   useEffect(() => {
-    // Handle the case where greetings list might be empty
     if (southAfricanGreetings.length === 0) return;
 
     const intervalId = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % southAfricanGreetings.length);
-    }, 3000); // Change every 3000 milliseconds (3 seconds)
+    }, 3000);
 
-    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [southAfricanGreetings]); // Re-run if greetings data changes (though memoized)
+  }, [southAfricanGreetings]);
 
-  // Color mode values for styling the container
   const containerBg = useColorModeValue('rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.8)');
-  // Removed languageColor as language name is no longer displayed
   const greetingColor = useColorModeValue('white', 'white');
 
   const currentGreeting = southAfricanGreetings[currentIndex];
 
-  // Define animation variants for the text
   const textVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
     exit: { opacity: 0 },
   };
 
-  // Handle case where greetings list might be empty
   if (southAfricanGreetings.length === 0) {
-      return null; // Or a placeholder message
+    return null;
   }
 
   return (
@@ -117,8 +111,7 @@ function RotatingGreetingsSection() {
       mb={12}
       backdropFilter="blur(10px)"
     >
-      <VStack spacing={4}>
-        {/* Updated Heading */}
+      <Stack spacing={4}>
         <Heading 
           size="lg"
           color={greetingColor}
@@ -127,30 +120,25 @@ function RotatingGreetingsSection() {
           Discover the Spirit of South Africa!
         </Heading>
 
-        {/* Use AnimatePresence and motion.Text for fading */}
-        <AnimatePresence mode="wait"> {/* 'wait' mode ensures one exits before the next enters */}
-          {/* Key changes with index, triggering animation */}
-          {/* Use a div or span inside AnimatePresence to wrap the motion component */}
-           <motion.div
-                key={currentIndex}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={textVariants}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={textVariants}
+          >
+            <Text 
+              fontSize={{ base: 'xl', md: '2xl' }} 
+              fontWeight="bold" 
+              color={greetingColor}
+              textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
             >
-                {/* Only display the greeting word */}
-                <Text 
-                  fontSize={{ base: 'xl', md: '2xl' }} 
-                  fontWeight="bold" 
-                  color={greetingColor}
-                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                >
-                    {currentGreeting}
-                </Text>
-            </motion.div>
+              {currentGreeting}
+            </Text>
+          </motion.div>
         </AnimatePresence>
-
-      </VStack>
+      </Stack>
     </Box>
   );
 }
@@ -158,18 +146,17 @@ function RotatingGreetingsSection() {
 function LandingPage() {
   const navigate = useNavigate();
   
-  // Update color mode values for better contrast against the background
+  // Keep these color mode values that are being used
+  const containerBg = useColorModeValue('rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.8)');
+  const greetingColor = useColorModeValue('white', 'white');
   const bgGradient = useColorModeValue(
     'linear(to-b, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5))',
     'linear(to-b, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6))'
   );
   const textColor = useColorModeValue('white', 'white');
   const headingColor = useColorModeValue('white', 'white');
-  const cardBg = useColorModeValue('rgba(255, 255, 255, 0.9)', 'rgba(26, 32, 44, 0.9)');
   const cardBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
   const developerSectionBg = useColorModeValue('rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.8)');
-  const developerCardBg = useColorModeValue('rgba(255, 255, 255, 0.9)', 'rgba(26, 32, 44, 0.9)');
-  const descriptionColor = useColorModeValue('gray.700', 'gray.300');
 
   // Define and memoize the rotating messages
   const messages = useMemo(() => [
@@ -390,7 +377,7 @@ function LandingPage() {
                 <MotionBox
                   key={index}
                   p={8}
-                  bg={cardBg}
+                  bg={containerBg}
                   borderRadius="full"
                   boxShadow="md"
                   borderWidth="1px"
@@ -454,7 +441,7 @@ function LandingPage() {
                 <MotionBox
                   key={`duplicate-${index}`}
                   p={8}
-                  bg={cardBg}
+                  bg={containerBg}
                   borderRadius="full"
                   boxShadow="md"
                   borderWidth="1px"
@@ -535,7 +522,7 @@ function LandingPage() {
                 key={index}
                 spacing={3}
                 p={4}
-                bg={developerCardBg}
+                bg={containerBg}
                 borderRadius="lg"
                 boxShadow="lg"
                 borderWidth="1px"
@@ -549,63 +536,80 @@ function LandingPage() {
                 }}
                 transition="all 0.3s ease"
               >
-                {dev.name === 'Nkosinathi Radebe' ? (
-                  <Image
-                    src={nathiProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : dev.name === 'Okuhle Gadla' ? (
-                  <Image
-                    src={okuhleProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : dev.name === 'Mpho Ramokhoase' ? (
-                  <Image
-                    src={mphoProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : dev.name === 'Thembelihle Zulu' ? (
-                  <Image
-                    src={lihleProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : (
-                  <Avatar size="xl" name={dev.name} />
-                )}
+                <Box
+                  width="100%"
+                  height="200px"
+                  position="relative"
+                  overflow="hidden"
+                  borderRadius="full"
+                  mb={2}
+                >
+                  {dev.name === 'Nkosinathi Radebe' ? (
+                    <Image
+                      src={nathiProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : dev.name === 'Okuhle Gadla' ? (
+                    <Image
+                      src={okuhleProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : dev.name === 'Mpho Ramokhoase' ? (
+                    <Image
+                      src={mphoProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : dev.name === 'Thembelihle Zulu' ? (
+                    <Image
+                      src={lihleProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : (
+                    <Avatar 
+                      size="full" 
+                      name={dev.name}
+                      width="100%"
+                      height="100%"
+                    />
+                  )}
+                </Box>
                 <Text 
                   fontWeight="bold" 
                   fontSize="lg" 
-                  color={headingColor}
+                  color={greetingColor}
+                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
                 >
                   {dev.name}
                 </Text>
                 <Text 
                   fontSize="md" 
-                  color={textColor}
+                  color={greetingColor}
+                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
                 >
                   {dev.role}
                 </Text>
                 <Text 
                   fontSize="sm" 
-                  color={descriptionColor}
+                  color={greetingColor}
                   textAlign="center"
                   px={2}
+                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
                 >
                   {dev.description}
                 </Text>
