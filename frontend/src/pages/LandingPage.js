@@ -24,7 +24,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
-import lihleProfile from '../assets/images/LIHLE.png';
+import LIHLE from '../assets/images/Lihle.png';
 import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Create motion components
@@ -573,7 +573,7 @@ function LandingPage() {
                     />
                   ) : dev.name === 'Thembelihle Zulu' ? (
                     <Image
-                      src={lihleProfile}
+                      src={LIHLE}
                       alt={dev.name}
                       width="100%"
                       height="100%"
