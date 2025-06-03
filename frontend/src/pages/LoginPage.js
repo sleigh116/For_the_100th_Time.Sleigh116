@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
+import gridXBackground from '../assets/images/GridX-IMG.jpg'; // Add this import
+import { FcGoogle } from 'react-icons/fc'; // Add this import
 
 // Import Chakra UI Components
 import {
@@ -100,8 +102,28 @@ function LoginPage() {
   );
 
   return (
-     // Use Flex for centering the form vertically and horizontally
-    <Flex minH="100vh" align="center" justify="center" bg={bgColor} p={4}>
+    <Flex 
+      minH="100vh" 
+      align="center" 
+      justify="center" 
+      p={4}
+      position="relative"
+      backgroundImage={`url(${gridXBackground})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+    >
+      {/* Add overlay for better readability */}
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        right="0"
+        bottom="0"
+        bg="rgba(0, 0, 0, 0.5)"
+        zIndex="1"
+      />
+
       {/* Box to contain the form with styling */}
       <Box
         maxW="md"

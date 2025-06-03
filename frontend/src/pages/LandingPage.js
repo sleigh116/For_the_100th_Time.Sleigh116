@@ -24,7 +24,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
-import LIHLE from '../assets/images/Lihle.png';
+import LIHLE from '../assets/images/LIHLE.png';
 import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Create motion components
