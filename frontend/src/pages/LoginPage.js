@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
+import gridxBg from '../assets/images/gridx-bg.jpg'; // Adjust the path if needed
 
 // Import Chakra UI Components
 import {
@@ -96,7 +97,18 @@ function LoginPage() {
 
   return (
      // Use Flex for centering the form vertically and horizontally
-    <Flex minH="100vh" align="center" justify="center" bg={bgColor} p={4}>
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
+      style={{
+        backgroundImage: `url(${gridxBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+      p={4}
+    >
       {/* Box to contain the form with styling */}
       <Box
         maxW="md" // Max width for the form container
