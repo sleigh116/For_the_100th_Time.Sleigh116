@@ -24,15 +24,40 @@ import { motion, AnimatePresence } from 'framer-motion';
 import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
-import lihleProfile from '../assets/images/Lihle.png';
+import lihleProfile from '../assets/images/LIHLE.png';
+import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Create motion components
 const MotionBox = motion(Box);
 
+// Add these animation variants at the top of the file, after the imports
+const textVariants = {
+  initial: { 
+    opacity: 0,
+    y: 20
+  },
+  animate: { 
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  },
+  exit: { 
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.3,
+      ease: "easeIn"
+    }
+  }
+};
+
 function RotatingGreetingsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Define greetings using useMemo with the new list (only greetings)
+  // Define greetings using useMemo
   const southAfricanGreetings = useMemo(() => [
     'Hello',
     'Hallo',
@@ -45,76 +70,75 @@ function RotatingGreetingsSection() {
     'Dumela',
     'Avuxeni',
     'Ndaa',
-  ], []); // Empty dependency array means this runs once on mount
+  ], []);
 
   useEffect(() => {
-    // Handle the case where greetings list might be empty
     if (southAfricanGreetings.length === 0) return;
 
     const intervalId = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % southAfricanGreetings.length);
-    }, 3000); // Change every 3000 milliseconds (3 seconds)
+    }, 3000);
 
-    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [southAfricanGreetings]); // Re-run if greetings data changes (though memoized)
+  }, [southAfricanGreetings]);
 
-  // Color mode values for styling the container
-  const containerBg = useColorModeValue('blue.50', 'blue.900');
-  // Removed languageColor as language name is no longer displayed
-  const greetingColor = useColorModeValue('gray.800', 'white');
+  const containerBg = useColorModeValue('rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.8)');
+  const greetingColor = useColorModeValue('white', 'white');
 
   const currentGreeting = southAfricanGreetings[currentIndex];
 
-  // Define animation variants for the text
   const textVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
     exit: { opacity: 0 },
   };
 
-  // Handle case where greetings list might be empty
   if (southAfricanGreetings.length === 0) {
-      return null; // Or a placeholder message
+    return null;
   }
 
   return (
     <Box
-      py={10} // Vertical padding
-      px={4} // Horizontal padding
-      bg={containerBg} // Background color based on theme
-      textAlign="center" // Center content horizontally
-      borderRadius="lg" // Rounded corners
-      boxShadow="md" // Subtle shadow
-      maxW="container.md" // Maximum width
-      mx="auto" // Center the box horizontally
-      mt={12} // Margin top to space it from the section above
-      mb={12} // Margin bottom to space it from the section below
+      py={10}
+      px={4}
+      bg={containerBg}
+      textAlign="center"
+      borderRadius="full"
+      boxShadow="lg"
+      maxW="container.md"
+      mx="auto"
+      mt={12}
+      mb={12}
+      backdropFilter="blur(10px)"
     >
-      <VStack spacing={4}>
-        {/* Updated Heading */}
-        <Heading size="lg">Discover the Spirit of South Africa!</Heading>
+      <Stack spacing={4}>
+        <Heading 
+          size="lg"
+          color={greetingColor}
+          textShadow="2px 2px 4px rgba(0, 0, 0, 0.5)"
+        >
+          Discover the Spirit of South Africa!
+        </Heading>
 
-        {/* Use AnimatePresence and motion.Text for fading */}
-        <AnimatePresence mode="wait"> {/* 'wait' mode ensures one exits before the next enters */}
-          {/* Key changes with index, triggering animation */}
-          {/* Use a div or span inside AnimatePresence to wrap the motion component */}
-           <motion.div
-                key={currentIndex}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={textVariants}
-                transition={{ duration: 0.5 }} // Animation duration
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={textVariants}
+          >
+            <Text 
+              fontSize={{ base: 'xl', md: '2xl' }} 
+              fontWeight="bold" 
+              color={greetingColor}
+              textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
             >
-                {/* Only display the greeting word */}
-                <Text fontSize={{ base: 'xl', md: '2xl' }} fontWeight="bold" color={greetingColor}>
-                    {currentGreeting}
-                </Text>
-            </motion.div>
+              {currentGreeting}
+            </Text>
+          </motion.div>
         </AnimatePresence>
-
-      </VStack>
+      </Stack>
     </Box>
   );
 }
@@ -122,18 +146,17 @@ function RotatingGreetingsSection() {
 function LandingPage() {
   const navigate = useNavigate();
   
-  // Color mode values
+  // Keep these color mode values that are being used
+  const containerBg = useColorModeValue('rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.8)');
+  const greetingColor = useColorModeValue('white', 'white');
   const bgGradient = useColorModeValue(
-    'linear(to-b, blue.50, white)',
-    'linear(to-b, blue.900, gray.900)'
+    'linear(to-b, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5))',
+    'linear(to-b, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6))'
   );
-  const textColor = useColorModeValue('gray.600', 'gray.400');
-  const headingColor = useColorModeValue('gray.800', 'white');
-  const cardBg = useColorModeValue('white', 'gray.800');
-  const cardBorderColor = useColorModeValue('gray.200', 'gray.700');
-  const developerSectionBg = useColorModeValue('gray.50', 'gray.800');
-  const developerCardBg = useColorModeValue('white', 'gray.700');
-  const descriptionColor = useColorModeValue('gray.500', 'gray.400');
+  const textColor = useColorModeValue('white', 'white');
+  const headingColor = useColorModeValue('white', 'white');
+  const cardBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
+  const developerSectionBg = useColorModeValue('rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.8)');
 
   // Define and memoize the rotating messages
   const messages = useMemo(() => [
@@ -237,9 +260,29 @@ function LandingPage() {
   ], []);
 
   return (
-    <Box minH="100vh">
+    <Box 
+      minH="100vh"
+      position="relative"
+      backgroundImage={`url(${gridXBackground})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+    >
+      {/* Add an overlay to ensure content readability */}
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        right="0"
+        bottom="0"
+        bg="rgba(0, 0, 0, 0.5)"
+        zIndex="1"
+      />
+
       {/* Hero Section */}
       <Box
+        position="relative"
+        zIndex="2"
         bgGradient={bgGradient}
         py={20}
         px={4}
@@ -255,36 +298,38 @@ function LandingPage() {
               size="2xl"
               color={headingColor}
               fontWeight="bold"
+              textShadow="2px 2px 4px rgba(0, 0, 0, 0.5)"
             >
               Welcome to GridX
             </Heading>
-            <Text
-              fontSize="xl"
-              color={textColor}
-              maxW="2xl"
-              minH="80px"
-              transition="all 0.5s ease-in-out"
-              opacity={1}
-              transform="translateY(0)"
-              sx={{
-                '&.fade-enter': {
-                  opacity: 0,
-                  transform: 'translateY(10px)',
-                },
-                '&.fade-enter-active': {
-                  opacity: 1,
-                  transform: 'translateY(0)',
-                },
-              }}
-              key={currentMessageIndex}
-            >
-              {messages[currentMessageIndex]}
-            </Text>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentMessageIndex}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={textVariants}
+              >
+                <Text
+                  fontSize="xl"
+                  color={textColor}
+                  maxW="2xl"
+                  minH="80px"
+                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                >
+                  {messages[currentMessageIndex]}
+                </Text>
+              </motion.div>
+            </AnimatePresence>
             <Button
               size="lg"
               colorScheme="blue"
               onClick={() => navigate('/register')}
               px={8}
+              _hover={{
+                transform: 'scale(1.05)',
+                boxShadow: 'lg',
+              }}
             >
               Get Started
             </Button>
@@ -292,11 +337,13 @@ function LandingPage() {
         </Container>
       </Box>
 
-      {/* New/Updated Rotating Greetings Section */}
-      <RotatingGreetingsSection />
+      {/* Rotating Greetings Section */}
+      <Box position="relative" zIndex="2">
+        <RotatingGreetingsSection />
+      </Box>
 
       {/* Features Section with Enhanced Animation */}
-      <Container maxW="container.xl" py={20} px={4}>
+      <Container maxW="container.xl" py={20} px={4} position="relative" zIndex="2">
         <Box
           position="relative"
           width="100%"
@@ -330,8 +377,8 @@ function LandingPage() {
                 <MotionBox
                   key={index}
                   p={8}
-                  bg={cardBg}
-                  borderRadius="lg"
+                  bg={containerBg}
+                  borderRadius="full"
                   boxShadow="md"
                   borderWidth="1px"
                   borderColor={cardBorderColor}
@@ -367,12 +414,18 @@ function LandingPage() {
                   >
                     {feature.title}
                   </Heading>
-                  <Text 
-                    color={textColor}
-                    transition="all 0.3s ease"
+                  <motion.div
+                    initial="initial"
+                    animate="animate"
+                    variants={textVariants}
                   >
-                    {feature.description}
-                  </Text>
+                    <Text 
+                      color={textColor}
+                      transition="all 0.3s ease"
+                    >
+                      {feature.description}
+                    </Text>
+                  </motion.div>
                 </MotionBox>
               ))}
             </SimpleGrid>
@@ -388,8 +441,8 @@ function LandingPage() {
                 <MotionBox
                   key={`duplicate-${index}`}
                   p={8}
-                  bg={cardBg}
-                  borderRadius="lg"
+                  bg={containerBg}
+                  borderRadius="full"
                   boxShadow="md"
                   borderWidth="1px"
                   borderColor={cardBorderColor}
@@ -425,12 +478,18 @@ function LandingPage() {
                   >
                     {feature.title}
                   </Heading>
-                  <Text 
-                    color={textColor}
-                    transition="all 0.3s ease"
+                  <motion.div
+                    initial="initial"
+                    animate="animate"
+                    variants={textVariants}
                   >
-                    {feature.description}
-                  </Text>
+                    <Text 
+                      color={textColor}
+                      transition="all 0.3s ease"
+                    >
+                      {feature.description}
+                    </Text>
+                  </motion.div>
                 </MotionBox>
               ))}
             </SimpleGrid>
@@ -439,9 +498,22 @@ function LandingPage() {
       </Container>
 
       {/* Meet the Developers Section */}
-      <Box bg={developerSectionBg} py={20} px={4}>
+      <Box 
+        bg={developerSectionBg} 
+        py={20} 
+        px={4}
+        position="relative"
+        zIndex="2"
+      >
         <Container maxW="container.xl">
-          <Heading as="h2" size="xl" textAlign="center" mb={10} color={headingColor}>
+          <Heading 
+            as="h2" 
+            size="xl" 
+            textAlign="center" 
+            mb={10} 
+            color={headingColor}
+            textShadow="2px 2px 4px rgba(0, 0, 0, 0.5)"
+          >
             Meet the Developers
           </Heading>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 5 }} spacing={8}>
@@ -450,60 +522,94 @@ function LandingPage() {
                 key={index}
                 spacing={3}
                 p={4}
-                bg={developerCardBg}
+                bg={containerBg}
                 borderRadius="lg"
-                boxShadow="md"
+                boxShadow="lg"
                 borderWidth="1px"
                 borderColor={cardBorderColor}
                 textAlign="center"
                 width="100%"
+                backdropFilter="blur(10px)"
+                _hover={{
+                  transform: 'translateY(-5px)',
+                  boxShadow: 'xl',
+                }}
+                transition="all 0.3s ease"
               >
-                {dev.name === 'Nkosinathi Radebe' ? (
-                  <Image
-                    src={nathiProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : dev.name === 'Okuhle Gadla' ? (
-                  <Image
-                    src={okuhleProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : dev.name === 'Mpho Ramokhoase' ? (
-                  <Image
-                    src={mphoProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : dev.name === 'Thembelihle Zulu' ? (
-                  <Image
-                    src={lihleProfile}
-                    alt={dev.name}
-                    width="300px"
-                    height="300px"
-                    borderRadius="lg"
-                    objectFit="cover"
-                  />
-                ) : (
-                  <Avatar size="xl" name={dev.name} />
-                )}
-                <Text fontWeight="bold" fontSize="lg" color={headingColor}>{dev.name}</Text>
-                <Text fontSize="md" color={textColor}>{dev.role}</Text>
+                <Box
+                  width="100%"
+                  height="200px"
+                  position="relative"
+                  overflow="hidden"
+                  borderRadius="full"
+                  mb={2}
+                >
+                  {dev.name === 'Nkosinathi Radebe' ? (
+                    <Image
+                      src={nathiProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : dev.name === 'Okuhle Gadla' ? (
+                    <Image
+                      src={okuhleProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : dev.name === 'Mpho Ramokhoase' ? (
+                    <Image
+                      src={mphoProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : dev.name === 'Thembelihle Zulu' ? (
+                    <Image
+                      src={lihleProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  ) : (
+                    <Avatar 
+                      size="full" 
+                      name={dev.name}
+                      width="100%"
+                      height="100%"
+                    />
+                  )}
+                </Box>
+                <Text 
+                  fontWeight="bold" 
+                  fontSize="lg" 
+                  color={greetingColor}
+                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                >
+                  {dev.name}
+                </Text>
+                <Text 
+                  fontSize="md" 
+                  color={greetingColor}
+                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                >
+                  {dev.role}
+                </Text>
                 <Text 
                   fontSize="sm" 
-                  color={descriptionColor}
+                  color={greetingColor}
                   textAlign="center"
                   px={2}
+                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
                 >
                   {dev.description}
                 </Text>
@@ -518,7 +624,12 @@ function LandingPage() {
         as="footer"
         py={8}
         px={4}
-        bg={useColorModeValue('gray.50', 'gray.900')}
+        bg="rgba(0, 0, 0, 0.8)"
+        position="relative"
+        zIndex="2"
+        borderRadius="full"
+        mx={4}
+        mb={4}
       >
         <Container maxW="container.xl">
           <Flex

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
+import gridXBackground from '../assets/images/GridX-IMG.jpg';
+import { FcGoogle } from 'react-icons/fc';
 
 // Import Chakra UI Components
 import {
@@ -12,7 +14,6 @@ import {
   Input,
   Button,
   Text,
-  Link as ChakraLink, // Alias Link from Chakra UI to avoid conflict with react-router-dom
   VStack,
   useToast, // For displaying messages
   useColorModeValue, // For light/dark mode styling
@@ -28,6 +29,17 @@ function RegisterPage() {
   const [errors, setErrors] = useState({}); // State for validation errors
   const navigate = useNavigate();
   const toast = useToast(); // Initialize toast for Chakra UI notifications
+
+  // Update color mode values for glassmorphism effect
+  const formBg = useColorModeValue(
+    'rgba(255, 255, 255, 0.15)',
+    'rgba(26, 32, 44, 0.15)'
+  );
+  const textColor = useColorModeValue('white', 'white');
+  const borderColor = useColorModeValue(
+    'rgba(255, 255, 255, 0.2)',
+    'rgba(255, 255, 255, 0.1)'
+  );
 
   // Function to validate form inputs
   const validateForm = () => {
@@ -55,81 +67,137 @@ function RegisterPage() {
 
   // Handler for form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default browser form submission
+    e.preventDefault();
 
     if (!validateForm()) {
-        return; // Stop submission if validation fails
+      return;
     }
 
-    setLoading(true); // Set loading state
-    setErrors({}); // Clear previous errors
+    setLoading(true);
+    setErrors({});
 
     try {
-      const response = await auth.register(name, email, password); // Call backend API
+      console.log('Attempting registration with:', { name, email, password }); // Debug log
+      const response = await auth.register(name, email, password);
+      console.log('Registration response:', response); // Debug log
       if (response.success) {
-        toast({ // Show success message using Chakra toast
-            title: 'Registration Successful!',
-            description: 'You can now log in.',
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
+        toast({
+          title: 'Registration Successful!',
+          description: 'You can now log in.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
         });
-        navigate('/login'); // Redirect to login page
+        navigate('/login');
       } else {
-         toast({ // Show error message from backend
-            title: 'Registration Failed.',
-            description: response.message || 'An unexpected error occurred.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
+        toast({
+          title: 'Registration Failed.',
+          description: response.message || 'An unexpected error occurred.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
         });
       }
     } catch (error) {
-        console.error('Registration error:', error);
-         toast({ // Handle network errors or other exceptions
-            title: 'An error occurred.',
-            description: error.message || 'Could not connect to the server.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-        });
+      console.error('Registration error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      }); // Enhanced error logging
+      toast({
+        title: 'An error occurred.',
+        description: error.message || 'Could not connect to the server.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
-   // Chakra UI hook for dynamic colors based on color mode
-   const bgColor = useColorModeValue('gray.50', 'gray.800');
-   const formBg = useColorModeValue('white', 'gray.700');
-   const textColor = useColorModeValue('gray.700', 'gray.200');
-
-
   return (
     // Use Flex for centering the form vertically and horizontally
-    <Flex minH="100vh" align="center" justify="center" bg={bgColor} p={4}>
-      {/* Box to contain the form with styling */}
+    <Flex 
+      minH="100vh" 
+      align="center" 
+      justify="center" 
+      p={4}
+      position="relative"
+      backgroundImage={`url(${gridXBackground})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+    >
+      {/* Add overlay for better readability */}
       <Box
-        maxW="md" // Max width for the form container
-        w="full" // Take full width up to maxW
-        bg={formBg} // Background color
-        boxShadow="md" // Shadow effect
-        borderRadius="lg" // Rounded corners
-        p={6} // Padding
-        textAlign="center" // Center text inside the box
+        position="absolute"
+        top="0"
+        left="0"
+        right="0"
+        bottom="0"
+        bg="rgba(0, 0, 0, 0.5)"
+        zIndex="1"
+      />
+
+      {/* Form container with enhanced glassmorphism styling */}
+      <Box
+        maxW="md"
+        w="full"
+        bg={formBg}
+        boxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)"
+        borderRadius="xl"
+        p={8}
+        textAlign="center"
+        position="relative"
+        zIndex="2"
+        backdropFilter="blur(16px)"
+        border="1px solid"
+        borderColor={borderColor}
+        _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: 'xl',
+          padding: '2px',
+          background: 'linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+        }}
       >
-        <Heading as="h2" size="xl" mb={6} color={textColor}>
+        <Heading 
+          as="h2" 
+          size="xl" 
+          mb={6} 
+          color={textColor}
+          textShadow="0 2px 4px rgba(0,0,0,0.2)"
+        >
           Register
         </Heading>
         {/* VStack for vertical stacking of form controls */}
         <VStack as="form" spacing={4} onSubmit={handleSubmit} noValidate>
           {/* Form Control for Full Name */}
           <FormControl id="name" isInvalid={!!errors.name}>
-            <FormLabel>Full Name</FormLabel>
+            <FormLabel color={textColor}>Full Name</FormLabel>
             <Input
               type="text"
               placeholder="Enter your full name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
              {/* Display error message if validation fails */}
              <FormErrorMessage>{errors.name}</FormErrorMessage>
@@ -137,36 +205,66 @@ function RegisterPage() {
 
           {/* Form Control for Email */}
           <FormControl id="email" isInvalid={!!errors.email}>
-            <FormLabel>Email address</FormLabel>
+            <FormLabel color={textColor}>Email address</FormLabel>
             <Input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
              <FormErrorMessage>{errors.email}</FormErrorMessage>
           </FormControl>
 
           {/* Form Control for Password */}
           <FormControl id="password" isInvalid={!!errors.password}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel color={textColor}>Password</FormLabel>
             <Input
               type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
              <FormErrorMessage>{errors.password}</FormErrorMessage>
           </FormControl>
 
           {/* Form Control for Confirm Password */}
           <FormControl id="confirm-password" isInvalid={!!errors.confirmPassword}>
-            <FormLabel>Confirm Password</FormLabel>
+            <FormLabel color={textColor}>Confirm Password</FormLabel>
             <Input
               type="password"
               placeholder="Confirm your password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
              <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
           </FormControl>
@@ -174,25 +272,76 @@ function RegisterPage() {
           {/* Submit Button */}
           <Button
             type="submit"
-            colorScheme="teal" // Use teal color scheme
-            size="lg" // Large button size
-            fontSize="md" // Medium font size
-            isLoading={loading} // Show loading spinner when submitting
+            colorScheme="teal"
+            size="lg"
+            fontSize="md"
+            isLoading={loading}
             loadingText="Registering..."
-            w="full" // Button takes full width
-            mt={4} // Margin top
+            w="full"
+            mt={4}
+            bg="rgba(49, 151, 149, 0.8)"
+            _hover={{
+              bg: 'rgba(49, 151, 149, 0.9)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }}
+            _active={{
+              bg: 'rgba(49, 151, 149, 1)',
+              transform: 'translateY(0)',
+            }}
           >
             Register
+          </Button>
+
+          {/* Add divider */}
+          <Flex w="full" align="center" my={4}>
+            <Box flex="1" h="1px" bg={borderColor} />
+            <Text px={4} color={textColor} fontSize="sm">or</Text>
+            <Box flex="1" h="1px" bg={borderColor} />
+          </Flex>
+
+          {/* Gmail Button */}
+          <Button
+            w="full"
+            size="lg"
+            variant="outline"
+            leftIcon={<FcGoogle size="20px" />}
+            onClick={() => navigate('/auth/google')}
+            bg="rgba(255, 255, 255, 0.1)"
+            borderColor={borderColor}
+            color={textColor}
+            _hover={{
+              bg: 'rgba(255, 255, 255, 0.2)',
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }}
+            _active={{
+              bg: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(0)',
+            }}
+          >
+            Continue with Gmail
           </Button>
         </VStack>
 
         {/* Link to Login page */}
         <Text mt={6} color={textColor}>
           Already have an account?{' '}
-           {/* Use ChakraLink as ReactRouterLink for navigation */}
-          <ChakraLink as={ReactRouterLink} to="/login" color="teal.500">
+          <Button
+            variant="link"
+            color="blue.200"
+            _hover={{
+              color: 'blue.100',
+              textDecoration: 'underline',
+            }}
+            onClick={() => {
+              console.log('Navigating to login...'); // Debug log
+              navigate('/login', { replace: true });
+            }}
+          >
             Login here
-          </ChakraLink>
+          </Button>
         </Text>
       </Box>
     </Flex>

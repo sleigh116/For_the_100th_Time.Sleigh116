@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
-import gridxBg from '../assets/images/gridx-bg.jpg'; // Adjust the path if needed
 
 // Import Chakra UI Components
 import {
@@ -13,7 +12,6 @@ import {
   Input,
   Button,
   Text,
-  Link as ChakraLink, // Alias Link from Chakra UI
   VStack,
   useToast, // For displaying messages
   useColorModeValue, // For light/dark mode styling
@@ -90,87 +88,174 @@ function LoginPage() {
     }
   };
 
-   // Chakra UI hook for dynamic colors based on color mode
-   const bgColor = useColorModeValue('gray.50', 'gray.800');
-   const formBg = useColorModeValue('white', 'gray.700');
-   const textColor = useColorModeValue('gray.700', 'gray.200');
+  // Update color mode values for glassmorphism effect
+  const formBg = useColorModeValue(
+    'rgba(255, 255, 255, 0.15)',
+    'rgba(26, 32, 44, 0.15)'
+  );
+  const textColor = useColorModeValue('white', 'white');
+  const borderColor = useColorModeValue(
+    'rgba(255, 255, 255, 0.2)',
+    'rgba(255, 255, 255, 0.1)'
+  );
 
   return (
      // Use Flex for centering the form vertically and horizontally
-    <Flex
-      minH="100vh"
-      align="center"
-      justify="center"
-      style={{
-        backgroundImage: `url(${gridxBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-      p={4}
-    >
+    <Flex minH="100vh" align="center" justify="center" bg={bgColor} p={4}>
       {/* Box to contain the form with styling */}
       <Box
-        maxW="md" // Max width for the form container
-        w="full" // Take full width up to maxW
-        bg={formBg} // Background color
-        boxShadow="md" // Shadow effect
-        borderRadius="lg" // Rounded corners
-        p={6} // Padding
-        textAlign="center" // Center text inside the box
+        maxW="md"
+        w="full"
+        bg={formBg}
+        boxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)"
+        borderRadius="xl"
+        p={8}
+        textAlign="center"
+        position="relative"
+        zIndex="2"
+        backdropFilter="blur(16px)"
+        border="1px solid"
+        borderColor={borderColor}
+        _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: 'xl',
+          padding: '2px',
+          background: 'linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
+        }}
       >
-        <Heading as="h2" size="xl" mb={6} color={textColor}>
+        <Heading 
+          as="h2" 
+          size="xl" 
+          mb={6} 
+          color={textColor}
+          textShadow="0 2px 4px rgba(0,0,0,0.2)"
+        >
           Login
         </Heading>
-         {/* VStack for vertical stacking of form controls */}
         <VStack as="form" spacing={4} onSubmit={handleSubmit} noValidate>
-          {/* Form Control for Email */}
-          <FormControl id="login-email" isInvalid={!!errors.email}> {/* Use a unique ID */}
-            <FormLabel>Email address</FormLabel>
+          {/* Form controls with glassmorphism styling */}
+          <FormControl id="login-email" isInvalid={!!errors.email}>
+            <FormLabel color={textColor}>Email address</FormLabel>
             <Input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
-             {/* Display error message if validation fails */}
-             <FormErrorMessage>{errors.email}</FormErrorMessage>
+            <FormErrorMessage>{errors.email}</FormErrorMessage>
           </FormControl>
 
-          {/* Form Control for Password */}
-          <FormControl id="login-password" isInvalid={!!errors.password}> {/* Use a unique ID */}
-            <FormLabel>Password</FormLabel>
+          <FormControl id="login-password" isInvalid={!!errors.password}>
+            <FormLabel color={textColor}>Password</FormLabel>
             <Input
               type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderColor={borderColor}
+              color={textColor}
+              _hover={{
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+              _focus={{
+                borderColor: 'rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.5)',
+              }}
             />
-             <FormErrorMessage>{errors.password}</FormErrorMessage>
+            <FormErrorMessage>{errors.password}</FormErrorMessage>
           </FormControl>
 
-          {/* Submit Button */}
           <Button
             type="submit"
-            colorScheme="blue" // Use blue color scheme
-            size="lg" // Large button size
-            fontSize="md" // Medium font size
-            isLoading={loading} // Show loading spinner when submitting
+            colorScheme="blue"
+            size="lg"
+            fontSize="md"
+            isLoading={loading}
             loadingText="Logging in..."
-            w="full" // Button takes full width
-            mt={4} // Margin top
+            w="full"
+            mt={4}
+            bg="rgba(66, 153, 225, 0.8)"
+            _hover={{
+              bg: 'rgba(66, 153, 225, 0.9)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }}
+            _active={{
+              bg: 'rgba(66, 153, 225, 1)',
+              transform: 'translateY(0)',
+            }}
           >
             Login
+          </Button>
+
+          {/* Add divider */}
+          <Flex w="full" align="center" my={4}>
+            <Box flex="1" h="1px" bg={borderColor} />
+            <Text px={4} color={textColor} fontSize="sm">or</Text>
+            <Box flex="1" h="1px" bg={borderColor} />
+          </Flex>
+
+          {/* Gmail Button */}
+          <Button
+            w="full"
+            size="lg"
+            variant="outline"
+            leftIcon={<FcGoogle size="20px" />}
+            onClick={() => navigate('/auth/google')}
+            bg="rgba(255, 255, 255, 0.1)"
+            borderColor={borderColor}
+            color={textColor}
+            _hover={{
+              bg: 'rgba(255, 255, 255, 0.2)',
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }}
+            _active={{
+              bg: 'rgba(255, 255, 255, 0.3)',
+              transform: 'translateY(0)',
+            }}
+          >
+            Continue with Gmail
           </Button>
         </VStack>
 
         {/* Link to Register page */}
         <Text mt={6} color={textColor}>
           Don't have an account?{' '}
-           {/* Use ChakraLink as ReactRouterLink for navigation */}
-          <ChakraLink as={ReactRouterLink} to="/register" color="blue.500">
+          <Button
+            variant="link"
+            color="blue.200"
+            _hover={{
+              color: 'blue.100',
+              textDecoration: 'underline',
+            }}
+            onClick={() => {
+              console.log('Navigating to register...'); // Debug log
+              navigate('/register', { replace: true });
+            }}
+          >
             Register here
-          </ChakraLink>
+          </Button>
         </Text>
       </Box>
     </Flex>
