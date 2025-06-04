@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// Updated import to include Link and alias it as ReactRouterLink
+import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service handles user data
 import axios from 'axios'; // Assuming axios is used for API calls. Adjust if using your api.js service.
 
@@ -18,30 +19,23 @@ import {
   Spinner,
   Text,
   Textarea,
-  HStack,
-  Divider,
-  SimpleGrid,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  IconButton,
-  Link,
-  Icon,
   Avatar,
   Card,
   CardHeader,
   CardBody,
+  Stack, // Keep Stack if used elsewhere
+  ButtonGroup, // Keep ButtonGroup if used elsewhere
+  Container, // Keep Container if used elsewhere
+  useDisclosure, // Keep useDisclosure if used elsewhere
+  HStack, // This line is essential for the HStack component to be defined
 } from '@chakra-ui/react';
 
-// Import Icons (example using react-icons, make sure they are installed)
-import { FaGoogle, FaFacebook, FaApple, FaEdit, FaTrash, FaArrowUp, FaArrowLeft } from 'react-icons/fa';
-import { CheckCircleIcon } from '@chakra-ui/icons'; // Assuming CheckCircleIcon is still needed or can be removed if replaced by toast
+// Import icons
+// Added import for FaArrowLeft from react-icons/fa
+import { FaArrowLeft } from 'react-icons/fa';
 
-// Define your backend API base URL
-const API_BASE_URL = 'http://localhost:5000'; // Replace with your actual backend URL
+// Define API base URL constant
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -68,7 +62,8 @@ function ProfilePage() {
   const user = auth.getCurrentUser(); // Get current user data from localStorage
 
   // Chakra UI hook for dynamic colors based on color mode
-  const bgColor = useColorModeValue('gray.50', 'gray.900'); // This can likely be removed if only used for the main Box background
+  // Keep bgColor as it's used in the loading state
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
   const textColor = useColorModeValue('gray.800', 'whiteAlpha.900');
   const headingColor = useColorModeValue('gray.800', 'white');
   const cardBg = useColorModeValue('white', 'gray.700');
@@ -118,20 +113,6 @@ function ProfilePage() {
     setLoading(false); // Stop loading after populating
 
   }, [user, navigate, toast]); // Re-run effect if user or navigate changes
-
-  // Dummy Data for new sections
-  const savedPaymentMethods = [
-      { id: 1, type: 'Visa', last4: '1234', expiry: '12/25' },
-      { id: 2, type: 'Mastercard', last4: '5678', expiry: '08/24' },
-  ];
-
-  const billingHistory = [
-      { id: 101, date: '2023-10-01', amount: 'R250.00', status: 'Paid' },
-      { id: 102, date: '2023-11-05', amount: 'R300.00', status: 'Paid' },
-      { id: 103, date: '2023-12-10', amount: 'R280.00', status: 'Paid' },
-  ];
-
-  // Removed dummy data for subscriptionPlan
 
   // Handler for saving account changes (currently just logs and shows toast)
   const handleSaveChanges = async () => {
@@ -197,39 +178,6 @@ function ProfilePage() {
       setIsSaving(false);
     }
   };
-
-  // Dummy handlers for new features
-  const handleLinkSocial = (provider) => {
-      toast({
-          title: `${provider} linking simulated.`,
-          description: `You would typically link your ${provider} account here.`,
-          status: 'info',
-          duration: 3000,
-          isClosable: true,
-      });
-  };
-
-  const handleEditPayment = (id) => {
-      toast({
-          title: `Edit Payment ${id} simulated.`,
-          description: `Editing details for payment method ID: ${id}.`,
-          status: 'info',
-          duration: 3000,
-          isClosable: true,
-      });
-  };
-
-  const handleRemovePayment = (id) => {
-      toast({
-          title: `Remove Payment ${id} simulated.`,
-          description: `Removing payment method ID: ${id}.`,
-          status: 'warning',
-          duration: 3000,
-          isClosable: true,
-      });
-  };
-
-  // Removed handleUpgradePlan function
 
   // Function to fetch profile data from backend
   const fetchProfileData = async () => {
@@ -324,9 +272,12 @@ function ProfilePage() {
 
         {/* Header */}
         <HStack justify="space-between" align="center" mb={8}> {/* Added align="center" for vertical alignment */}
-          <Button leftIcon={<FaArrowLeft />} variant="ghost" onClick={() => navigate('/dashboard')}>
-            Back to Dashboard
-          </Button>
+          {/* Correctly using ReactRouterLink with the Back to Dashboard button */}
+          <ReactRouterLink to="/dashboard">
+            <Button leftIcon={<FaArrowLeft />} variant="ghost">
+              Back to Dashboard
+            </Button>
+          </ReactRouterLink>
         </HStack>
 
         <Heading as="h1" size="xl" color={headingColor} mb={8}>
