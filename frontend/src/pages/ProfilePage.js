@@ -18,30 +18,14 @@ import {
   Spinner,
   Text,
   Textarea,
-  HStack,
-  Divider,
-  SimpleGrid,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  IconButton,
-  Link,
-  Icon,
   Avatar,
   Card,
   CardHeader,
   CardBody,
 } from '@chakra-ui/react';
 
-// Import Icons (example using react-icons, make sure they are installed)
-import { FaGoogle, FaFacebook, FaApple, FaEdit, FaTrash, FaArrowUp, FaArrowLeft } from 'react-icons/fa';
-import { CheckCircleIcon } from '@chakra-ui/icons'; // Assuming CheckCircleIcon is still needed or can be removed if replaced by toast
-
-// Define your backend API base URL
-const API_BASE_URL = 'http://localhost:5000'; // Replace with your actual backend URL
+// Define API base URL constant
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -115,20 +99,6 @@ function ProfilePage() {
 
   }, [user, navigate, toast]); // Re-run effect if user or navigate changes
 
-  // Dummy Data for new sections
-  const savedPaymentMethods = [
-      { id: 1, type: 'Visa', last4: '1234', expiry: '12/25' },
-      { id: 2, type: 'Mastercard', last4: '5678', expiry: '08/24' },
-  ];
-
-  const billingHistory = [
-      { id: 101, date: '2023-10-01', amount: 'R250.00', status: 'Paid' },
-      { id: 102, date: '2023-11-05', amount: 'R300.00', status: 'Paid' },
-      { id: 103, date: '2023-12-10', amount: 'R280.00', status: 'Paid' },
-  ];
-
-  // Removed dummy data for subscriptionPlan
-
   // Handler for saving account changes (currently just logs and shows toast)
   const handleSaveChanges = async () => {
     setIsSaving(true);
@@ -193,39 +163,6 @@ function ProfilePage() {
       setIsSaving(false);
     }
   };
-
-  // Dummy handlers for new features
-  const handleLinkSocial = (provider) => {
-      toast({
-          title: `${provider} linking simulated.`,
-          description: `You would typically link your ${provider} account here.`,
-          status: 'info',
-          duration: 3000,
-          isClosable: true,
-      });
-  };
-
-  const handleEditPayment = (id) => {
-      toast({
-          title: `Edit Payment ${id} simulated.`,
-          description: `Editing details for payment method ID: ${id}.`,
-          status: 'info',
-          duration: 3000,
-          isClosable: true,
-      });
-  };
-
-  const handleRemovePayment = (id) => {
-      toast({
-          title: `Remove Payment ${id} simulated.`,
-          description: `Removing payment method ID: ${id}.`,
-          status: 'warning',
-          duration: 3000,
-          isClosable: true,
-      });
-  };
-
-  // Removed handleUpgradePlan function
 
   // Function to fetch profile data from backend
   const fetchProfileData = async () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
 
 // Import Chakra UI Components
@@ -24,8 +24,6 @@ import {
   Input,
   Textarea,
   Link as ChakraLink,
-  Stack,
-  Divider,
   Icon,
   HStack
 } from '@chakra-ui/react';

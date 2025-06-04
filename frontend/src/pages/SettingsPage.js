@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
 
@@ -17,23 +17,21 @@ import {
   useToast,
   useColorModeValue,
   Spinner,
-  Divider, // Added Divider
-  Select, // Added Select for dropdown
-  Switch, // Added Switch for toggles
-  Spacer, // Added Spacer for layout if needed
-  AlertDialog, // Added AlertDialog for confirmation modal
+  Divider,
+  Switch,
+  Spacer,
+  AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  useDisclosure, // Hook for modal
-  FormErrorMessage, // ADDED: Import FormErrorMessage
+  useDisclosure,
+  FormErrorMessage,
   Collapse,
   Icon,
 } from '@chakra-ui/react';
 import { CheckCircleIcon, WarningIcon } from '@chakra-ui/icons';
-import { FaArrowLeft } from 'react-icons/fa'; // Icon for back button
 
 function SettingsPage() {
   const navigate = useNavigate();
@@ -65,7 +63,6 @@ function SettingsPage() {
   const headingColor = useColorModeValue('gray.800', 'white');
   const mutedTextColor = useColorModeValue('gray.600', 'gray.400');
   const spinnerColor = useColorModeValue('blue.500', 'blue.300');
-  const borderColor = useColorModeValue('gray.200', 'gray.600'); // Added border color
 
   // Redirect if user is not logged in
   useEffect(() => {
