@@ -14,11 +14,9 @@ import {
   VStack,
   HStack,
   Icon, // Keep Icon for the ChakraIcon helper
-  Badge,
   useColorModeValue,
   Progress,
   Spinner, // Added Spinner for loading state
-  Container,
   Modal, // Added Modal components
   ModalOverlay,
   ModalContent,
@@ -52,23 +50,9 @@ import {
   FaSun, // Use for Solar Tracker
   FaToggleOn, // Use for Power Alerts
   FaBolt, // Use for Energy Mode
-  FaEdit, // Added for Edit button
-  FaTrash, // Added for Remove button
 } from 'react-icons/fa';
 
 // Import Lucide Icons - only include what's used
-import {
-  BatteryCharging,
-  Zap,
-  FileText,
-  CircleDot,
-  User, // Keep User icon for the Edit Profile button
-  DollarSign as DollarSignLucide, // Renamed to avoid conflict
-  Settings, // Added Settings icon
-  Leaf // Added Leaf icon for Impact button
-} from 'lucide-react'; // Import DollarSign, Settings, and Leaf icons
-
-// Helper component to convert Lucide icons to Chakra UI icons
 /*
 const ChakraIcon = ({ icon, ...props }) => {
   // Check if icon is a valid React component

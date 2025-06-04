@@ -36,7 +36,7 @@ import {
   Flex,
   Icon,
 } from '@chakra-ui/react';
-import { FaImage, FaUsers, FaClock, FaTag, FaSolarPanel, FaBolt, FaBatteryFull } from 'react-icons/fa';
+import { FaUsers, FaClock, FaTag, FaSolarPanel, FaBolt, FaBatteryFull } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 function GroupBuying() {
@@ -103,7 +103,6 @@ function GroupBuying() {
   });
 
   // Color mode values
-  const bgColor = useColorModeValue('gray.50', 'gray.900');
   const textColor = useColorModeValue('gray.800', 'whiteAlpha.900');
   const headingColor = useColorModeValue('gray.800', 'white');
   const cardBg = useColorModeValue('white', 'gray.700');
