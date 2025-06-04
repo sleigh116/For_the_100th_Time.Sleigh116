@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -14,6 +14,8 @@ import {
   Avatar,
   VStack,
   Image,
+  Link,
+  Divider,
 } from '@chakra-ui/react';
 import {
   FaSolarPanel,
@@ -619,28 +621,69 @@ function LandingPage() {
         </Container>
       </Box>
 
-      {/* Footer */}
+      {/* New Footer */}
       <Box
         as="footer"
-        py={8}
-        px={4}
-        bg="rgba(0, 0, 0, 0.8)"
         position="relative"
         zIndex="2"
-        borderRadius="full"
-        mx={4}
-        mb={4}
+        bg="rgba(0, 0, 0, 0.9)"
+        py={12}
+        mt={20}
       >
         <Container maxW="container.xl">
-          <Flex
-            justify="center"
-            align="center"
-            color={textColor}
-          >
-            <Text>
+          <Stack spacing={10}>
+            {/* Main Footer Content */}
+            <SimpleGrid columns={{ base: 1, md: 4 }} spacing={8}>
+              {/* Company Info */}
+              <Stack spacing={4}>
+                <Heading size="md" color={greetingColor}>GridX</Heading>
+                <Text color={textColor} fontSize="sm">
+                  Empowering South Africa with sustainable energy solutions and smart power management.
+                </Text>
+              </Stack>
+
+              {/* Quick Links */}
+              <Stack spacing={4}>
+                <Heading size="sm" color={greetingColor}>Quick Links</Heading>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>About Us</Link>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Services</Link>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Contact</Link>
+                <Link 
+                  as={RouterLink} 
+                  to="/support" 
+                  color={textColor} 
+                  _hover={{ color: 'blue.400' }}
+                >
+                  Support
+                </Link>
+              </Stack>
+
+              {/* Services */}
+              <Stack spacing={4}>
+                <Heading size="sm" color={greetingColor}>Services</Heading>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Solar Solutions</Link>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Power Management</Link>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Load Shedding</Link>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Energy Analytics</Link>
+              </Stack>
+
+              {/* Contact Info */}
+              <Stack spacing={4}>
+                <Heading size="sm" color={greetingColor}>Contact Us</Heading>
+                <Text color={textColor} fontSize="sm">Email: gridx.noreply@gmail.com</Text>
+                <Text color={textColor} fontSize="sm">Support Hours: Mon-Fri, 9:00-17:00</Text>
+                <Text color={textColor} fontSize="sm">Address: Sandton, South Africa</Text>
+              </Stack>
+            </SimpleGrid>
+
+            {/* Divider */}
+            <Divider borderColor="gray.700" />
+
+            {/* Copyright */}
+            <Text color={textColor} fontSize="sm" textAlign="center">
               © {new Date().getFullYear()} GridX. All rights reserved.
             </Text>
-          </Flex>
+          </Stack>
         </Container>
       </Box>
     </Box>
