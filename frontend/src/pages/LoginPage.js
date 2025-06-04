@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
-import gridXBackground from '../assets/images/GridX-IMG.jpg'; // Add this import
+import gridxBackground from '../assets/images/gridx_background.jpg'; // Make sure this path and filename are correct
 import { FcGoogle } from 'react-icons/fc'; // Add this import
 
 // Import Chakra UI Components
@@ -102,57 +102,28 @@ function LoginPage() {
   );
 
   return (
-    <Flex 
-      minH="100vh" 
-      align="center" 
-      justify="center" 
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
       p={4}
-      position="relative"
-      backgroundImage={`url(${gridXBackground})`}
+      backgroundImage={`url(${gridxBackground})`}
       backgroundSize="cover"
       backgroundPosition="center"
-      backgroundAttachment="fixed"
+      backgroundRepeat="no-repeat"
+      position="relative"
+      _before={{
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        bg: 'rgba(0, 0, 0, 0.6)',
+        zIndex: 1,
+      }}
     >
-      {/* Add overlay for better readability */}
-      <Box
-        position="absolute"
-        top="0"
-        left="0"
-        right="0"
-        bottom="0"
-        bg="rgba(0, 0, 0, 0.5)"
-        zIndex="1"
-      />
-
-      {/* Box to contain the form with styling */}
-      <Box
-        maxW="md"
-        w="full"
-        bg={formBg}
-        boxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)"
-        borderRadius="xl"
-        p={8}
-        textAlign="center"
-        position="relative"
-        zIndex="2"
-        backdropFilter="blur(16px)"
-        border="1px solid"
-        borderColor={borderColor}
-        _before={{
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          borderRadius: 'xl',
-          padding: '2px',
-          background: 'linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
-          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-          WebkitMaskComposite: 'xor',
-          maskComposite: 'exclude',
-        }}
-      >
+      <Box zIndex={2} maxW="md" w="full" bg={formBg} boxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)" borderRadius="xl" p={8} textAlign="center">
         <Heading 
           as="h2" 
           size="xl" 
@@ -163,7 +134,6 @@ function LoginPage() {
           Login
         </Heading>
         <VStack as="form" spacing={4} onSubmit={handleSubmit} noValidate>
-          {/* Form controls with glassmorphism styling */}
           <FormControl id="login-email" isInvalid={!!errors.email}>
             <FormLabel color={textColor}>Email address</FormLabel>
             <Input
@@ -229,14 +199,12 @@ function LoginPage() {
             Login
           </Button>
 
-          {/* Add divider */}
           <Flex w="full" align="center" my={4}>
             <Box flex="1" h="1px" bg={borderColor} />
             <Text px={4} color={textColor} fontSize="sm">or</Text>
             <Box flex="1" h="1px" bg={borderColor} />
           </Flex>
 
-          {/* Gmail Button */}
           <Button
             w="full"
             size="lg"
@@ -261,7 +229,6 @@ function LoginPage() {
           </Button>
         </VStack>
 
-        {/* Link to Register page */}
         <Text mt={6} color={textColor}>
           Don't have an account?{' '}
           <Button
@@ -272,7 +239,7 @@ function LoginPage() {
               textDecoration: 'underline',
             }}
             onClick={() => {
-              console.log('Navigating to register...'); // Debug log
+              console.log('Navigating to register...');
               navigate('/register', { replace: true });
             }}
           >
@@ -284,4 +251,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage; // Export the component
+export default LoginPage;

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
-import gridXBackground from '../assets/images/GridX-IMG.jpg';
-import { FcGoogle } from 'react-icons/fc';
-
+import gridXBackground from '../assets/images/GridX-IMG.jpg'; // Make sure this path is correct for your background image
+import { FcGoogle } from 'react-icons/fc'; // Import the Google icon
 // Import Chakra UI Components
 import {
   Box,
@@ -14,6 +13,7 @@ import {
   Input,
   Button,
   Text,
+  Link as ChakraLink, // Alias Link from Chakra UI to avoid conflict with react-router-dom
   VStack,
   useToast, // For displaying messages
   useColorModeValue, // For light/dark mode styling
@@ -118,13 +118,13 @@ function RegisterPage() {
 
   return (
     // Use Flex for centering the form vertically and horizontally
-    <Flex 
-      minH="100vh" 
-      align="center" 
-      justify="center" 
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
       p={4}
       position="relative"
-      backgroundImage={`url(${gridXBackground})`}
+      backgroundImage={`url(${gridXBackground})`} // Set background image
       backgroundSize="cover"
       backgroundPosition="center"
       backgroundAttachment="fixed"
@@ -136,7 +136,7 @@ function RegisterPage() {
         left="0"
         right="0"
         bottom="0"
-        bg="rgba(0, 0, 0, 0.5)"
+        bg="rgba(0, 0, 0, 0.5)" // Dark overlay with 50% opacity
         zIndex="1"
       />
 
@@ -169,10 +169,10 @@ function RegisterPage() {
           maskComposite: 'exclude',
         }}
       >
-        <Heading 
-          as="h2" 
-          size="xl" 
-          mb={6} 
+        <Heading
+          as="h2"
+          size="xl"
+          mb={6}
           color={textColor}
           textShadow="0 2px 4px rgba(0,0,0,0.2)"
         >
@@ -328,20 +328,9 @@ function RegisterPage() {
         {/* Link to Login page */}
         <Text mt={6} color={textColor}>
           Already have an account?{' '}
-          <Button
-            variant="link"
-            color="blue.200"
-            _hover={{
-              color: 'blue.100',
-              textDecoration: 'underline',
-            }}
-            onClick={() => {
-              console.log('Navigating to login...'); // Debug log
-              navigate('/login', { replace: true });
-            }}
-          >
+          <ChakraLink as={ReactRouterLink} to="/login" color="teal.500">
             Login here
-          </Button>
+          </ChakraLink>
         </Text>
       </Box>
     </Flex>
