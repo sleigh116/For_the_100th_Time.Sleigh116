@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -633,29 +633,13 @@ function LandingPage() {
         <Container maxW="container.xl">
           <Stack spacing={10}>
             {/* Main Footer Content */}
-            <SimpleGrid columns={{ base: 1, md: 4 }} spacing={8}>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
               {/* Company Info */}
               <Stack spacing={4}>
                 <Heading size="md" color={greetingColor}>GridX</Heading>
                 <Text color={textColor} fontSize="sm">
                   Empowering South Africa with sustainable energy solutions and smart power management.
                 </Text>
-              </Stack>
-
-              {/* Quick Links */}
-              <Stack spacing={4}>
-                <Heading size="sm" color={greetingColor}>Quick Links</Heading>
-                <Link color={textColor} _hover={{ color: 'blue.400' }}>About Us</Link>
-                <Link color={textColor} _hover={{ color: 'blue.400' }}>Services</Link>
-                <Link color={textColor} _hover={{ color: 'blue.400' }}>Contact</Link>
-                <Link 
-                  as={RouterLink} 
-                  to="/support" 
-                  color={textColor} 
-                  _hover={{ color: 'blue.400' }}
-                >
-                  Support
-                </Link>
               </Stack>
 
               {/* Services */}
