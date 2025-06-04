@@ -204,31 +204,35 @@ function GroupBuying() {
   };
 
   return (
-    <Box minH="100vh" bg={bgColor} py={8}>
-      <Container maxW="container.xl">
-        <VStack spacing={12} align="stretch">
-          {/* Hero Section */}
-          <Box textAlign="center" py={8}>
-            <Heading size="2xl" mb={4} color={headingColor}>
-              Group Buying for Solar Gear
-            </Heading>
-            <Text fontSize="xl" color={textColor} maxW="3xl" mx="auto">
-              Join group buying campaigns to get the best prices on solar equipment. The more people join, the bigger the discount!
-            </Text>
-          </Box>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+      }}
+    >
+      <Container maxW="container.lg" py={8} position="relative" zIndex={2}>
+        <VStack spacing={8} align="stretch">
+          {/* Header Section */}
+          <HStack justifyContent="space-between" mb={6}>
+            <Heading size="xl" color={headingColor}>Group Buying Campaigns</Heading>
+            <Button colorScheme="teal" onClick={onOpen} leftIcon={<Icon as={FaSolarPanel} />}>
+              Create Campaign
+            </Button>
+          </HStack>
 
-          {/* Create Campaign Button */}
-          <Button
-            colorScheme="blue"
-            size="lg"
-            leftIcon={<FaUsers />}
-            onClick={onOpen}
-            alignSelf="flex-start" // Align left as requested
-          >
-            Start New Campaign
-          </Button>
-
-          {/* Campaigns Grid */}
+          {/* Campaigns List */}
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
             {ongoingCampaigns.map((campaign) => {
               const progressValue = (campaign.participants / campaign.goal) * 100;

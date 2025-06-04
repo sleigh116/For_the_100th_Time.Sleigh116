@@ -66,6 +66,7 @@ function SettingsPage() {
   const mutedTextColor = useColorModeValue('gray.600', 'gray.400');
   const spinnerColor = useColorModeValue('blue.500', 'blue.300');
   const borderColor = useColorModeValue('gray.200', 'gray.600'); // Added border color
+  const glassBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
 
   // Redirect if user is not logged in
   useEffect(() => {
@@ -242,17 +243,34 @@ function SettingsPage() {
    }
 
   return (
-    <Box minH="100vh" bg={bgColor}>
-        <Box maxW="1200px" mx="auto" p={{ base: 4, md: 6, lg: 8 }}>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+      }}
+    >
+      <Box maxW="container.md" mx="auto" p={{ base: 4, md: 8 }} position="relative" zIndex={2}>
 
             {/* Header / Back Button */}
-            <HStack justify="flex-start" w="full" mb={8} pt={4}>
-                <Button variant="link" colorScheme="blue" onClick={handleBackToDashboard}>
-                   &larr; Back to Dashboard
+            <HStack justify="space-between" mb={8}>
+                <Button leftIcon={<FaArrowLeft />} variant="ghost" onClick={handleBackToDashboard}>
+                   Back to Dashboard
                 </Button>
             </HStack>
 
-            <Heading as="h1" size="xl" color={headingColor} mb={2}>
+            <Heading as="h1" size="xl" color={headingColor} mb={8}>
               Settings
             </Heading>
 

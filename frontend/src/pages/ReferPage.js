@@ -98,147 +98,166 @@ function ReferPage() {
   };
 
   return (
-    <Container maxW="container.lg" py={8}>
-      <VStack spacing={8} align="stretch">
-        {/* Back Button */}
-        <Box>
-          <IconButton
-            aria-label="Back to Home"
-            icon={<FaArrowLeft />}
-            onClick={() => navigate('/home')}
-            variant="ghost"
-            size="md"
-          />
-        </Box>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+      }}
+    >
+      <Container maxW="container.lg" py={8} position="relative" zIndex={2}>
+        <VStack spacing={8} align="stretch">
+          {/* Back Button */}
+          <Box>
+            <IconButton
+              aria-label="Back to Home"
+              icon={<FaArrowLeft />}
+              onClick={() => navigate('/home')}
+              variant="ghost"
+              size="md"
+            />
+          </Box>
 
-        {/* Header Section */}
-        <Box textAlign="center">
-          <Heading size="xl" mb={2} color={headingColor}>
-            Refer & Earn
-          </Heading>
-          <Text color={textColor}>
-            Share your referral link and earn rewards for each friend who joins!
-          </Text>
-        </Box>
+          {/* Header Section */}
+          <Box textAlign="center">
+            <Heading size="xl" mb={2} color={headingColor}>
+              Refer & Earn
+            </Heading>
+            <Text color={textColor}>
+              Share your referral link and earn rewards for each friend who joins!
+            </Text>
+          </Box>
 
-        {/* Referral Link Section */}
-        <Card bg={cardBg} borderWidth="1px" borderColor={borderColor}>
-          <CardHeader>
-            <Heading size="md">Your Referral Link</Heading>
-          </CardHeader>
-          <CardBody>
-            <VStack spacing={4}>
-              <InputGroup size="lg">
-                <Input
-                  value={referralLink}
-                  readOnly
-                  pr="4.5rem"
-                />
-                <InputRightElement width="4.5rem">
+          {/* Referral Link Section */}
+          <Card bg={cardBg} borderWidth="1px" borderColor={borderColor}>
+            <CardHeader>
+              <Heading size="md">Your Referral Link</Heading>
+            </CardHeader>
+            <CardBody>
+              <VStack spacing={4}>
+                <InputGroup size="lg">
+                  <Input
+                    value={referralLink}
+                    readOnly
+                    pr="4.5rem"
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button
+                      h="1.75rem"
+                      size="sm"
+                      onClick={handleCopyLink}
+                      leftIcon={<Icon as={FaCopy} />}
+                      colorScheme={copied ? "green" : "blue"}
+                    >
+                      {copied ? "Copied!" : "Copy"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+
+                <HStack spacing={4}>
                   <Button
-                    h="1.75rem"
-                    size="sm"
-                    onClick={handleCopyLink}
-                    leftIcon={<Icon as={FaCopy} />}
-                    colorScheme={copied ? "green" : "blue"}
+                    leftIcon={<Icon as={FaWhatsapp} />}
+                    colorScheme="green"
+                    onClick={() => handleShare('whatsapp')}
                   >
-                    {copied ? "Copied!" : "Copy"}
+                    WhatsApp
                   </Button>
-                </InputRightElement>
-              </InputGroup>
-
-              <HStack spacing={4}>
-                <Button
-                  leftIcon={<Icon as={FaWhatsapp} />}
-                  colorScheme="green"
-                  onClick={() => handleShare('whatsapp')}
-                >
-                  WhatsApp
-                </Button>
-                <Button
-                  leftIcon={<Icon as={FaFacebook} />}
-                  colorScheme="facebook"
-                  onClick={() => handleShare('facebook')}
-                >
-                  Facebook
-                </Button>
-                <Button
-                  leftIcon={<Icon as={FaEnvelope} />}
-                  colorScheme="gray"
-                  onClick={() => handleShare('email')}
-                >
-                  Email
-                </Button>
-              </HStack>
-            </VStack>
-          </CardBody>
-        </Card>
-
-        {/* Rewards Section */}
-        <Card bg={cardBg} borderWidth="1px" borderColor={borderColor}>
-          <CardHeader>
-            <Heading size="md">Your Rewards</Heading>
-          </CardHeader>
-          <CardBody>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-              <Box p={4} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>
-                <HStack spacing={4}>
-                  <Icon as={FaUserPlus} w={6} h={6} color="blue.500" />
-                  <VStack align="start" spacing={1}>
-                    <Text fontWeight="bold">Total Referrals</Text>
-                    <Text fontSize="2xl">3</Text>
-                  </VStack>
+                  <Button
+                    leftIcon={<Icon as={FaFacebook} />}
+                    colorScheme="facebook"
+                    onClick={() => handleShare('facebook')}
+                  >
+                    Facebook
+                  </Button>
+                  <Button
+                    leftIcon={<Icon as={FaEnvelope} />}
+                    colorScheme="gray"
+                    onClick={() => handleShare('email')}
+                  >
+                    Email
+                  </Button>
                 </HStack>
-              </Box>
-              <Box p={4} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>
-                <HStack spacing={4}>
-                  <Icon as={FaGift} w={6} h={6} color="green.500" />
-                  <VStack align="start" spacing={1}>
-                    <Text fontWeight="bold">Total Rewards</Text>
-                    <Text fontSize="2xl">125 units</Text>
-                  </VStack>
-                </HStack>
-              </Box>
-            </SimpleGrid>
-          </CardBody>
-        </Card>
+              </VStack>
+            </CardBody>
+          </Card>
 
-        {/* Referral History Section */}
-        <Card bg={cardBg} borderWidth="1px" borderColor={borderColor}>
-          <CardHeader>
-            <Heading size="md">Referral History</Heading>
-          </CardHeader>
-          <CardBody>
-            <VStack spacing={4} align="stretch">
-              {referralHistory.map((referral) => (
-                <Box
-                  key={referral.id}
-                  p={4}
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  borderColor={borderColor}
-                >
-                  <HStack justify="space-between">
+          {/* Rewards Section */}
+          <Card bg={cardBg} borderWidth="1px" borderColor={borderColor}>
+            <CardHeader>
+              <Heading size="md">Your Rewards</Heading>
+            </CardHeader>
+            <CardBody>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                <Box p={4} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>
+                  <HStack spacing={4}>
+                    <Icon as={FaUserPlus} w={6} h={6} color="blue.500" />
                     <VStack align="start" spacing={1}>
-                      <Text fontWeight="bold">{referral.name}</Text>
-                      <Text color={textColor}>{referral.date}</Text>
-                    </VStack>
-                    <VStack align="end" spacing={1}>
-                      <Badge
-                        colorScheme={referral.status === 'completed' ? 'green' : 'yellow'}
-                      >
-                        {referral.status}
-                      </Badge>
-                      <Text color={textColor}>{referral.reward}</Text>
+                      <Text fontWeight="bold">Total Referrals</Text>
+                      <Text fontSize="2xl">3</Text>
                     </VStack>
                   </HStack>
                 </Box>
-              ))}
-            </VStack>
-          </CardBody>
-        </Card>
-      </VStack>
-    </Container>
+                <Box p={4} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>
+                  <HStack spacing={4}>
+                    <Icon as={FaGift} w={6} h={6} color="green.500" />
+                    <VStack align="start" spacing={1}>
+                      <Text fontWeight="bold">Total Rewards</Text>
+                      <Text fontSize="2xl">125 units</Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              </SimpleGrid>
+            </CardBody>
+          </Card>
+
+          {/* Referral History Section */}
+          <Card bg={cardBg} borderWidth="1px" borderColor={borderColor}>
+            <CardHeader>
+              <Heading size="md">Referral History</Heading>
+            </CardHeader>
+            <CardBody>
+              <VStack spacing={4} align="stretch">
+                {referralHistory.map((referral) => (
+                  <Box
+                    key={referral.id}
+                    p={4}
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    borderColor={borderColor}
+                  >
+                    <HStack justify="space-between">
+                      <VStack align="start" spacing={1}>
+                        <Text fontWeight="bold">{referral.name}</Text>
+                        <Text color={textColor}>{referral.date}</Text>
+                      </VStack>
+                      <VStack align="end" spacing={1}>
+                        <Badge
+                          colorScheme={referral.status === 'completed' ? 'green' : 'yellow'}
+                        >
+                          {referral.status}
+                        </Badge>
+                        <Text color={textColor}>{referral.reward}</Text>
+                      </VStack>
+                    </HStack>
+                  </Box>
+                ))}
+              </VStack>
+            </CardBody>
+          </Card>
+        </VStack>
+      </Container>
+    </Box>
   );
 }
 

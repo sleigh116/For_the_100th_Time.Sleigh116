@@ -69,6 +69,7 @@ import {
 } from 'lucide-react'; // Import DollarSign, Settings, and Leaf icons
 
 // Helper component to convert Lucide icons to Chakra UI icons
+/*
 const ChakraIcon = ({ icon, ...props }) => {
   // Check if icon is a valid React component
   if (!React.isValidElement(icon) && typeof icon !== 'function') {
@@ -78,7 +79,7 @@ const ChakraIcon = ({ icon, ...props }) => {
   const ChakraComp = icon;
   return <Icon as={ChakraComp} {...props} />;
 };
-
+*/
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -91,8 +92,9 @@ function DashboardPage() {
   const [isToppingUp, setIsToppingUp] = useState(false);
 
   // State for Energy Budget
-  const [energyBudget, setEnergyBudget] = useState(500); // Dummy default budget
-  const [currentUsage, setCurrentUsage] = useState(400); // Dummy current usage
+  const [energyBudget, setEnergyBudget] = useState(500);
+  // The state setter setCurrentUsage is unused, but keep currentUsage if it's used
+  const [currentUsage, /* Removed setCurrentUsage */] = useState(400);
 
   // State for Energy Saving Tips (Memoized)
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
@@ -129,6 +131,10 @@ function DashboardPage() {
   const cardBg = useColorModeValue('white', 'gray.800');
   const cardBorderColor = useColorModeValue('gray.200', 'gray.700');
   const spinnerColor = useColorModeValue('blue.500', 'blue.300');
+
+  // Define modal colors using useColorModeValue at the top level:
+  const modalBg = useColorModeValue('rgba(255, 255, 255, 0.15)', 'rgba(26, 32, 44, 0.15)');
+  const modalBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -192,8 +198,25 @@ function DashboardPage() {
   }
 
   return (
-    <Box minH="100vh" bg={bgColor}>
-      <Box maxW="1200px" mx="auto" p={{ base: 4, md: 6, lg: 8 }}>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+      }}
+    >
+      <Box maxW="1200px" mx="auto" p={{ base: 4, md: 6, lg: 8 }} position="relative" zIndex={2}>
         {/* Header with Back to Home button */}
         <Flex justify="space-between" align="center" mb={8}>
           <Button
@@ -289,7 +312,16 @@ function DashboardPage() {
                 {/* Top-Up Modal */}
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
-                    <ModalContent>
+                    <ModalContent
+                       bg={modalBg}
+                       boxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)"
+                       borderRadius="xl"
+                       p={6} // Adjust padding as needed
+                       textAlign="center" // Adjust text alignment as needed
+                       backdropFilter="blur(10px)" // Apply blur effect
+                       border="1px solid"
+                       borderColor={modalBorderColor}
+                    >
                         <ModalHeader>Top Up Electricity</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>

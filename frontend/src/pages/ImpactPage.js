@@ -88,82 +88,101 @@ function ImpactPage() {
   }
 
   return (
-    <Box p={[4, 6, 8]} maxWidth="1200px" mx="auto" bg={bgColor} color={textColor}>
-      <Flex justify="space-between" align="center" mb={8}>
-        <Button onClick={handleBackToDashboard} variant="outline" colorScheme="teal">
-          Back to Dashboard
-        </Button>
-        <Heading as="h1" size="xl">Our Impact</Heading>
-        {/* Optional: Spacer if needed for alignment */}
-        <Box width="100px" /> {/* Placeholder for symmetry */}
-      </Flex>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+      }}
+    >
+      <Box p={[4, 6, 8]} maxWidth="1200px" mx="auto" color={textColor} position="relative" zIndex={2}>
+        <Flex justify="space-between" align="center" mb={8}>
+          <Button onClick={handleBackToDashboard} variant="outline" colorScheme="teal">
+            Back to Dashboard
+          </Button>
+          <Heading as="h1" size="xl">Our Impact</Heading>
+          {/* Optional: Spacer if needed for alignment */}
+          <Box width="100px" /> {/* Placeholder for symmetry */}
+        </Flex>
 
-      <Stack spacing={10}>
-        {/* Impact Stats Section */}
-        <Box>
-          <Heading as="h2" size="lg" mb={4}>Impact Statistics</Heading>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-            {impactStats.map((stat, index) => (
-              <Box
-                key={index}
-                p={6}
-                boxShadow="md"
-                borderRadius="lg"
-                bg={testimonialBg} // Using testimonialBg for card background
-                borderColor={testimonialBorderColor} // Using testimonialBorderColor for card border
-                borderWidth="1px"
-              >
-                <Flex align="center" mb={2}>
-                  <Icon as={stat.icon} w={8} h={8} color={statColor} mr={3} />
-                  <Stat>
-                    <StatLabel fontSize="md">{stat.label}</StatLabel>
-                    <StatNumber fontSize="2xl" fontWeight="bold">{stat.value}</StatNumber>
-                  </Stat>
-                </Flex>
-              </Box>
-            ))}
-          </SimpleGrid>
-        </Box>
+        <Stack spacing={10}>
+          {/* Impact Stats Section */}
+          <Box>
+            <Heading as="h2" size="lg" mb={4}>Impact Statistics</Heading>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+              {impactStats.map((stat, index) => (
+                <Box
+                  key={index}
+                  p={6}
+                  boxShadow="md"
+                  borderRadius="lg"
+                  bg={testimonialBg} // Using testimonialBg for card background
+                  borderColor={testimonialBorderColor} // Using testimonialBorderColor for card border
+                  borderWidth="1px"
+                >
+                  <Flex align="center" mb={2}>
+                    <Icon as={stat.icon} w={8} h={8} color={statColor} mr={3} />
+                    <Stat>
+                      <StatLabel fontSize="md">{stat.label}</StatLabel>
+                      <StatNumber fontSize="2xl" fontWeight="bold">{stat.value}</StatNumber>
+                    </Stat>
+                  </Flex>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Box>
 
-        <Divider />
+          <Divider />
 
-        {/* Community Testimonials Section */}
-        <Box>
-          <Heading as="h2" size="lg" mb={4}>Community Voices</Heading>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-            {testimonials.map((testimonial, index) => (
-              <Box
-                key={index}
-                p={6}
-                boxShadow="md"
-                borderRadius="lg"
-                bg={testimonialBg}
-                borderColor={testimonialBorderColor}
-                borderWidth="1px"
-              >
-                <Flex>
-                  <Avatar name={testimonial.name} src={testimonial.avatar} mr={4} />
-                  <Stack spacing={3}>
-                    <Text fontStyle="italic">"{testimonial.quote}"</Text>
-                    <Text fontWeight="bold">- {testimonial.name}</Text>
-                  </Stack>
-                </Flex>
-              </Box>
-            ))}
-          </SimpleGrid>
-        </Box>
+          {/* Community Testimonials Section */}
+          <Box>
+            <Heading as="h2" size="lg" mb={4}>Community Voices</Heading>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+              {testimonials.map((testimonial, index) => (
+                <Box
+                  key={index}
+                  p={6}
+                  boxShadow="md"
+                  borderRadius="lg"
+                  bg={testimonialBg}
+                  borderColor={testimonialBorderColor}
+                  borderWidth="1px"
+                >
+                  <Flex>
+                    <Avatar name={testimonial.name} src={testimonial.avatar} mr={4} />
+                    <Stack spacing={3}>
+                      <Text fontStyle="italic">"{testimonial.quote}"</Text>
+                      <Text fontWeight="bold">- {testimonial.name}</Text>
+                    </Stack>
+                  </Flex>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Box>
 
-        <Divider />
+          <Divider />
 
-        {/* Why It Matters Section */}
-        <Box textAlign="center">
-          <Heading as="h2" size="lg" mb={4}>Why Solar + Fintech Matters</Heading>
-          <Text fontSize="lg" maxWidth="800px" mx="auto">
-            Access to clean, affordable energy is transformative. By combining solar technology with accessible fintech solutions, we empower individuals and communities, drive economic growth, and build a sustainable future. Every watt saved and every household powered contributes to a brighter tomorrow.
-          </Text>
-        </Box>
+          {/* Why It Matters Section */}
+          <Box textAlign="center">
+            <Heading as="h2" size="lg" mb={4}>Why Solar + Fintech Matters</Heading>
+            <Text fontSize="lg" maxWidth="800px" mx="auto">
+              Access to clean, affordable energy is transformative. By combining solar technology with accessible fintech solutions, we empower individuals and communities, drive economic growth, and build a sustainable future. Every watt saved and every household powered contributes to a brighter tomorrow.
+            </Text>
+          </Box>
 
-      </Stack>
+        </Stack>
+      </Box>
     </Box>
   );
 }

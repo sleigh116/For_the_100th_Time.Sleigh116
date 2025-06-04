@@ -55,11 +55,18 @@ function TopUpPage() {
 
   // Chakra UI hook for dynamic colors based on color mode
   const bgColor = useColorModeValue('gray.50', 'gray.800');
-  const formBg = useColorModeValue('white', 'gray.700');
   const textColor = useColorModeValue('gray.700', 'gray.200');
   const headingColor = useColorModeValue('gray.800', 'white');
   const buttonColorScheme = useColorModeValue('green', 'teal'); // Use green/teal for top-up
   const spinnerColor = useColorModeValue('blue.500', 'blue.300');
+
+  // Styles for the glassmorphism effect on the form Box
+  const glassmorphismBoxStyles = {
+    bg: useColorModeValue('rgba(255, 255, 255, 0.15)', 'rgba(26, 32, 44, 0.15)'), // Semi-transparent background
+    backdropFilter: 'blur(10px)', // Blur effect
+    boxShadow: useColorModeValue('lg', 'dark-lg'), // Shadow for depth
+    borderRadius: 'lg', // Rounded corners
+  };
 
   // Basic check if user data is available. ProtectedRoute handles the main redirection,
   // but this can help if the user object is null for some reason after landing here.
@@ -160,15 +167,37 @@ function TopUpPage() {
     }
 
   return (
-    <Flex minH="100vh" align="center" justify="center" bg={bgColor} p={4}>
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
+      p={4}
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)" // Your gradient
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed" // Fix background during scroll
+      position="relative" // Needed for the pseudo-element overlay
+      _before={{ // Semi-transparent overlay for readability
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)', // Dark overlay (adjust opacity as needed)
+          zIndex: 1, // Ensure overlay is behind content
+      }}
+    >
       <Box
         maxW="md"
         w="full"
-        bg={formBg}
-        boxShadow="md"
-        borderRadius="lg"
+        {...glassmorphismBoxStyles} // Apply glassmorphism styles here
+        boxShadow="md" // Keep or adjust shadow as needed
+        borderRadius="lg" // Keep or adjust border radius
         p={6}
         textAlign="center"
+        position="relative" // Needed for zIndex
+        zIndex={2} // Ensure content is above overlay
       >
          {/* Back to Dashboard Button */}
          <HStack justify="flex-start" w="full" mb={4}>

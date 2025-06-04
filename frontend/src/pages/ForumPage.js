@@ -210,8 +210,14 @@ function ForumPage() {
   }
 
   return (
-    <Box minH="100vh" bg={bgColor}>
-      <Container maxW="container.xl" py={8}>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/path-to-your-background-image.jpg')"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      position="relative"
+    >
+      <Container maxW="container.xl" py={8} position="relative" zIndex={2}>
          {/* Header with Back to Home button */}
         <Flex justify="space-between" align="center" mb={8}>
            <Button
@@ -228,7 +234,7 @@ function ForumPage() {
             {selectedTopic ? 'Back to Topics' : 'Back to Home'}
           </Button>
            {!selectedTopic && !isCreatingTopic && ( // Show New Topic button only on topic list view
-             <Button leftIcon={<FaPlus />} colorScheme={buttonScheme} size="sm" onClick={() => setIsCreatingTopic(true)}>
+             <Button colorScheme={buttonScheme} leftIcon={<FaPlus />} onClick={() => setIsCreatingTopic(true)}>
                 New Topic
              </Button>
            )}

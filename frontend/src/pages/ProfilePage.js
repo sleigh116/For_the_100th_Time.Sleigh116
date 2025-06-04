@@ -67,20 +67,24 @@ function ProfilePage() {
 
   const user = auth.getCurrentUser(); // Get current user data from localStorage
 
-  // Color mode values - MOVED TO TOP LEVEL
-  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  // Chakra UI hook for dynamic colors based on color mode
+  const bgColor = useColorModeValue('gray.50', 'gray.900'); // This can likely be removed if only used for the main Box background
   const textColor = useColorModeValue('gray.800', 'whiteAlpha.900');
   const headingColor = useColorModeValue('gray.800', 'white');
   const cardBg = useColorModeValue('white', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const inputBgColor = useColorModeValue('white', 'gray.800');
   const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
-  const avatarBg = useColorModeValue('gray.300', 'gray.600'); // For Avatar fallback background
-  const avatarColor = useColorModeValue('gray.800', 'white'); // For Avatar fallback text color
-  const fileButtonBg = useColorModeValue('gray.100', 'gray.600'); // For file input button background
-  const fileButtonBorderColor = useColorModeValue('gray.300', 'gray.600'); // For file input button border
-  const fileButtonColor = useColorModeValue('gray.700', 'whiteAlpha.800'); // For file input button text color
-  const fileButtonHoverBg = useColorModeValue('gray.200', 'gray.500'); // For file input button hover background
+  const avatarBg = useColorModeValue('gray.300', 'gray.600');
+  const avatarColor = useColorModeValue('gray.800', 'white');
+  const fileButtonBg = useColorModeValue('gray.100', 'gray.600');
+  const fileButtonBorderColor = useColorModeValue('gray.300', 'gray.600');
+  const fileButtonColor = useColorModeValue('gray.700', 'whiteAlpha.800');
+  const fileButtonHoverBg = useColorModeValue('gray.200', 'gray.500');
+  const glassBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
+
+  // Define the spinner color using useColorModeValue at the top level:
+  const spinnerColor = useColorModeValue('blue.500', 'blue.300'); // Define the spinner color here
 
   useEffect(() => {
     // Redirect if user is not logged in (should be handled by ProtectedRoute too, but good check)
@@ -286,31 +290,48 @@ function ProfilePage() {
     }
   };
 
-  if (loading) {
-      return (
-           <Flex minH="100vh" align="center" justify="center" bg={bgColor}>
-               <Spinner size="xl" color="blue.500" />
-           </Flex>
-      );
+  if (!user) {
+    return (
+      // This Flex uses bgColor for the background when loading
+      <Flex minH="100vh" align="center" justify="center" bg={bgColor}>
+        <Spinner size="xl" color={spinnerColor} />
+      </Flex>
+    );
   }
 
   return (
-    <Flex minH="100vh" align="center" justify="center" bg={bgColor} p={4}>
-      <Box
-        maxW="3xl" // Increased max width to accommodate more content
-        w="full"
-        bg={bgColor} // Use bgColor for the main container background
-        p={6}
-      >
-         <Flex justifyContent="space-between" alignItems="center" mb={6}>
-            <Heading as="h1" size="xl" color={headingColor}>
-              User Profile & Settings
-            </Heading>
-            {/* Back to Dashboard button */}
-             <Button onClick={() => navigate('/dashboard')} size="sm" colorScheme="teal">
-                 Back to Dashboard
-             </Button>
-        </Flex>
+    // Locate the outermost container that renders when the user is loaded (likely a Box around line 291 in the provided code):
+    // Apply the background gradient and overlay to this Box:
+    <Box
+      minH="100vh" // Ensure this Box takes the full viewport height
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)" // Example gradient (adjust colors)
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed" // Fixed background
+      position="relative" // Needed for absolute positioning of overlay
+      _before={{ // Add an overlay for readability
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)', // Dark overlay with 50% opacity (adjust as needed)
+          zIndex: 1, // Ensure this is lower than the content Box's zIndex
+      }}
+    >
+      <Box maxW="container.lg" mx="auto" p={{ base: 4, md: 6 }} position="relative" zIndex={2}> {/* Keep this Box for content centering and padding */}
+
+        {/* Header */}
+        <HStack justify="space-between" align="center" mb={8}> {/* Added align="center" for vertical alignment */}
+          <Button leftIcon={<FaArrowLeft />} variant="ghost" onClick={() => navigate('/dashboard')}>
+            Back to Dashboard
+          </Button>
+        </HStack>
+
+        <Heading as="h1" size="xl" color={headingColor} mb={8}>
+          User Profile & Settings
+        </Heading>
 
         <VStack spacing={8} align="stretch"> {/* Increased spacing between sections */}
 
@@ -523,7 +544,7 @@ function ProfilePage() {
 
         </VStack>
       </Box>
-    </Flex>
+    </Box>
   );
 }
 
