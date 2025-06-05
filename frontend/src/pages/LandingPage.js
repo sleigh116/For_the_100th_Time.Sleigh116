@@ -32,6 +32,7 @@ import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Create motion components
 const MotionBox = motion(Box);
+const MotionVStack = motion(VStack);
 
 // Add these animation variants at the top of the file, after the imports
 const textVariants = {
@@ -55,6 +56,35 @@ const textVariants = {
       ease: "easeIn"
     }
   }
+};
+
+// Define animation variants for the developer cards
+const developerCardVariants = {
+  initial: {
+    // Optional initial state
+  },
+  animate: {
+    // Base state (unhovered)
+    rotate: 0, // Ensure it's not rotated when not hovered
+    transition: {
+        duration: 0.3, // Base transition duration
+        ease: "easeInOut"
+    }
+  },
+  hover: {
+    // Hover state
+    rotate: 720, // Spin 2 full turns clockwise (360 * 2)
+    transition: {
+      duration: 1.0, // Fast duration for the spin (adjust as needed)
+      ease: "easeInOut"
+    }
+  }
+};
+
+const descriptionVariants = {
+    initial: { opacity: 0, y: 10 }, // Start hidden and slightly below
+    animate: { opacity: 0, y: 10 }, // Keep hidden and slightly below when parent not hovered
+    hover: { opacity: 1, y: 0 } // Fade in and move to original position on hover
 };
 
 function RotatingGreetingsSection() {
@@ -501,19 +531,19 @@ function LandingPage() {
       </Container>
 
       {/* Meet the Developers Section */}
-      <Box 
-        bg={developerSectionBg} 
-        py={20} 
+      <Box
+        bg={developerSectionBg}
+        py={20}
         px={4}
         position="relative"
         zIndex="2"
       >
         <Container maxW="container.xl">
-          <Heading 
-            as="h2" 
-            size="xl" 
-            textAlign="center" 
-            mb={10} 
+          <Heading
+            as="h2"
+            size="xl"
+            textAlign="center"
+            mb={10}
             color={headingColor}
             textShadow="2px 2px 4px rgba(0, 0, 0, 0.5)"
           >
@@ -521,7 +551,7 @@ function LandingPage() {
           </Heading>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 5 }} spacing={8}>
             {developers.map((dev, index) => (
-              <VStack
+              <MotionVStack
                 key={index}
                 spacing={3}
                 p={4}
@@ -533,16 +563,16 @@ function LandingPage() {
                 textAlign="center"
                 width="100%"
                 backdropFilter="blur(10px)"
-                _hover={{
-                  transform: 'translateY(-5px)',
-                  boxShadow: 'xl',
-                }}
-                transition="all 0.3s ease"
                 position="relative"
                 overflow="hidden"
-                style={{
-                  clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)',
-                }}
+                initial="animate"
+                whileHover="hover"
+                variants={developerCardVariants}
+                _hover={{
+                   transform: 'translateY(-5px)',
+                   boxShadow: 'xl',
+                 }}
+                 transition="all 0.3s ease"
               >
                 <Box
                   width="100%"
@@ -616,8 +646,8 @@ function LandingPage() {
                       borderRadius="lg"
                     />
                   ) : (
-                    <Avatar 
-                      size="full" 
+                    <Avatar
+                      size="full"
                       name={dev.name}
                       width="100%"
                       height="100%"
@@ -628,32 +658,39 @@ function LandingPage() {
                   )}
                 </Box>
                 <Box>
-                  <Text 
-                    fontWeight="bold" 
-                    fontSize="lg" 
+                  <Text
+                    fontWeight="bold"
+                    fontSize="lg"
                     color={greetingColor}
                     textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
                   >
                     {dev.name}
                   </Text>
-                  <Text 
-                    fontSize="md" 
+                  <Text
+                    fontSize="md"
                     color={greetingColor}
                     textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
                   >
                     {dev.role}
                   </Text>
-                  <Text 
-                    fontSize="sm" 
-                    color={greetingColor}
-                    textAlign="center"
-                    px={2}
-                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                  <motion.div
+                    variants={descriptionVariants}
+                    initial="animate"
+                    animate="animate"
+                    whileHover="hover"
                   >
-                    {dev.description}
-                  </Text>
+                    <Text
+                      fontSize="sm"
+                      color={greetingColor}
+                      textAlign="center"
+                      px={2}
+                      textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                    >
+                      {dev.description}
+                    </Text>
+                  </motion.div>
                 </Box>
-              </VStack>
+              </MotionVStack>
             ))}
           </SimpleGrid>
         </Container>
