@@ -681,40 +681,6 @@ function LandingPage() {
 
             {/* Copyright */}
             <Text color={textColor} fontSize="sm" textAlign="center">
-          <Stack spacing={10}>
-            {/* Main Footer Content */}
-            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-              {/* Company Info */}
-              <Stack spacing={4}>
-                <Heading size="md" color={greetingColor}>GridX</Heading>
-                <Text color={textColor} fontSize="sm">
-                  Empowering South Africa with sustainable energy solutions and smart power management By nathi and Mpho
-                </Text>
-              </Stack>
-
-              {/* Services */}
-              <Stack spacing={4}>
-                <Heading size="sm" color={greetingColor}>Services</Heading>
-                <Link color={textColor} _hover={{ color: 'blue.400' }}>Solar Solutions</Link>
-                <Link color={textColor} _hover={{ color: 'blue.400' }}>Power Management</Link>
-                <Link color={textColor} _hover={{ color: 'blue.400' }}>Load Shedding</Link>
-                <Link color={textColor} _hover={{ color: 'blue.400' }}>Energy Analytics</Link>
-              </Stack>
-
-              {/* Contact Info */}
-              <Stack spacing={4}>
-                <Heading size="sm" color={greetingColor}>Contact Us</Heading>
-                <Text color={textColor} fontSize="sm">Email: gridx.noreply@gmail.com</Text>
-                <Text color={textColor} fontSize="sm">Support Hours: Mon-Fri, 9:00-17:00</Text>
-                <Text color={textColor} fontSize="sm">Address: Sandton, South Africa</Text>
-              </Stack>
-            </SimpleGrid>
-
-            {/* Divider */}
-            <Divider borderColor="gray.700" />
-
-            {/* Copyright */}
-            <Text color={textColor} fontSize="sm" textAlign="center">
               © {new Date().getFullYear()} GridX. All rights reserved.
             </Text>
           </Stack>
