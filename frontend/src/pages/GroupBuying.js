@@ -38,6 +38,8 @@ import {
 } from '@chakra-ui/react';
 import { FaUsers, FaClock, FaTag, FaSolarPanel, FaBolt, FaBatteryFull, FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import batteryBankImage from '../assets/images/battery_bank_10_kwh.png';
+import inverterImage from '../assets/images/inverter__5kw_hybrid.png';
 
 function GroupBuying() {
   const toast = useToast();
@@ -64,7 +66,7 @@ function GroupBuying() {
     {
       id: 2,
       product: 'Inverter (5kW Hybrid)',
-      image: null, // No image for this one
+      image: inverterImage,
       originalPrice: 22000,
       groupPrice: 18000,
       goal: 10,
@@ -78,7 +80,7 @@ function GroupBuying() {
     {
       id: 3,
       product: 'Battery Bank (10kWh)',
-      image: '', // No image for this one either
+      image: batteryBankImage, // Updated to use the imported image
       originalPrice: 55000,
       groupPrice: 45000,
       goal: 5,
