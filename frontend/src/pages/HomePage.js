@@ -2,6 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api';
 
+// Import the video
+import backgroundVideo from '../assets/videos/Slowed-GridX-Video.mp4';
+
 // Import Chakra UI Components
 import {
   Box,
@@ -52,18 +55,42 @@ function HomePage() {
   const user = auth.getCurrentUser();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  // Color mode values
+  // Update color mode values for better visibility in light mode
   const bgColor = useColorModeValue('gray.50', 'gray.900');
-  const textColor = useColorModeValue('gray.600', 'gray.400');
-  const headingColor = useColorModeValue('gray.800', 'white');
+  const textColor = useColorModeValue('gray.800', 'gray.400'); // Darker text in light mode
+  const headingColor = useColorModeValue('gray.900', 'white'); // Darker heading in light mode
   const cardBg = useColorModeValue('white', 'gray.800');
-  const cardBorderColor = useColorModeValue('gray.200', 'gray.700');
+  const cardBorderColor = useColorModeValue('gray.300', 'gray.700'); // Slightly darker border
   const spinnerColor = useColorModeValue('blue.500', 'blue.300');
-  const iconColor = useColorModeValue('gray.700', 'gray.200');
+  const iconColor = useColorModeValue('gray.800', 'gray.200'); // Darker icons in light mode
+  const loadSheddingBg = useColorModeValue('gray.100', 'gray.700'); // Slightly darker background
+  const loadSheddingText = useColorModeValue('gray.800', 'gray.400'); // Darker text in light mode
 
-  // Add these color mode values with the other useColorModeValue calls at the top of the component
-  const loadSheddingBg = useColorModeValue('gray.50', 'gray.700');
-  const loadSheddingText = useColorModeValue('gray.600', 'gray.400');
+  // Update glassmorphism styles for better visibility in light mode
+  const glassStyle = useColorModeValue(
+    {
+      backdropFilter: 'blur(10px)',
+      backgroundColor: 'rgba(255, 255, 255, 0.85)', // More opaque background
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.2)',
+      color: 'gray.800', // Ensure text is visible
+    },
+    {}
+  );
+
+  // Update card backgrounds for better visibility
+  const cardBackgrounds = useColorModeValue(
+    {
+      nav: 'rgba(255, 255, 255, 0.9)', // More opaque background
+      subscription: 'rgba(255, 255, 255, 0.9)',
+      loadShedding: 'rgba(255, 255, 255, 0.9)'
+    },
+    {
+      nav: cardBg,
+      subscription: cardBg,
+      loadShedding: cardBg
+    }
+  );
 
   // Navigation items (Memoized for performance)
   const navItems = useMemo(() => [
@@ -215,7 +242,7 @@ function HomePage() {
     }, 10000); // Change tip every 10 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [solarTips.length]); // Add solarTips.length to the dependency array
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -266,262 +293,303 @@ function HomePage() {
   }
 
   return (
-    <Box minH="100vh" bg={bgColor}>
-      <Container maxW="container.xl" py={8}>
-        {/* Header with Welcome and Theme Toggle */}
-        <Flex justify="space-between" align="center" mb={8}>
-          {/* Welcome Section */}
-          <Box>
-            <Heading
-              as="h1"
-              size="xl"
-              color={headingColor}
-              mb={2}
-            >
-              Welcome, {user.name}!
-            </Heading>
-            <Text fontSize="lg" color={textColor}>
-              What would you like to do today?
-            </Text>
-          </Box>
-
-          {/* Tips and Theme Toggle Section */}
-          <Flex align="center" gap={4}>
-            <Fade in={true} transition={{ enter: { duration: 0.5 }, exit: { duration: 0.5 } }}>
-              <Text
-                fontSize="sm"
-                color={textColor}
-                maxW="300px"
-                textAlign="right"
-                fontStyle="italic"
-              >
-                💡 Tip: {solarTips[currentTipIndex]}
-              </Text>
-            </Fade>
-
-            {/* Theme Toggle Button */}
-            <IconButton
-              aria-label="Toggle Theme"
-              icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
-              onClick={toggleColorMode}
-              variant="ghost"
-              size="xs"
-              color={iconColor}
-              fontSize="sm"
-            />
-          </Flex>
-        </Flex>
-
-        {/* Navigation Grid */}
-        <SimpleGrid
-          columns={{ base: 1, md: 2, lg: 3 }}
-          spacing={6}
-          mb={12}
+    <Box minH="100vh" position="relative" overflow="hidden">
+      {/* Video Background */}
+      <Box
+        position="fixed"
+        top="0"
+        left="0"
+        width="100%"
+        height="100%"
+        zIndex="0"
+        overflow="hidden"
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
         >
-          {navItems.map((item) => (
-            <Box
-              key={item.path}
-              p={6}
-              bg={cardBg}
-              borderRadius="lg"
-              boxShadow="md"
-              borderWidth="1px"
-              borderColor={cardBorderColor}
-              _hover={{
-                transform: 'translateY(-2px)',
-                boxShadow: 'lg',
-                transition: 'all 0.2s'
-              }}
-              onClick={() => navigate(item.path)}
-              cursor="pointer"
-              role="group"
-            >
-              <Flex align="center" mb={3}>
-                 <Icon
-                    as={item.icon}
-                    w={8}
-                    h={8}
-                    color={`${item.colorScheme}.500`}
-                    _groupHover={{ color: `${item.colorScheme}.600` }}
-                    mr={4}
-                 />
-                 <Heading as="h3" size="md" color={headingColor}>
-                    {item.title}
-                 </Heading>
-              </Flex>
-              <Text fontSize="sm" color={textColor}>
-                {item.description}
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
+        {/* Overlay to ensure content readability */}
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          width="100%"
+          height="100%"
+          bg="rgba(0, 0, 0, 0.5)"
+        />
+      </Box>
+
+      {/* Main Content - Add relative positioning and z-index */}
+      <Box position="relative" zIndex="1">
+        <Container maxW="container.xl" py={8}>
+          {/* Header with Welcome and Theme Toggle */}
+          <Flex justify="space-between" align="center" mb={8}>
+            {/* Welcome Section */}
+            <Box>
+              <Heading
+                as="h1"
+                size="xl"
+                color={headingColor}
+                mb={2}
+              >
+                Welcome, {user.name}!
+              </Heading>
+              <Text fontSize="lg" color={textColor}>
+                What would you like to do today?
               </Text>
             </Box>
-          ))}
-        </SimpleGrid>
 
-        {/* Subscription Plans Section */}
-        <Box
-          p={6}
-          bg={cardBg}
-          borderRadius="lg"
-          boxShadow="md"
-          borderWidth="1px"
-          borderColor={cardBorderColor}
-          mb={8}
-        >
-          <Heading as="h2" size="lg" color={headingColor} mb={4}>
-            Subscription Plans
-          </Heading>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-            {subscriptionPlans.map((plan) => (
-              <Box
-                key={plan.id}
-                p={6}
-                borderWidth="1px"
-                borderRadius="md"
-                borderColor={selectedPlan.id === plan.id ? 'blue.500' : cardBorderColor}
-                textAlign="center"
-                cursor="pointer"
-                onClick={() => handleSelectAndSavePlan(plan)}
-                _hover={{
-                  borderColor: 'blue.400',
-                  boxShadow: 'sm'
-                }}
-                display="flex"
-                flexDirection="column"
-                justifyContent="space-between"
-              >
-                <VStack spacing={3} align="center">
-                  <Text fontWeight="bold" fontSize="xl">
-                    {plan.name}
-                  </Text>
-                  <Text fontSize="3xl" fontWeight="extrabold" color="green.500">
-                    R{plan.price}
-                  </Text>
-
-                  <VStack align="start" spacing={1} mt={3}>
-                    {plan.features.map((feature, idx) => (
-                      <Text key={idx} fontSize="sm" color={textColor}>
-                         - {feature}
-                      </Text>
-                    ))}
-                  </VStack>
-                </VStack>
-
-                <Button
-                  mt={6}
-                  size="sm"
-                  colorScheme={selectedPlan.id === plan.id ? 'blue' : 'gray'}
-                  onClick={() => handleSelectAndSavePlan(plan)}
-                  isLoading={isSavingPlan && selectedPlan.id === plan.id}
-                  loadingText="Saving"
+            {/* Tips and Theme Toggle Section */}
+            <Flex align="center" gap={4}>
+              <Fade in={true} transition={{ enter: { duration: 0.5 }, exit: { duration: 0.5 } }}>
+                <Text
+                  fontSize="sm"
+                  color={textColor}
+                  maxW="300px"
+                  textAlign="right"
+                  fontStyle="italic"
                 >
-                  {selectedPlan.id === plan.id ? 'Selected' : 'Select Plan'}
-                </Button>
+                  💡 Tip: {solarTips[currentTipIndex]}
+                </Text>
+              </Fade>
+
+              {/* Theme Toggle Button */}
+              <IconButton
+                aria-label="Toggle Theme"
+                icon={colorMode === 'light' ? <FaMoon /> : <FaSun />}
+                onClick={toggleColorMode}
+                variant="ghost"
+                size="xs"
+                color={iconColor}
+                fontSize="sm"
+              />
+            </Flex>
+          </Flex>
+
+          {/* Navigation Grid */}
+          <SimpleGrid
+            columns={{ base: 1, md: 2, lg: 3 }}
+            spacing={6}
+            mb={12}
+          >
+            {navItems.map((item) => (
+              <Box
+                key={item.path}
+                p={6}
+                borderRadius="lg"
+                borderWidth="1px"
+                borderColor={cardBorderColor}
+                _hover={{
+                  transform: 'translateY(-2px)',
+                  boxShadow: 'lg',
+                  transition: 'all 0.2s'
+                }}
+                onClick={() => navigate(item.path)}
+                cursor="pointer"
+                role="group"
+                {...glassStyle}
+                bg={cardBackgrounds.nav}
+              >
+                <Flex align="center" mb={3}>
+                   <Icon
+                      as={item.icon}
+                      w={8}
+                      h={8}
+                      color={`${item.colorScheme}.500`}
+                      _groupHover={{ color: `${item.colorScheme}.600` }}
+                      mr={4}
+                   />
+                   <Heading as="h3" size="md" color={headingColor}>
+                      {item.title}
+                   </Heading>
+                </Flex>
+                <Text fontSize="sm" color={textColor}>
+                  {item.description}
+                </Text>
               </Box>
             ))}
           </SimpleGrid>
-        </Box>
 
-        {/* Load Shedding Section */}
-        <Box
-          p={6}
-          bg={cardBg}
-          borderRadius="lg"
-          boxShadow="md"
-          borderWidth="1px"
-          borderColor={cardBorderColor}
-          mb={8}
-        >
-          <Flex justify="space-between" align="center" mb={4}>
-            <Heading as="h2" size="lg" color={headingColor}>
-              Load Shedding Status
+          {/* Subscription Plans Section */}
+          <Box
+            p={6}
+            borderRadius="lg"
+            borderWidth="1px"
+            borderColor={cardBorderColor}
+            mb={8}
+            {...glassStyle}
+            bg={cardBackgrounds.subscription}
+          >
+            <Heading as="h2" size="lg" color={headingColor} mb={4}>
+              Subscription Plans
             </Heading>
-            <Icon as={FaBolt} w={6} h={6} color={loadSheddingStage >= 5 ? 'red.500' : 'yellow.500'} />
-          </Flex>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+              {subscriptionPlans.map((plan) => (
+                <Box
+                  key={plan.id}
+                  p={6}
+                  borderWidth="1px"
+                  borderRadius="md"
+                  borderColor={selectedPlan.id === plan.id ? 'blue.500' : cardBorderColor}
+                  textAlign="center"
+                  cursor="pointer"
+                  onClick={() => handleSelectAndSavePlan(plan)}
+                  _hover={{
+                    borderColor: 'blue.400',
+                    boxShadow: 'sm'
+                  }}
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="space-between"
+                >
+                  <VStack spacing={3} align="center">
+                    <Text fontWeight="bold" fontSize="xl">
+                      {plan.name}
+                    </Text>
+                    <Text fontSize="3xl" fontWeight="extrabold" color="green.500">
+                      R{plan.price}
+                    </Text>
 
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-            <Box
-              p={4}
-              bg={loadSheddingBg}
-              borderRadius="md"
-            >
-              <Text fontSize="sm" color={loadSheddingText} mb={2}>Current Stage</Text>
-              <Badge
-                colorScheme={
-                  loadSheddingStage >= 5
-                    ? 'red'
-                    : loadSheddingStage >= 3
-                    ? 'orange'
-                    : 'yellow'
-                }
-                fontSize="lg"
-                p={2}
+                    <VStack align="start" spacing={1} mt={3}>
+                      {plan.features.map((feature, idx) => (
+                        <Text key={idx} fontSize="sm" color={textColor}>
+                           - {feature}
+                        </Text>
+                      ))}
+                    </VStack>
+                  </VStack>
+
+                  <Button
+                    mt={6}
+                    size="sm"
+                    colorScheme={selectedPlan.id === plan.id ? 'blue' : 'gray'}
+                    onClick={() => handleSelectAndSavePlan(plan)}
+                    isLoading={isSavingPlan && selectedPlan.id === plan.id}
+                    loadingText="Saving"
+                  >
+                    {selectedPlan.id === plan.id ? 'Selected' : 'Select Plan'}
+                  </Button>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Box>
+
+          {/* Load Shedding Section */}
+          <Box
+            p={6}
+            borderRadius="lg"
+            borderWidth="1px"
+            borderColor={cardBorderColor}
+            mb={8}
+            {...glassStyle}
+            bg={cardBackgrounds.loadShedding}
+          >
+            <Flex justify="space-between" align="center" mb={4}>
+              <Heading as="h2" size="lg" color={headingColor}>
+                Load Shedding Status
+              </Heading>
+              <Icon as={FaBolt} w={6} h={6} color={loadSheddingStage >= 5 ? 'red.500' : 'yellow.500'} />
+            </Flex>
+
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+              <Box
+                p={4}
+                bg={loadSheddingBg}
+                borderRadius="md"
               >
-                Stage {loadSheddingStage}
-              </Badge>
-            </Box>
-
-            <Box
-              p={4}
-              bg={loadSheddingBg}
-              borderRadius="md"
-            >
-              <Text fontSize="sm" color={loadSheddingText} mb={2}>Next Load Shedding</Text>
-              <VStack align="start" spacing={1}>
-                <Text fontWeight="medium">
-                  {new Date(nextLoadShedding.date).toLocaleDateString()}
-                </Text>
-                <Text>
-                  {nextLoadShedding.startTime} - {nextLoadShedding.endTime}
-                </Text>
+                <Text fontSize="sm" color={loadSheddingText} mb={2}>Current Stage</Text>
                 <Badge
                   colorScheme={
-                    nextLoadShedding.stage >= 5
+                    loadSheddingStage >= 5
                       ? 'red'
-                      : nextLoadShedding.stage >= 3
+                      : loadSheddingStage >= 3
                       ? 'orange'
                       : 'yellow'
                   }
+                  fontSize="lg"
+                  p={2}
                 >
-                  Stage {nextLoadShedding.stage}
+                  Stage {loadSheddingStage}
                 </Badge>
-              </VStack>
-            </Box>
-          </SimpleGrid>
-
-          {loadSheddingStage >= 5 && (
-            <Alert status="error" mt={4} borderRadius="md">
-              <AlertIcon />
-              <Box>
-                <AlertTitle>High Load Shedding Stage!</AlertTitle>
-                <AlertDescription>
-                  Your area is experiencing Stage {loadSheddingStage} load shedding. Please plan accordingly.
-                </AlertDescription>
               </Box>
-            </Alert>
-          )}
 
-          <Button
-            colorScheme="blue"
-            variant="outline"
-            size="sm"
-            mt={4}
-            onClick={() => navigate('/loadshedding')}
-          >
-            View Full Schedule
-          </Button>
-        </Box>
+              <Box
+                p={4}
+                bg={loadSheddingBg}
+                borderRadius="md"
+              >
+                <Text fontSize="sm" color={loadSheddingText} mb={2}>Next Load Shedding</Text>
+                <VStack align="start" spacing={1}>
+                  <Text fontWeight="medium">
+                    {new Date(nextLoadShedding.date).toLocaleDateString()}
+                  </Text>
+                  <Text>
+                    {nextLoadShedding.startTime} - {nextLoadShedding.endTime}
+                  </Text>
+                  <Badge
+                    colorScheme={
+                      nextLoadShedding.stage >= 5
+                        ? 'red'
+                        : nextLoadShedding.stage >= 3
+                        ? 'orange'
+                        : 'yellow'
+                    }
+                  >
+                    Stage {nextLoadShedding.stage}
+                  </Badge>
+                </VStack>
+              </Box>
+            </SimpleGrid>
 
-        {/* Logout Button */}
-        <Box textAlign="center" mt={8}>
-          <Button
-            colorScheme="red"
-            onClick={handleLogout}
-            leftIcon={<FaSignOutAlt />}
-            size="lg"
-          >
-            Logout
-          </Button>
-        </Box>
-      </Container>
+            {loadSheddingStage >= 5 && (
+              <Alert status="error" mt={4} borderRadius="md">
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>High Load Shedding Stage!</AlertTitle>
+                  <AlertDescription>
+                    Your area is experiencing Stage {loadSheddingStage} load shedding. Please plan accordingly.
+                  </AlertDescription>
+                </Box>
+              </Alert>
+            )}
+
+            <Button
+              colorScheme="blue"
+              variant="outline"
+              size="sm"
+              mt={4}
+              onClick={() => navigate('/loadshedding')}
+            >
+              View Full Schedule
+            </Button>
+          </Box>
+
+          {/* Logout Button */}
+          <Box textAlign="center" mt={8}>
+            <Button
+              colorScheme="red"
+              onClick={handleLogout}
+              leftIcon={<FaSignOutAlt />}
+              size="lg"
+            >
+              Logout
+            </Button>
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 }

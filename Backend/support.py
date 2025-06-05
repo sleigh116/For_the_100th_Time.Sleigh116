@@ -53,11 +53,11 @@ def execute_query(operation=None, query=None, params=None):
         if conn: conn.close()
 
 # ================== USER OPERATIONS ==================
-def create_user(email, password_hash, full_name=None, phone=None, is_installer=False):
+def create_user(email, password_hash, full_name=None, is_installer=False):
     """Create a new user account"""
     query = """
-    INSERT INTO users (email, password_hash, full_name, phone, is_installer)
-    VALUES (%s, %s, %s, %s, %s) RETURNING id
+    INSERT INTO users (email, password_hash, full_name, is_installer)
+    VALUES (%s, %s, %s, %s) RETURNING id
     """
     return execute_query('insert', query, (email, password_hash, full_name, phone, is_installer))
 
@@ -137,10 +137,108 @@ def get_payment_history(contract_id):
     """
     return execute_query('search', query, (contract_id,))
 
+# ================== FORUM OPERATIONS ==================
+def create_topic(user_id, title, content):
+    """Create a new forum topic"""
+    query = """
+    INSERT INTO forum_topics (user_id, title, content)
+    VALUES (%s, %s, %s) RETURNING id
+    """
+    return execute_query('insert', query, (user_id, title, content))
+
+def get_topics():
+    """Get all forum topics"""
+    query = """
+    SELECT ft.*, u.full_name as author_name 
+    FROM forum_topics ft
+    JOIN users u ON ft.user_id = u.id
+    ORDER BY ft.created_at DESC
+    """
+    return execute_query('search', query)
+
+# ================== SUPPORT OPERATIONS ==================
+def submit_support_request(name, email, subject, message):
+    """Submit a new support request"""
+    query = """
+    INSERT INTO contact_support (your_name, email_address, subject, message)
+    VALUES (%s, %s, %s, %s) RETURNING id
+    """
+    return execute_query('insert', query, (name, email, subject, message))
+
+def get_support_requests():
+    """Get all support requests"""
+    query = "SELECT * FROM contact_support ORDER BY created_at DESC"
+    return execute_query('search', query)
+
+# ================== PROFILE OPERATIONS ==================
+def update_account_info(user_id, full_name, email, phone, address):
+    """Update or create account information"""
+    query = """
+    INSERT INTO account_information (user_id, full_name, email_address, phone_number, address)
+    VALUES (%s, %s, %s, %s, %s)
+    ON CONFLICT (user_id) DO UPDATE
+    SET full_name = EXCLUDED.full_name,
+        email_address = EXCLUDED.email_address,
+        phone_number = EXCLUDED.phone_number,
+        address = EXCLUDED.address
+    RETURNING id
+    """
+    return execute_query('insert', query, (user_id, full_name, email, phone, address))
+
+def update_linked_accounts(user_id, facebook_url=None, twitter_url=None, instagram_url=None):
+    """Update or create linked social media accounts"""
+    query = """
+    INSERT INTO linked_accounts (user_id, facebook_profile_url, twitter_profile_url, instagram_profile_url)
+    VALUES (%s, %s, %s, %s)
+    ON CONFLICT (user_id) DO UPDATE
+    SET facebook_profile_url = EXCLUDED.facebook_profile_url,
+        twitter_profile_url = EXCLUDED.twitter_profile_url,
+        instagram_profile_url = EXCLUDED.instagram_profile_url
+    RETURNING id
+    """
+    return execute_query('insert', query, (user_id, facebook_url, twitter_url, instagram_url))
+
+def save_payment_method(user_id, payment_type, card_number, expiry_date, card_holder_name, is_default=False):
+    """Save a new payment method"""
+    query = """
+    INSERT INTO saved_payment_methods 
+    (user_id, payment_type, card_number, expiry_date, card_holder_name, is_default)
+    VALUES (%s, %s, %s, %s, %s, %s) RETURNING id
+    """
+    return execute_query('insert', query, (user_id, payment_type, card_number, expiry_date, card_holder_name, is_default))
+
+def get_saved_payment_methods(user_id):
+    """Get all saved payment methods for a user"""
+    query = """
+    SELECT * FROM saved_payment_methods 
+    WHERE user_id = %s 
+    ORDER BY is_default DESC, created_at DESC
+    """
+    return execute_query('search', query, (user_id,))
+
+def update_profile_bio(user_id, energy_motto):
+    """Update or create user's energy motto/goal"""
+    query = """
+    INSERT INTO profile_bio (user_id, energy_motto)
+    VALUES (%s, %s)
+    ON CONFLICT (user_id) DO UPDATE
+    SET energy_motto = EXCLUDED.energy_motto,
+        updated_at = CURRENT_TIMESTAMP
+    RETURNING id
+    """
+    return execute_query('insert', query, (user_id, energy_motto))
+
+def get_profile_bio(user_id):
+    """Get user's energy motto/goal"""
+    query = "SELECT energy_motto FROM profile_bio WHERE user_id = %s"
+    result = execute_query('search', query, (user_id,))
+    return result[0][0] if result else None
+
 # Initialize database tables when module loads
 def initialize_db():
     conn, cur = connect_db()
     try:
+        # Existing tables
         cur.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -181,6 +279,74 @@ def initialize_db():
             amount DECIMAL(10,2) NOT NULL,
             payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             payment_method VARCHAR(50)
+        )""")
+
+        # Forum topics table
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS forum_topics (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+            title VARCHAR(255) NOT NULL,
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
+        
+        # Contact support table
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS contact_support (
+            id SERIAL PRIMARY KEY,
+            your_name VARCHAR(100) NOT NULL,
+            email_address VARCHAR(255) NOT NULL,
+            subject VARCHAR(255) NOT NULL,
+            message TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
+        
+        # Account information table
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS account_information (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+            full_name VARCHAR(100) NOT NULL,
+            email_address VARCHAR(255) NOT NULL,
+            phone_number VARCHAR(20),
+            address TEXT,
+            UNIQUE(user_id)
+        )""")
+        
+        # Linked accounts table
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS linked_accounts (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+            facebook_profile_url VARCHAR(255),
+            twitter_profile_url VARCHAR(255),
+            instagram_profile_url VARCHAR(255),
+            UNIQUE(user_id)
+        )""")
+        
+        # Saved payment methods table
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS saved_payment_methods (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+            payment_type VARCHAR(50) NOT NULL,
+            card_number VARCHAR(20),
+            expiry_date DATE,
+            card_holder_name VARCHAR(100),
+            is_default BOOLEAN DEFAULT FALSE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
+
+        # Profile bio table
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS profile_bio (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+            energy_motto TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(user_id)
         )""")
         
         conn.commit()

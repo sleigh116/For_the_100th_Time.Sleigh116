@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
 
@@ -17,23 +17,23 @@ import {
   useToast,
   useColorModeValue,
   Spinner,
-  Divider, // Added Divider
-  Select, // Added Select for dropdown
-  Switch, // Added Switch for toggles
-  Spacer, // Added Spacer for layout if needed
-  AlertDialog, // Added AlertDialog for confirmation modal
+  Divider,
+  Switch,
+  AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  useDisclosure, // Hook for modal
-  FormErrorMessage, // ADDED: Import FormErrorMessage
-  Collapse,
+  useDisclosure,
+  FormErrorMessage,
   Icon,
 } from '@chakra-ui/react';
 import { CheckCircleIcon, WarningIcon } from '@chakra-ui/icons';
-import { FaArrowLeft } from 'react-icons/fa'; // Icon for back button
+
+// Import icons - Added FaArrowLeft import here
+import { FaArrowLeft } from 'react-icons/fa';
+
 
 function SettingsPage() {
   const navigate = useNavigate();
@@ -53,20 +53,33 @@ function SettingsPage() {
   const [preferencesSaving, setPreferencesSaving] = useState(false);
   const [preferencesStatus, setPreferencesStatus] = useState(null);
 
+
   // State and hooks for Delete Account Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef(); // Ref for the cancel button
 
+
   const user = auth.getCurrentUser(); // Get current user data
 
-  // Chakra UI hook for dynamic colors based on color mode
+  // Chakra UI hook for dynamic colors based on color mode - Defined at the top level
   const bgColor = useColorModeValue('gray.50', 'gray.800');
-  const cardBg = useColorModeValue('white', 'gray.700');
   const headingColor = useColorModeValue('gray.800', 'white');
   const mutedTextColor = useColorModeValue('gray.600', 'gray.400');
   const spinnerColor = useColorModeValue('blue.500', 'blue.300');
   const borderColor = useColorModeValue('gray.200', 'gray.600'); // Added border color
+  // Added glassmorphism border color definition
   const glassBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
+  const backButtonColor = useColorModeValue('whiteAlpha.800', 'whiteAlpha.800'); // Color for the Back to Dashboard button
+  const glassBgColor = useColorModeValue('rgba(255, 255, 255, 0.15)', 'rgba(26, 32, 44, 0.15)');
+  const glassBoxShadow = useColorModeValue('0 4px 6px rgba(0, 0, 0, 0.1)', '0 4px 6px rgba(0, 0, 0, 0.4)');
+
+  // Define colors for conditionally rendered elements and input focus borders at the top level
+  const inputFocusBorderColor = useColorModeValue('blue.500', 'blue.300'); // For all inputs
+  const successIconColor = useColorModeValue('green.500', 'green.500'); // Assuming green is consistent
+  const warningIconColor = useColorModeValue('red.500', 'red.500'); // Assuming red is consistent
+  const successTextColor = useColorModeValue('green.500', 'green.500'); // Assuming green is consistent
+  const warningTextColor = useColorModeValue('red.500', 'red.500'); // Assuming red is consistent
+
 
   // Redirect if user is not logged in
   useEffect(() => {
@@ -94,6 +107,7 @@ function SettingsPage() {
       }
   };
 
+
   // Handle Password Change Submission (Mock API call)
   const handleChangePassword = async (e) => {
       e.preventDefault();
@@ -119,6 +133,7 @@ function SettingsPage() {
            setPasswordChangeStatus({ status: 'error', message: 'Please fix the errors above' });
           return;
       }
+
 
       setPasswordChangeLoading(true);
 
@@ -207,6 +222,7 @@ function SettingsPage() {
        }
    };
 
+
   // Handle Delete Account
   const handleDeleteAccount = async () => {
       // --- MOCK DELETE ACCOUNT PROCESS ---
@@ -228,10 +244,12 @@ function SettingsPage() {
       // --- END MOCK PROCESS ---
   };
 
+
   // Handle Back to Dashboard button
   const handleBackToDashboard = () => {
       navigate('/dashboard');
   };
+
 
   // Render loading spinner while user is being checked or data is loading initially
   if (!user) {
@@ -243,216 +261,214 @@ function SettingsPage() {
    }
 
   return (
+    // Applied background gradient and overlay to the outermost Box
     <Box
-      minH="100vh"
-      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      minH="100vh" // Ensure this Box takes the full viewport height
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)" // Gradient matching login page
       backgroundSize="cover"
       backgroundPosition="center"
-      backgroundAttachment="fixed"
-      position="relative"
-      _before={{
+      backgroundAttachment="fixed" // Fixed background
+      position="relative" // Needed for absolute positioning of overlay
+      _before={{ // Add an overlay for readability
           content: '""',
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          bg: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 1,
+          bg: 'rgba(0, 0, 0, 0.5)', // Dark overlay with 50% opacity (adjust as needed)
+          zIndex: 1, // Ensure this is lower than the content Box's zIndex
       }}
     >
-      <Box maxW="container.md" mx="auto" p={{ base: 4, md: 8 }} position="relative" zIndex={2}>
-
-            {/* Header / Back Button */}
+        {/* Content Box with glassmorphism */}
+        <Box
+            maxW="container.lg"
+            mx="auto"
+            p={{ base: 4, md: 6 }}
+            position="relative"
+            zIndex={2} // Ensure content is above the overlay
+            bg={glassBgColor} // Glassmorphism background
+            borderRadius="lg" // Rounded corners for glassmorphism box
+            backdropFilter="blur(10px)" // Apply blur effect for glassmorphism
+            borderWidth="1px" // Optional: Add a subtle border
+            borderColor={glassBorderColor} // Use the defined glassmorphism border color
+            boxShadow={glassBoxShadow} // Optional: Add shadow
+            mt={8} // Add some margin top to separate from the top edge if needed
+            mb={8} // Add some margin bottom
+        >
+            {/* Header with Back to Dashboard Button */}
             <HStack justify="space-between" mb={8}>
-                <Button leftIcon={<FaArrowLeft />} variant="ghost" onClick={handleBackToDashboard}>
-                   Back to Dashboard
+                {/* Using the imported FaArrowLeft icon */}
+                <Button leftIcon={<FaArrowLeft />} variant="ghost" onClick={handleBackToDashboard} color={backButtonColor}> {/* Using the defined backButtonColor */}
+                    Back to Dashboard
                 </Button>
+                {/* You can add other header elements here if needed */}
             </HStack>
 
             <Heading as="h1" size="xl" color={headingColor} mb={8}>
-              Settings
+                Account Settings
             </Heading>
 
-            {/* Last Login Info */}
-             <Text fontSize="sm" color={mutedTextColor} mb={8}>
-                 Last login: {formatLastLogin(user?.lastLogin)}
-             </Text>
+            <VStack spacing={8} align="stretch">
 
-            {/* Account Settings Section */}
-            <Box p={{ base: 4, md: 6 }} boxShadow="md" borderRadius="lg" bg={cardBg} mb={8}>
-                <Heading as="h2" size="md" mb={4} color={headingColor}>Account Settings</Heading>
-                <Collapse in={passwordChangeStatus !== null} animateOpacity>
-                     {passwordChangeStatus && (
-                        <Flex
-                            align="center"
-                            color={passwordChangeStatus.status === 'success' ? 'green.500' : 'red.500'}
-                            mb={4}
-                        >
-                            <Icon
-                                as={passwordChangeStatus.status === 'success' ? CheckCircleIcon : WarningIcon}
-                                mr={2}
-                            />
-                            <Text>{passwordChangeStatus.message}</Text>
-                        </Flex>
-                     )}
-                </Collapse>
-                <VStack as="form" spacing={4} onSubmit={handleChangePassword} noValidate align="stretch">
-                     <FormControl id="old-password" isInvalid={!!passwordErrors.oldPassword}>
-                       <FormLabel fontSize="sm" color={mutedTextColor}>Old Password</FormLabel>
-                       <Input
-                         type="password"
-                         placeholder="Enter current password"
-                         value={oldPassword}
-                         onChange={(e) => setOldPassword(e.target.value)}
-                       />
-                       <FormErrorMessage>{passwordErrors.oldPassword}</FormErrorMessage>
-                     </FormControl>
+                {/* General Information Section */}
+                <Box>
+                    <Heading as="h2" size="lg" mb={4} color={headingColor}>General Information</Heading>
+                    <Text color={mutedTextColor} mb={4}>Review and update your profile details.</Text>
+                    <VStack spacing={4} align="stretch">
+                        <FormControl id="email">
+                            <FormLabel color={mutedTextColor}>Email Address</FormLabel>
+                            {/* Using the defined inputFocusBorderColor */}
+                            <Input type="email" value={user?.email} isReadOnly focusBorderColor={inputFocusBorderColor} /> {/* Email is usually not changeable here */}
+                        </FormControl>
+                        {/* Display last login if available */}
+                         {user?.lastLogin && (
+                            <Box>
+                                <Text fontSize="sm" color={mutedTextColor}>Last Login: {formatLastLogin(user.lastLogin)}</Text>
+                            </Box>
+                         )}
+                        {/* You can add more general user info fields here if your user object has them */}
+                    </VStack>
+                </Box>
 
-                     <FormControl id="new-password" isInvalid={!!passwordErrors.newPassword}>
-                       <FormLabel fontSize="sm" color={mutedTextColor}>New Password</FormLabel>
-                       <Input
-                         type="password"
-                         placeholder="Enter new password"
-                         value={newPassword}
-                         onChange={(e) => setNewPassword(e.target.value)}
-                       />
-                       <FormErrorMessage>{passwordErrors.newPassword}</FormErrorMessage>
-                     </FormControl>
+                <Divider borderColor={borderColor} /> {/* Add a divider */}
 
-                     <FormControl id="confirm-new-password" isInvalid={!!passwordErrors.confirmNewPassword}>
-                       <FormLabel fontSize="sm" color={mutedTextColor}>Confirm New Password</FormLabel>
-                       <Input
-                         type="password"
-                         placeholder="Confirm new password"
-                         value={confirmNewPassword}
-                         onChange={(e) => setConfirmNewPassword(e.target.value)}
-                       />
-                       <FormErrorMessage>{passwordErrors.confirmNewPassword}</FormErrorMessage>
-                     </FormControl>
+                {/* Change Password Section */}
+                <Box>
+                    <Heading as="h2" size="lg" mb={4} color={headingColor}>Change Password</Heading>
+                    <Text color={mutedTextColor} mb={4}>Update your account password.</Text>
+                    <VStack spacing={4} as="form" onSubmit={handleChangePassword}>
+                         <FormControl id="old-password" isInvalid={passwordErrors.oldPassword}>
+                              <FormLabel color={mutedTextColor}>Old Password</FormLabel>
+                               {/* Using the defined inputFocusBorderColor */}
+                              <Input
+                                  type="password"
+                                  value={oldPassword}
+                                  onChange={(e) => setOldPassword(e.target.value)}
+                                   focusBorderColor={inputFocusBorderColor}
+                              />
+                              <FormErrorMessage>{passwordErrors.oldPassword}</FormErrorMessage>
+                         </FormControl>
+                         <FormControl id="new-password" isInvalid={passwordErrors.newPassword}>
+                              <FormLabel color={mutedTextColor}>New Password</FormLabel>
+                               {/* Using the defined inputFocusBorderColor */}
+                              <Input
+                                  type="password"
+                                  value={newPassword}
+                                  onChange={(e) => setNewPassword(e.target.value)}
+                                   focusBorderColor={inputFocusBorderColor}
+                              />
+                               <FormErrorMessage>{passwordErrors.newPassword}</FormErrorMessage>
+                         </FormControl>
+                         <FormControl id="confirm-new-password" isInvalid={passwordErrors.confirmNewPassword}>
+                              <FormLabel color={mutedTextColor}>Confirm New Password</FormLabel>
+                               {/* Using the defined inputFocusBorderColor */}
+                              <Input
+                                  type="password"
+                                  value={confirmNewPassword}
+                                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                   focusBorderColor={inputFocusBorderColor}
+                              />
+                               <FormErrorMessage>{passwordErrors.confirmNewPassword}</FormErrorMessage>
+                         </FormControl>
+                         <Button type="submit" colorScheme="blue" isLoading={passwordChangeLoading}>
+                             Change Password
+                         </Button>
+                         {passwordChangeStatus && (
+                             <HStack>
+                                  {/* Using the defined successIconColor and warningIconColor */}
+                                  <Icon
+                                      as={passwordChangeStatus.status === 'success' ? CheckCircleIcon : WarningIcon}
+                                       color={passwordChangeStatus.status === 'success' ? successIconColor : warningIconColor}
+                                  />
+                                   {/* Using the defined successTextColor and warningTextColor */}
+                                  <Text color={passwordChangeStatus.status === 'success' ? successTextColor : warningTextColor} fontSize="sm">
+                                      {passwordChangeStatus.message}
+                                  </Text>
+                             </HStack>
+                         )}
+                    </VStack>
+                </Box>
 
-                     <Button
-                       type="submit"
-                       colorScheme="teal"
-                       size="md"
-                       w={{ base: 'full', md: 'auto' }} // Full width on mobile, auto on desktop
-                       isLoading={passwordChangeLoading}
-                       loadingText="Saving..."
-                       mt={4}
-                     >
-                       Change Password
-                     </Button>
-                </VStack>
-            </Box>
+                 <Divider borderColor={borderColor} /> {/* Add another divider */}
 
-            <Divider mb={8} /> {/* Divider between sections */}
+                 {/* Notification Preferences Section */}
+                 <Box>
+                     <Heading as="h2" size="lg" mb={4} color={headingColor}>Notification Preferences</Heading>
+                     <Text color={mutedTextColor} mb={4}>Choose how you want to receive notifications.</Text>
+                     <VStack spacing={4} align="stretch">
+                         <HStack justify="space-between">
+                             <FormLabel htmlFor="receive-sms" mb="0" color={mutedTextColor}>
+                                 Receive SMS Notifications
+                             </FormLabel>
+                             <Switch id="receive-sms" isChecked={receiveSms} onChange={(e) => setReceiveSms(e.target.checked)} colorScheme="blue" />
+                         </HStack>
+                         <HStack justify="space-between">
+                             <FormLabel htmlFor="receive-email" mb="0" color={mutedTextColor}>
+                                 Receive Email Notifications
+                             </FormLabel>
+                             <Switch id="receive-email" isChecked={receiveEmail} onChange={(e) => setReceiveEmail(e.target.checked)} colorScheme="blue" />
+                         </HStack>
+                         <Button onClick={handleSavePreferences} isLoading={preferencesSaving} colorScheme="blue" alignSelf="flex-start">
+                             Save Preferences
+                         </Button>
+                          {preferencesStatus && (
+                              <HStack>
+                                   {/* Using the defined successIconColor and warningIconColor */}
+                                  <Icon
+                                      as={preferencesStatus.status === 'success' ? CheckCircleIcon : WarningIcon}
+                                       color={preferencesStatus.status === 'success' ? successIconColor : warningIconColor}
+                                  />
+                                   {/* Using the defined successTextColor and warningTextColor */}
+                                  <Text color={preferencesStatus.status === 'success' ? successTextColor : warningTextColor} fontSize="sm">
+                                      {preferencesStatus.message}
+                                  </Text>
+                              </HStack>
+                          )}
+                     </VStack>
+                 </Box>
 
-            {/* Preferences Section */}
-             <Box p={{ base: 4, md: 6 }} boxShadow="md" borderRadius="lg" bg={cardBg} mb={8}>
-                <Heading as="h2" size="md" mb={4} color={headingColor}>Preferences</Heading>
-                <Collapse in={preferencesStatus !== null} animateOpacity>
-                     {preferencesStatus && (
-                        <Flex
-                            align="center"
-                            color={preferencesStatus.status === 'success' ? 'green.500' : 'red.500'}
-                             mb={2}
-                        >
-                            <Icon
-                                as={preferencesStatus.status === 'success' ? CheckCircleIcon : WarningIcon}
-                                mr={2}
-                            />
-                            <Text>{preferencesStatus.message}</Text>
-                        </Flex>
-                     )}
-                </Collapse>
-                <VStack spacing={4} align="stretch">
-                     <FormControl display="flex" alignItems="center">
-                        <FormLabel htmlFor="sms-alerts" mb="0" fontSize="sm" color={mutedTextColor}>
-                           Receive SMS Alerts
-                        </FormLabel>
-                        <Spacer /> {/* Pushes switch to the right */}
-                        <Switch
-                           id="sms-alerts"
-                           isChecked={receiveSms}
-                           onChange={(e) => setReceiveSms(e.target.checked)}
-                           colorScheme="blue"
-                         />
-                    </FormControl>
 
-                    <FormControl display="flex" alignItems="center">
-                        <FormLabel htmlFor="email-alerts" mb="0" fontSize="sm" color={mutedTextColor}>
-                           Receive Email Alerts
-                        </FormLabel>
-                        <Spacer /> {/* Pushes switch to the right */}
-                        <Switch
-                           id="email-alerts"
-                           isChecked={receiveEmail}
-                           onChange={(e) => setReceiveEmail(e.target.checked)}
-                           colorScheme="blue"
-                         />
-                    </FormControl>
+                <Divider borderColor={borderColor} /> {/* Add another divider */}
 
-                    <Button
-                       colorScheme="blue"
-                       size="md"
-                       w={{ base: 'full', md: 'auto' }}
-                       isLoading={preferencesSaving}
-                       loadingText="Saving..."
-                        onClick={handleSavePreferences}
-                       mt={4}
-                     >
-                       Save Preferences
-                     </Button>
-                </VStack>
-            </Box>
-
-            <Divider mb={8} /> {/* Divider between sections */}
-
-            {/* Delete Account Section (Danger Zone) */}
-             <Box p={{ base: 4, md: 6 }} boxShadow="md" borderRadius="lg" bg={cardBg} borderColor="red.500" borderWidth={1}> {/* Add border for danger */}
-                <Heading as="h2" size="md" mb={4} color="red.500">Danger Zone</Heading>
-                <Text fontSize="sm" color={mutedTextColor} mb={4}>
-                    Deleting your account is irreversible. All your data will be lost.
-                </Text>
-                <Button
-                   colorScheme="red"
-                   size="md"
-                   w={{ base: 'full', md: 'auto' }}
-                   onClick={onOpen} // Open the confirmation modal
-                 >
-                   Delete My Account
-                 </Button>
-            </Box>
-
-            {/* Delete Account Confirmation Modal */}
-             <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-             >
-                <AlertDialogOverlay>
-                <AlertDialogContent>
-                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                    Delete My Account
-                    </AlertDialogHeader>
-
-                    <AlertDialogBody>
-                    Are you sure you want to delete your account? This action cannot be undone.
-                    </AlertDialogBody>
-
-                    <AlertDialogFooter>
-                    <Button ref={cancelRef} onClick={onClose}>
-                        Cancel
+                {/* Delete Account Section */}
+                <Box>
+                    <Heading as="h2" size="lg" mb={4} color={headingColor}>Danger Zone</Heading>
+                    <Text color="red.400" mb={4}>Deleting your account is irreversible.</Text>
+                    <Button colorScheme="red" onClick={onOpen}>
+                        Delete Account
                     </Button>
-                    <Button colorScheme="red" onClick={handleDeleteAccount} ml={3}>
-                        Delete
-                    </Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-                </AlertDialogOverlay>
-             </AlertDialog>
 
+                    {/* Delete Account Confirmation Modal */}
+                    <AlertDialog
+                        isOpen={isOpen}
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                    >
+                        <AlertDialogOverlay>
+                            <AlertDialogContent>
+                                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                    Delete Account
+                                </AlertDialogHeader>
 
+                                <AlertDialogBody>
+                                    Are you sure you want to delete your account? This action cannot be undone.
+                                </AlertDialogBody>
+
+                                <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button colorScheme="red" onClick={handleDeleteAccount} ml={3}>
+                                        Delete
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialogOverlay>
+                    </AlertDialog>
+                </Box>
+
+            </VStack>
         </Box>
     </Box>
   );
