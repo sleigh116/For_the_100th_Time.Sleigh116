@@ -27,6 +27,7 @@ import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
 import LihleProfile from '../assets/images/Lihle.png';
+import kgothatsoProfile from '../assets/images/kg_img.png';
 import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Create motion components
@@ -537,14 +538,22 @@ function LandingPage() {
                   boxShadow: 'xl',
                 }}
                 transition="all 0.3s ease"
+                position="relative"
+                overflow="hidden"
+                style={{
+                  clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)',
+                }}
               >
                 <Box
                   width="100%"
                   height="200px"
                   position="relative"
                   overflow="hidden"
-                  borderRadius="full"
+                  borderRadius="lg"
                   mb={2}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
                 >
                   {dev.name === 'Nkosinathi Radebe' ? (
                     <Image
@@ -554,6 +563,9 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : dev.name === 'Okuhle Gadla' ? (
                     <Image
@@ -563,6 +575,9 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : dev.name === 'Mpho Ramokhoase' ? (
                     <Image
@@ -572,6 +587,9 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : dev.name === 'Thembelihle Zulu' ? (
                     <Image
@@ -581,6 +599,21 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
+                    />
+                  ) : dev.name === 'Kgothatso Mokgashi' ? (
+                    <Image
+                      src={kgothatsoProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : (
                     <Avatar 
@@ -588,33 +621,38 @@ function LandingPage() {
                       name={dev.name}
                       width="100%"
                       height="100%"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   )}
                 </Box>
-                <Text 
-                  fontWeight="bold" 
-                  fontSize="lg" 
-                  color={greetingColor}
-                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                >
-                  {dev.name}
-                </Text>
-                <Text 
-                  fontSize="md" 
-                  color={greetingColor}
-                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                >
-                  {dev.role}
-                </Text>
-                <Text 
-                  fontSize="sm" 
-                  color={greetingColor}
-                  textAlign="center"
-                  px={2}
-                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                >
-                  {dev.description}
-                </Text>
+                <Box>
+                  <Text 
+                    fontWeight="bold" 
+                    fontSize="lg" 
+                    color={greetingColor}
+                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                  >
+                    {dev.name}
+                  </Text>
+                  <Text 
+                    fontSize="md" 
+                    color={greetingColor}
+                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                  >
+                    {dev.role}
+                  </Text>
+                  <Text 
+                    fontSize="sm" 
+                    color={greetingColor}
+                    textAlign="center"
+                    px={2}
+                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                  >
+                    {dev.description}
+                  </Text>
+                </Box>
               </VStack>
             ))}
           </SimpleGrid>
