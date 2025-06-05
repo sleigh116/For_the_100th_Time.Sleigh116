@@ -32,7 +32,6 @@ import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Create motion components
 const MotionBox = motion(Box);
-const MotionVStack = motion(VStack);
 
 // Add these animation variants at the top of the file, after the imports
 const textVariants = {
@@ -53,38 +52,27 @@ const textVariants = {
     y: -20,
     transition: {
       duration: 0.3,
-      ease: "easeIn"
-    }
-  }
-};
-
-// Define animation variants for the developer cards
-const developerCardVariants = {
-  initial: {
-    // Optional initial state
-  },
-  animate: {
-    // Base state (unhovered)
-    rotate: 0, // Ensure it's not rotated when not hovered
-    transition: {
-        duration: 0.3, // Base transition duration
-        ease: "easeInOut"
-    }
-  },
-  hover: {
-    // Hover state
-    rotate: 720, // Spin 2 full turns clockwise (360 * 2)
-    transition: {
-      duration: 1.0, // Fast duration for the spin (adjust as needed)
       ease: "easeInOut"
     }
   }
 };
 
-const descriptionVariants = {
-    initial: { opacity: 0, y: 10 }, // Start hidden and slightly below
-    animate: { opacity: 0, y: 10 }, // Keep hidden and slightly below when parent not hovered
-    hover: { opacity: 1, y: 0 } // Fade in and move to original position on hover
+// Define animation variants for the Image container to perform the flip
+const imageContainerFlipVariants = {
+  animate: {
+    rotateY: 0, // Default state: no rotation
+    transition: {
+        duration: 0.3, // Base transition speed for unhover
+        ease: "easeInOut"
+    }
+  },
+  hover: {
+    rotateY: 180, // Flip 180 degrees around the Y-axis on hover
+    transition: {
+      duration: 0.6, // Duration for the flip
+      ease: "easeInOut"
+    }
+  }
 };
 
 function RotatingGreetingsSection() {
@@ -420,7 +408,6 @@ function LandingPage() {
                   variants={feature.animation}
                   initial="initial"
                   animate="animate"
-                  exit="exit"
                   transition={{ duration: 0.3 }}
                   _hover={{
                     boxShadow: 'lg',
@@ -484,7 +471,6 @@ function LandingPage() {
                   variants={feature.animation}
                   initial="initial"
                   animate="animate"
-                  exit="exit"
                   transition={{ duration: 0.3 }}
                   _hover={{
                     boxShadow: 'lg',
@@ -551,7 +537,7 @@ function LandingPage() {
           </Heading>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 5 }} spacing={8}>
             {developers.map((dev, index) => (
-              <MotionVStack
+              <VStack
                 key={index}
                 spacing={3}
                 p={4}
@@ -565,16 +551,13 @@ function LandingPage() {
                 backdropFilter="blur(10px)"
                 position="relative"
                 overflow="hidden"
-                initial="animate"
-                whileHover="hover"
-                variants={developerCardVariants}
                 _hover={{
                    transform: 'translateY(-5px)',
                    boxShadow: 'xl',
                  }}
                  transition="all 0.3s ease"
               >
-                <Box
+                <MotionBox
                   width="100%"
                   height="200px"
                   position="relative"
@@ -584,6 +567,9 @@ function LandingPage() {
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
+                  initial="animate"
+                  whileHover="hover"
+                  variants={imageContainerFlipVariants}
                 >
                   {dev.name === 'Nkosinathi Radebe' ? (
                     <Image
@@ -656,7 +642,8 @@ function LandingPage() {
                       borderRadius="lg"
                     />
                   )}
-                </Box>
+                </MotionBox>
+
                 <Box>
                   <Text
                     fontWeight="bold"
@@ -670,27 +657,22 @@ function LandingPage() {
                     fontSize="md"
                     color={greetingColor}
                     textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                    textDecoration="underline"
+                    fontStyle="italic"
                   >
                     {dev.role}
                   </Text>
-                  <motion.div
-                    variants={descriptionVariants}
-                    initial="animate"
-                    animate="animate"
-                    whileHover="hover"
+                  <Text
+                    fontSize="sm"
+                    color={greetingColor}
+                    textAlign="center"
+                    px={2}
+                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
                   >
-                    <Text
-                      fontSize="sm"
-                      color={greetingColor}
-                      textAlign="center"
-                      px={2}
-                      textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                    >
-                      {dev.description}
-                    </Text>
-                  </motion.div>
+                    {dev.description}
+                  </Text>
                 </Box>
-              </MotionVStack>
+              </VStack>
             ))}
           </SimpleGrid>
         </Container>
