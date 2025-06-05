@@ -638,7 +638,7 @@ function LandingPage() {
               <Stack spacing={4}>
                 <Heading size="md" color={greetingColor}>GridX</Heading>
                 <Text color={textColor} fontSize="sm">
-                  Revolutionizing South Africa's energy landscape with cutting-edge solar solutions and intelligent power management systems.
+                  Empowering South Africa with sustainable energy solutions and smart power management By nathi and Mpho
                 </Text>
               </Stack>
 
