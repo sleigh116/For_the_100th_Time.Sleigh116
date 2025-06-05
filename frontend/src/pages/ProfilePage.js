@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// Updated import to include Link and alias it as ReactRouterLink
-import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service handles user data
 import axios from 'axios'; // Assuming axios is used for API calls. Adjust if using your api.js service.
 
@@ -261,12 +260,15 @@ function ProfilePage() {
 
         {/* Header */}
         <HStack justify="space-between" align="center" mb={8}> {/* Added align="center" for vertical alignment */}
-          {/* Correctly using ReactRouterLink with the Back to Dashboard button */}
-          <ReactRouterLink to="/dashboard">
-            <Button leftIcon={<FaArrowLeft />} variant="ghost">
-              Back to Dashboard
-            </Button>
-          </ReactRouterLink>
+          {/* Changed from ReactRouterLink to Button with onClick navigation to /home */}
+          <Button 
+            leftIcon={<FaArrowLeft />} 
+            variant="ghost" 
+            onClick={() => navigate('/home')}
+            color={headingColor}
+          >
+            Back to Home
+          </Button>
         </HStack>
 
         <Heading as="h1" size="xl" color={headingColor} mb={8}>

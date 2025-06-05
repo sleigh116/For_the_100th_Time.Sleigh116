@@ -54,7 +54,7 @@ function ImpactPage() {
 
   // Handle Back to Dashboard button
   const handleBackToDashboard = () => {
-      navigate('/dashboard');
+      navigate('/home');
   };
 
   // Mock data (replace with actual data fetching later)

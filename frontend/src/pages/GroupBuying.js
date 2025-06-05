@@ -36,7 +36,7 @@ import {
   Flex,
   Icon,
 } from '@chakra-ui/react';
-import { FaUsers, FaClock, FaTag, FaSolarPanel, FaBolt, FaBatteryFull } from 'react-icons/fa';
+import { FaUsers, FaClock, FaTag, FaSolarPanel, FaBolt, FaBatteryFull, FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 function GroupBuying() {
@@ -225,10 +225,17 @@ function GroupBuying() {
         <VStack spacing={8} align="stretch">
           {/* Header Section */}
           <HStack justifyContent="space-between" mb={6}>
-            <Heading size="xl" color={headingColor}>Group Buying Campaigns</Heading>
-            <Button colorScheme="teal" onClick={onOpen} leftIcon={<Icon as={FaSolarPanel} />}>
-              Create Campaign
-            </Button>
+            <HStack spacing={4}>
+              <Button 
+                leftIcon={<FaArrowLeft />} 
+                variant="ghost" 
+                onClick={() => navigate('/home')}
+                color={headingColor}
+              >
+                Back
+              </Button>
+              <Heading size="xl" color={headingColor}>Group Buying Campaigns</Heading>
+            </HStack>
           </HStack>
 
           {/* Campaigns List */}
@@ -300,16 +307,25 @@ function GroupBuying() {
                       >
                         {campaign.participants >= campaign.goal ? 'Goal Reached!' : 'Join Campaign'}
                       </Button>
-                       {/* Back to Home Button */}
-                      <Button variant="outline" onClick={() => navigate('/home')} size="sm" width="100%" mt={2}> {/* Make button full width and add margin */}
-                         Back to Home
-                      </Button>
                     </VStack>
                   </CardBody>
                 </Card>
               );
             })}
           </SimpleGrid>
+
+          {/* Create Campaign Button at bottom */}
+          <Box textAlign="center" mt={8}>
+            <Button 
+              colorScheme="teal" 
+              onClick={onOpen} 
+              leftIcon={<Icon as={FaSolarPanel} />}
+              size="lg"
+              width={{ base: "full", md: "auto" }}
+            >
+              Create New Campaign
+            </Button>
+          </Box>
         </VStack>
       </Container>
 

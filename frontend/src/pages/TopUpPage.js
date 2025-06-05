@@ -154,7 +154,7 @@ function TopUpPage() {
 
   // Handler for Back to Dashboard button
   const handleBackToDashboard = () => {
-      navigate('/dashboard');
+      navigate('/home');
   };
 
   // Render loading spinner if user is being checked (though ProtectedRoute handles the redirect)
