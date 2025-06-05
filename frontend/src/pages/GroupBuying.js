@@ -40,6 +40,7 @@ import { FaUsers, FaClock, FaTag, FaSolarPanel, FaBolt, FaBatteryFull, FaArrowLe
 import { useNavigate } from 'react-router-dom';
 import batteryBankImage from '../assets/images/battery_bank_10_kwh.png';
 import inverterImage from '../assets/images/inverter__5kw_hybrid.png';
+import solarPanelImage from '../assets/images/solar_panel_350w.png';
 
 function GroupBuying() {
   const toast = useToast();
@@ -52,7 +53,7 @@ function GroupBuying() {
     {
       id: 1,
       product: 'Solar Panel (350W)',
-      image: '/path/to/your/solar_panel_image.jpg', // This path remains as you added it
+      image: solarPanelImage,
       originalPrice: 2000,
       groupPrice: 1500,
       goal: 20,
