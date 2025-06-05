@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
+import { FaArrowLeft } from 'react-icons/fa'; // Import FaArrowLeft
 
 // Import Chakra UI Components
 import {
@@ -152,11 +153,6 @@ function TopUpPage() {
     setIsProcessing(false); // Reset loading state
   };
 
-  // Handler for Back to Dashboard button
-  const handleBackToDashboard = () => {
-      navigate('/home');
-  };
-
   // Render loading spinner if user is being checked (though ProtectedRoute handles the redirect)
   if (!user) {
         return (
@@ -200,9 +196,14 @@ function TopUpPage() {
         zIndex={2} // Ensure content is above overlay
       >
          {/* Back to Dashboard Button */}
-         <HStack justify="flex-start" w="full" mb={4}>
-             <Button variant="link" colorScheme="blue" onClick={handleBackToDashboard}>
-                &larr; Back to Dashboard
+         <HStack justify="space-between" w="full" mb={8}>
+             <Button
+               leftIcon={<FaArrowLeft />}
+               variant="ghost"
+               onClick={() => navigate('/home')}
+               color={headingColor}
+             >
+                Back to Home
              </Button>
          </HStack>
 

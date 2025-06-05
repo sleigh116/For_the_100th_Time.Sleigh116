@@ -134,15 +134,16 @@ function SupportPage() {
     <Box minH="100vh" bg={bgColor}>
       <Container maxW="container.xl" py={8}>
          {/* Header with Back to Home button */}
-        <Flex justify="flex-start" align="center" mb={8}>
+        <HStack justify="space-between" align="center" mb={8}>
           <Button
             leftIcon={<FaArrowLeft />}
             variant="ghost"
             onClick={handleBackClick}
+            color={headingColor}
           >
-            Back
+            Back to Home
           </Button>
-        </Flex>
+        </HStack>
 
         <Heading as="h1" size="xl" color={headingColor} mb={6}>
           Support and Help Center

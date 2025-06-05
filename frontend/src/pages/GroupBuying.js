@@ -226,19 +226,17 @@ function GroupBuying() {
       <Container maxW="container.lg" py={8} position="relative" zIndex={2}>
         <VStack spacing={8} align="stretch">
           {/* Header Section */}
-          <HStack justifyContent="space-between" mb={6}>
-            <HStack spacing={4}>
-              <Button 
-                leftIcon={<FaArrowLeft />} 
-                variant="ghost" 
-                onClick={() => navigate('/home')}
-                color={headingColor}
-              >
-                Back
-              </Button>
-              <Heading size="xl" color={headingColor}>Group Buying Campaigns</Heading>
-            </HStack>
-          </HStack>
+          <Flex justify="space-between" align="center" mb={8}>
+            <Button
+              leftIcon={<FaArrowLeft />}
+              variant="ghost"
+              onClick={() => navigate('/home')}
+              color={headingColor}
+            >
+              Back to Home
+            </Button>
+            <Heading size="xl" color={headingColor}>Group Buying Campaigns</Heading>
+          </Flex>
 
           {/* Campaigns List */}
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>

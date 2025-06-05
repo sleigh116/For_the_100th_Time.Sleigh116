@@ -19,7 +19,8 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer
+  TableContainer,
+  HStack
 } from '@chakra-ui/react';
 
 // Import Icons
@@ -87,11 +88,12 @@ function ExpensesPage() {
     >
       <Container maxW="container.xl" py={8} position="relative" zIndex={2}>
         {/* Header with Back to Home button */}
-        <Flex justify="space-between" align="center" mb={8}>
+        <HStack justify="space-between" align="center" mb={8}>
            <Button
             leftIcon={<FaArrowLeft />}
             variant="ghost"
             onClick={() => navigate('/home')}
+            color={headingColor}
           >
             Back to Home
           </Button>
@@ -99,7 +101,7 @@ function ExpensesPage() {
           <Button leftIcon={<FaPlus />} colorScheme="teal" size="sm">
             Add Expense
           </Button>
-        </Flex>
+        </HStack>
 
         <Heading as="h1" size="xl" color={headingColor} mb={6}>
           Your Energy Expenses
