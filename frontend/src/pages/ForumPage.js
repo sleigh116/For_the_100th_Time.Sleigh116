@@ -16,7 +16,6 @@ import {
   Spinner,
   Container,
   Avatar, // Import Avatar
-  Stack, // Import Stack for general stacking
   FormControl, // Import FormControl
   FormLabel,
   Textarea, // Import Textarea
@@ -25,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 
 // Import Icons
-import { FaArrowLeft, FaPlus, FaCommentAlt, FaUserCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaPlus, FaCommentAlt } from 'react-icons/fa';
 
 
 // Dummy data structure for topics and posts - UPDATED with South African names and avatars

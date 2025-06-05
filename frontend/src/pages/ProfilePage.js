@@ -23,10 +23,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Stack, // Keep Stack if used elsewhere
-  ButtonGroup, // Keep ButtonGroup if used elsewhere
-  Container, // Keep Container if used elsewhere
-  useDisclosure, // Keep useDisclosure if used elsewhere
   HStack, // This line is essential for the HStack component to be defined
 } from '@chakra-ui/react';
 
@@ -56,7 +52,6 @@ function ProfilePage() {
     profilePictureUrl: null,
   });
   const [profilePictureFile, setProfilePictureFile] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state for fetching user data
   const [isSaving, setIsSaving] = useState(false); // Loading state for saving account changes
 
   const user = auth.getCurrentUser(); // Get current user data from localStorage
@@ -76,7 +71,6 @@ function ProfilePage() {
   const fileButtonBorderColor = useColorModeValue('gray.300', 'gray.600');
   const fileButtonColor = useColorModeValue('gray.700', 'whiteAlpha.800');
   const fileButtonHoverBg = useColorModeValue('gray.200', 'gray.500');
-  const glassBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
 
   // Define the spinner color using useColorModeValue at the top level:
   const spinnerColor = useColorModeValue('blue.500', 'blue.300'); // Define the spinner color here
@@ -109,8 +103,6 @@ function ProfilePage() {
       },
       profilePictureUrl: user.profilePictureUrl || null,
     });
-
-    setLoading(false); // Stop loading after populating
 
   }, [user, navigate, toast]); // Re-run effect if user or navigate changes
 
@@ -181,7 +173,6 @@ function ProfilePage() {
 
   // Function to fetch profile data from backend
   const fetchProfileData = async () => {
-    setLoading(true);
     try {
       // Replace with your actual backend endpoint to get profile data
       const response = await axios.get(`${API_BASE_URL}/api/profile`, {
@@ -197,8 +188,6 @@ function ProfilePage() {
     } catch (error) {
       console.error('Error fetching profile data:', error);
       // Optionally show an error toast
-    } finally {
-      setLoading(false);
     }
   };
 

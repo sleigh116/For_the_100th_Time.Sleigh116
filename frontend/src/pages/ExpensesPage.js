@@ -9,7 +9,6 @@ import {
   Heading,
   Text,
   Button,
-  VStack,
   useColorModeValue,
   useToast,
   Spinner,
@@ -20,8 +19,7 @@ import {
   Tr,
   Th,
   Td,
-  TableContainer,
-  HStack
+  TableContainer
 } from '@chakra-ui/react';
 
 // Import Icons
