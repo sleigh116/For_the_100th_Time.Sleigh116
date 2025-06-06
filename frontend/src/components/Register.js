@@ -1,7 +1,21 @@
 // frontend/src/components/Register.js
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api';
+
+// Import Chakra UI components
+import {
+  Box, // Added Box import as it might be useful for layout, though not explicitly used in the last version
+  Flex, // Added Flex import if needed for layout
+  Heading, // Added Heading import for the title
+  FormControl, // Added FormControl import for form fields if you plan to use Chakra forms later
+  FormLabel, // Added FormLabel import for form fields
+  Input, // Added Input import for form fields
+  Button,
+  Text, // Added Text import for general text
+  VStack, // Added VStack for vertical stacking
+  useToast // Added useToast for potential future use (e.g., registration success message)
+} from '@chakra-ui/react';
 
 function Register() {
     const [name, setName] = useState('');
@@ -58,44 +72,67 @@ function Register() {
 
     return (
         <div className="auth-container">
-            <h2>Register</h2>
+            <Heading as="h2" size="xl" mb={6} textAlign="center">Register</Heading>
             {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <input
+                    <FormLabel>Full Name</FormLabel>
+                    <Input
                         type="text"
-                        placeholder="Name"
+                        placeholder="Enter your full name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>
                 <div className="form-group">
-                    <input
+                    <FormLabel>Email address</FormLabel>
+                    <Input
                         type="email"
-                        placeholder="Email"
+                        placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
                 <div className="form-group">
-                    <input
+                    <FormLabel>Password</FormLabel>
+                    <Input
                         type="password"
-                        placeholder="Password"
+                        placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         minLength={6}
                     />
                 </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Registering...' : 'Register'}
-                </button>
+                <Button
+                    type="submit"
+                    colorScheme="teal"
+                    size="lg"
+                    fontSize="md"
+                    isLoading={loading}
+                    loadingText="Registering..."
+                    w="full"
+                    mt={4}
+                >
+                    Register
+                </Button>
             </form>
-            <p className="auth-link">
-                Already have an account? <Link to="/login">Login here</Link>
-            </p>
+            <VStack mt={6} spacing={4}>
+                <Button
+                    type="button"
+                    colorScheme="blue"
+                    size="md"
+                    width="full"
+                    onClick={() => {
+                        console.log("Navigating to login from 'Register here' button...");
+                        navigate('/login');
+                    }}
+                >
+                    Register here
+                </Button>
+            </VStack>
         </div>
     );
 }

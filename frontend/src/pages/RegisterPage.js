@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
 import gridXBackground from '../assets/images/GridX-IMG.jpg'; // Make sure this path is correct for your background image
 import { FcGoogle } from 'react-icons/fc'; // Import the Google icon
@@ -13,7 +13,6 @@ import {
   Input,
   Button,
   Text,
-  Link as ChakraLink, // Alias Link from Chakra UI to avoid conflict with react-router-dom
   VStack,
   useToast, // For displaying messages
   useColorModeValue, // For light/dark mode styling
@@ -328,9 +327,18 @@ function RegisterPage() {
         {/* Link to Login page */}
         <Text mt={6} color={textColor}>
           Already have an account?{' '}
-          <ChakraLink as={ReactRouterLink} to="/login" color="teal.500">
+          {/* Using Chakra Button styled as a link for consistency and clickability */}
+          <Button
+            variant="link"
+            color="teal.300" // Using a Chakra color, adjust as needed
+             _hover={{ textDecoration: 'underline' }} // Add underline on hover
+            onClick={() => {
+               console.log("Navigating to login from 'Already have an account? Login here' link...");
+               navigate('/login'); // Navigate to the login page
+            }}
+          >
             Login here
-          </ChakraLink>
+          </Button>
         </Text>
       </Box>
     </Flex>

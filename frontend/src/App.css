@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+/* Authentication link styles */
+.auth-link {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
