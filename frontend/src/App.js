@@ -21,6 +21,7 @@ import ForumPage from './pages/ForumPage';
 import AboutPage from './pages/AboutPage'; // Import the AboutPage
 import ReferPage from './pages/ReferPage';
 import GroupBuying from './pages/GroupBuying';
+import OAuthCallbackHandler from './pages/OAuthCallbackHandler';
 
 // Protected Route component
 // This component checks if the user is authenticated before rendering the child routes.
@@ -43,6 +44,9 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/about" element={<AboutPage />} /> {/* About Page route */}
+
+        {/* Add OAuth callback route */}
+        <Route path="/auth/callback" element={<OAuthCallbackHandler />} />
 
         {/* Protected Routes */}
         {/* All routes nested inside this ProtectedRoute will require authentication */}

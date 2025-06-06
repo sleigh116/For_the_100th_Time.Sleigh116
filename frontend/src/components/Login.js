@@ -15,6 +15,13 @@ function Login() {
     if (user) {
       navigate('/dashboard');
     }
+
+    // Check for error parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMsg = urlParams.get('error');
+    if (errorMsg) {
+      setError(decodeURIComponent(errorMsg));
+    }
   }, [navigate]);
 
   const handleSubmit = async (e) => {
@@ -36,6 +43,10 @@ function Login() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/auth/google?action=login`;
   };
 
   return (
@@ -65,6 +76,17 @@ function Login() {
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
+      
+      <div className="oauth-buttons">
+        <button 
+          type="button" 
+          className="google-login-button"
+          onClick={handleGoogleLogin}
+        >
+          Continue with Google
+        </button>
+      </div>
+
       <p className="auth-link">
         Don't have an account? <Link to="/register">Register here</Link>
       </p>

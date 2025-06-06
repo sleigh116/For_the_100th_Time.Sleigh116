@@ -26,6 +26,7 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({}); // State for validation errors
+  const [error, setError] = useState('');  // Make sure this is defined
   const navigate = useNavigate();
   const toast = useToast(); // Initialize toast for Chakra UI notifications
 
@@ -113,6 +114,11 @@ function RegisterPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleRegister = () => {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+    window.location.href = `${backendUrl}/api/auth/google?action=register`;
   };
 
   return (
@@ -305,7 +311,7 @@ function RegisterPage() {
             size="lg"
             variant="outline"
             leftIcon={<FcGoogle size="20px" />}
-            onClick={() => navigate('/auth/google')}
+            onClick={handleGoogleRegister}
             bg="rgba(255, 255, 255, 0.1)"
             borderColor={borderColor}
             color={textColor}
