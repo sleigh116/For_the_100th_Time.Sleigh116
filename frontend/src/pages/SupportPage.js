@@ -52,6 +52,7 @@ function SupportPage() {
   const cardBorderColor = useColorModeValue('gray.200', 'gray.700');
   const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
   const linkColor = useColorModeValue('blue.500', 'blue.300');
+  const spinnerColor = useColorModeValue('blue.500', 'blue.300');
 
 
   // Dummy FAQ data
@@ -125,14 +126,31 @@ function SupportPage() {
   if (!user) {
     return (
       <Flex minH="100vh" align="center" justify="center" bg={bgColor}>
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" color={spinnerColor} />
       </Flex>
     );
   }
 
   return (
-    <Box minH="100vh" bg={bgColor}>
-      <Container maxW="container.xl" py={8}>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+      }}
+    >
+      <Container maxW="container.xl" py={8} position="relative" zIndex={2}>
          {/* Header with Back to Home button */}
         <HStack justify="space-between" align="center" mb={8}>
           <Button

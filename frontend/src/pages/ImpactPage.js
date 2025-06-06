@@ -19,7 +19,8 @@ import {
   StatNumber,
   Avatar,
   Stack,
-  Icon
+  Icon,
+  HStack
 } from '@chakra-ui/react';
 
 // Import Icons from react-icons
@@ -103,7 +104,7 @@ function ImpactPage() {
       }}
     >
       <Box p={[4, 6, 8]} maxWidth="1200px" mx="auto" color={textColor} position="relative" zIndex={2}>
-        <Flex justify="space-between" align="center" mb={8}>
+        <HStack justify="space-between" align="center" mb={8}>
           <Button
             leftIcon={<FaArrowLeft />}
             variant="ghost"
@@ -112,10 +113,11 @@ function ImpactPage() {
           >
             Back to Home
           </Button>
-          <Heading as="h1" size="xl" color={headingColor}>
-            Environmental Impact
-          </Heading>
-        </Flex>
+        </HStack>
+
+        <Heading as="h1" size="xl" color={headingColor} mb={6}>
+          Environmental Impact
+        </Heading>
 
         <Stack spacing={10}>
           {/* Impact Stats Section */}

@@ -271,7 +271,7 @@ function ProfilePage() {
           </Button>
         </HStack>
 
-        <Heading as="h1" size="xl" color={headingColor} mb={8}>
+        <Heading as="h1" size="xl" color={headingColor} mb={8} textAlign="center">
           User Profile & Settings
         </Heading>
 

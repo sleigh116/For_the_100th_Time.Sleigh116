@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -41,6 +41,10 @@ import { useNavigate } from 'react-router-dom';
 import batteryBankImage from '../assets/images/battery_bank_10_kwh.png';
 import inverterImage from '../assets/images/inverter__5kw_hybrid.png';
 import solarPanelImage from '../assets/images/solar_panel_350w.png';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Create a motion component for Text
+const MotionText = motion(Text);
 
 function GroupBuying() {
   const toast = useToast();
@@ -105,13 +109,56 @@ function GroupBuying() {
     category: 'Solar Panels' // Default category
   });
 
+  // Array of motivational lines
+  const motivationalLines = useMemo(() => [
+    "Unlock exclusive savings by joining forces with other buyers!",
+    "Group buying: the smart way to go solar and save big!",
+    "Lower your costs, increase your impact – together we power change.",
+    "Get premium solar gear at unbeatable group prices.",
+    "Join a campaign and step closer to energy independence.",
+    "Your next energy upgrade is more affordable with group power.",
+    "Connect with fellow solar enthusiasts and save together.",
+    "Every participant helps drive down the price for everyone.",
+    "Don't miss out on limited-time group buying opportunities.",
+    "Investing in solar is easier and cheaper in a group.",
+  ], []);
+
+  // State for current line index and the key for AnimatePresence
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0); // Key to trigger exit/enter animation
+
+  // Effect to rotate lines every 7 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLineIndex((prevIndex) =>
+        prevIndex === motivationalLines.length - 1 ? 0 : prevIndex + 1
+      );
+      setAnimationKey(prevKey => prevKey + 1); // Update key to trigger re-render and animation
+    }, 7000);
+
+    return () => clearInterval(interval); // Clean up interval on component unmount
+  }, [motivationalLines.length]); // Re-run if the number of lines changes
+
+  // Animation variants for fade in/out
+  const fadeVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+  };
+
   // Color mode values
   const textColor = useColorModeValue('gray.800', 'whiteAlpha.900');
   const headingColor = useColorModeValue('gray.800', 'white');
-  const cardBg = useColorModeValue('white', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
   const inputBgColor = useColorModeValue('white', 'gray.800');
   const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
+
+  // Define colors for glassmorphism effect on cards
+  const glassCardBg = useColorModeValue('rgba(255, 255, 255, 0.15)', 'rgba(26, 32, 44, 0.15)');
+  const glassBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
+  const glassBoxShadow = useColorModeValue('0 4px 12px rgba(0, 0, 0, 0.15)', '0 4px 12px rgba(0, 0, 0, 0.5)'); // Adjust shadow for depth
+
+  // Define hover box shadow using useColorModeValue at the top level
+  const hoverBoxShadow = useColorModeValue('0 8px 16px rgba(0, 0, 0, 0.2)', '0 8px 16px rgba(0, 0, 0, 0.6)');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -227,7 +274,7 @@ function GroupBuying() {
       <Container maxW="container.lg" py={8} position="relative" zIndex={2}>
         <VStack spacing={8} align="stretch">
           {/* Header Section */}
-          <Flex justify="space-between" align="center" mb={8}>
+          <HStack justify="space-between" align="center" mb={8}>
             <Button
               leftIcon={<FaArrowLeft />}
               variant="ghost"
@@ -236,8 +283,25 @@ function GroupBuying() {
             >
               Back to Home
             </Button>
-            <Heading size="xl" color={headingColor}>Group Buying Campaigns</Heading>
-          </Flex>
+          </HStack>
+
+          <Heading size="xl" color={headingColor} mb={2} textAlign="center">Group Buying Campaigns</Heading>
+          <AnimatePresence mode="wait">
+             <MotionText
+                key={animationKey}
+                color={textColor}
+                fontSize="lg"
+                textAlign="center"
+                mb={6}
+                variants={fadeVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.5 }}
+             >
+               {motivationalLines[currentLineIndex]}
+             </MotionText>
+          </AnimatePresence>
 
           {/* Campaigns List */}
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
@@ -247,24 +311,34 @@ function GroupBuying() {
               const savingsPercentage = campaign.originalPrice > 0 ? ((savings / campaign.originalPrice) * 100).toFixed(0) : 0;
 
               return (
-                <Card key={campaign.id} bg={cardBg} borderWidth="1px" borderColor={borderColor}>
-                  <CardHeader p={0}> {/* Remove default padding */}
-                    {/* Image component - will no longer use fallbackSrc */}
+                <Card
+                  key={campaign.id}
+                  bg={glassCardBg}
+                  borderWidth="1px"
+                  borderColor={glassBorderColor}
+                  boxShadow={glassBoxShadow}
+                  borderRadius="lg"
+                  backdropFilter="blur(10px)"
+                  transition="all 0.3s ease-in-out"
+                  _hover={{
+                    transform: 'translateY(-5px)',
+                    boxShadow: hoverBoxShadow,
+                  }}
+                >
+                  <CardHeader p={0}>
                     <Image
                       src={campaign.image}
                       alt={campaign.product}
                       height="200px"
-                      width="100%" // Ensure image takes full width of card header
+                      width="100%"
                       objectFit="cover"
-                      borderTopRadius="lg" // Apply border radius only to the top
+                      borderTopRadius="lg"
                     />
                   </CardHeader>
-                  <CardBody> {/* Keep default padding here */}
+                  <CardBody>
                     <Flex align="center" mb={2}>
-                       {/* You could add an icon here based on campaign.category */}
                       <Heading size="md">{campaign.product}</Heading>
                     </Flex>
-                    {/* <Badge colorScheme="blue" mt={2}>{campaign.category}</Badge> */} {/* Optionally display category */}
 
                     <VStack spacing={3} align="stretch">
                       <HStack justify="space-between">
@@ -283,7 +357,7 @@ function GroupBuying() {
                         Group Price: R{campaign.groupPrice}
                       </Text>
 
-                      <Text color={textColor} noOfLines={2}>{campaign.description}</Text> {/* Limit description lines */}
+                      <Text color={textColor} noOfLines={2}>{campaign.description}</Text>
 
                       <HStack>
                         <Icon as={FaUsers} />
@@ -292,7 +366,7 @@ function GroupBuying() {
                         </Text>
                       </HStack>
 
-                      <Progress value={progressValue} size="sm" colorScheme="blue" hasStripe isAnimated /> {/* Added stripe and animation */}
+                      <Progress value={progressValue} size="sm" colorScheme="blue" hasStripe isAnimated />
 
                       <HStack>
                         <Icon as={FaClock} />
@@ -303,8 +377,12 @@ function GroupBuying() {
                         colorScheme="green"
                         onClick={() => handleJoinCampaign(campaign.id)}
                         isDisabled={campaign.participants >= campaign.goal}
-                        width="100%" // Make button full width
-                        mt={4} // Add margin top
+                        width="100%"
+                        mt={4}
+                        transition="transform 0.2s ease-in-out"
+                        _hover={{
+                            transform: 'scale(1.02)',
+                        }}
                       >
                         {campaign.participants >= campaign.goal ? 'Goal Reached!' : 'Join Campaign'}
                       </Button>
@@ -317,12 +395,16 @@ function GroupBuying() {
 
           {/* Create Campaign Button at bottom */}
           <Box textAlign="center" mt={8}>
-            <Button 
-              colorScheme="teal" 
-              onClick={onOpen} 
+            <Button
+              colorScheme="teal"
+              onClick={onOpen}
               leftIcon={<Icon as={FaSolarPanel} />}
               size="lg"
               width={{ base: "full", md: "auto" }}
+              transition="transform 0.2s ease-in-out"
+              _hover={{
+                  transform: 'scale(1.05)',
+              }}
             >
               Create New Campaign
             </Button>
@@ -338,18 +420,6 @@ function GroupBuying() {
           <ModalCloseButton />
           <ModalBody>
             <VStack spacing={4}>
-               {/* Category is now internal data, not needed in form unless you want to make it selectable */}
-              {/* <FormControl id="category" isRequired>
-                <FormLabel>Product Category</FormLabel>
-                 <Input
-                  name="category"
-                  value={newCampaign.category}
-                  onChange={handleInputChange}
-                  bg={inputBgColor}
-                  borderColor={inputBorderColor}
-                />
-              </FormControl> */}
-
               <FormControl id="product" isRequired>
                 <FormLabel>Product Name</FormLabel>
                 <Input

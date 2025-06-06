@@ -207,7 +207,7 @@ function DashboardPage() {
         </Flex>
 
         {/* Dashboard Content */}
-        <Heading as="h1" size="xl" color={headingColor} mb={6}>
+        <Heading as="h1" size="xl" color={headingColor} mb={6} textAlign="center">
           Dashboard
         </Heading>
 

@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 
 // Import Icons
-import { FaArrowLeft, FaPlus } from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 
 function ExpensesPage() {
   const navigate = useNavigate();
@@ -37,6 +37,9 @@ function ExpensesPage() {
   const headingColor = useColorModeValue('gray.800', 'white');
   const tableColor = useColorModeValue('gray.800', 'white');
   const tableHeaderColor = useColorModeValue('gray.600', 'gray.300');
+
+  // Define spinner color if not already defined globally or in a theme
+  const spinnerColor = useColorModeValue('blue.500', 'blue.300');
 
   // Dummy expense data
   const dummyExpenses = [
@@ -62,7 +65,7 @@ function ExpensesPage() {
   if (!user) {
     return (
       <Flex minH="100vh" align="center" justify="center" bg={bgColor}>
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" color={spinnerColor} />
       </Flex>
     );
   }
@@ -97,13 +100,9 @@ function ExpensesPage() {
           >
             Back to Home
           </Button>
-           {/* Optional Add Expense Button */}
-          <Button leftIcon={<FaPlus />} colorScheme="teal" size="sm">
-            Add Expense
-          </Button>
         </HStack>
 
-        <Heading as="h1" size="xl" color={headingColor} mb={6}>
+        <Heading as="h1" size="xl" color={headingColor} mb={6} textAlign="center">
           Your Energy Expenses
         </Heading>
 
@@ -131,7 +130,6 @@ function ExpensesPage() {
         {dummyExpenses.length === 0 && (
             <Text textAlign="center" mt={8} color={textColor}>No expenses recorded yet.</Text>
         )}
-
       </Container>
     </Box>
   );
