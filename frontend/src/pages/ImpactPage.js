@@ -19,11 +19,12 @@ import {
   StatNumber,
   Avatar,
   Stack,
-  Icon
+  Icon,
+  HStack
 } from '@chakra-ui/react';
 
 // Import Icons from react-icons
-import { FaSolarPanel, FaUsers, FaLeaf } from 'react-icons/fa';
+import { FaSolarPanel, FaUsers, FaLeaf, FaArrowLeft } from 'react-icons/fa';
 
 function ImpactPage() {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ function ImpactPage() {
   const statColor = useColorModeValue('teal.500', 'teal.300');
   const testimonialBg = useColorModeValue('white', 'gray.800');
   const testimonialBorderColor = useColorModeValue('gray.200', 'gray.600');
+  const headingColor = useColorModeValue('gray.800', 'white');
 
   // Redirect if user is not logged in
   useEffect(() => {
@@ -51,11 +53,6 @@ function ImpactPage() {
           });
       }
   }, [user, navigate, toast]);
-
-  // Handle Back to Dashboard button
-  const handleBackToDashboard = () => {
-      navigate('/dashboard');
-  };
 
   // Mock data (replace with actual data fetching later)
   const impactStats = [
@@ -107,14 +104,20 @@ function ImpactPage() {
       }}
     >
       <Box p={[4, 6, 8]} maxWidth="1200px" mx="auto" color={textColor} position="relative" zIndex={2}>
-        <Flex justify="space-between" align="center" mb={8}>
-          <Button onClick={handleBackToDashboard} variant="outline" colorScheme="teal">
-            Back to Dashboard
+        <HStack justify="space-between" align="center" mb={8}>
+          <Button
+            leftIcon={<FaArrowLeft />}
+            variant="ghost"
+            onClick={() => navigate('/home')}
+            color={headingColor}
+          >
+            Back to Home
           </Button>
-          <Heading as="h1" size="xl">Our Impact</Heading>
-          {/* Optional: Spacer if needed for alignment */}
-          <Box width="100px" /> {/* Placeholder for symmetry */}
-        </Flex>
+        </HStack>
+
+        <Heading as="h1" size="xl" color={headingColor} mb={6}>
+          Environmental Impact
+        </Heading>
 
         <Stack spacing={10}>
           {/* Impact Stats Section */}

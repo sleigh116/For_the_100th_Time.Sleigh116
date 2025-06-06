@@ -69,7 +69,6 @@ function SettingsPage() {
   const borderColor = useColorModeValue('gray.200', 'gray.600'); // Added border color
   // Added glassmorphism border color definition
   const glassBorderColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
-  const backButtonColor = useColorModeValue('whiteAlpha.800', 'whiteAlpha.800'); // Color for the Back to Dashboard button
   const glassBgColor = useColorModeValue('rgba(255, 255, 255, 0.15)', 'rgba(26, 32, 44, 0.15)');
   const glassBoxShadow = useColorModeValue('0 4px 6px rgba(0, 0, 0, 0.1)', '0 4px 6px rgba(0, 0, 0, 0.4)');
 
@@ -245,12 +244,6 @@ function SettingsPage() {
   };
 
 
-  // Handle Back to Dashboard button
-  const handleBackToDashboard = () => {
-      navigate('/dashboard');
-  };
-
-
   // Render loading spinner while user is being checked or data is loading initially
   if (!user) {
        return (
@@ -297,10 +290,10 @@ function SettingsPage() {
             mb={8} // Add some margin bottom
         >
             {/* Header with Back to Dashboard Button */}
-            <HStack justify="space-between" mb={8}>
+            <HStack justify="space-between" align="center" mb={8}>
                 {/* Using the imported FaArrowLeft icon */}
-                <Button leftIcon={<FaArrowLeft />} variant="ghost" onClick={handleBackToDashboard} color={backButtonColor}> {/* Using the defined backButtonColor */}
-                    Back to Dashboard
+                <Button leftIcon={<FaArrowLeft />} variant="ghost" onClick={() => navigate('/home')} color={headingColor}>
+                    Back to Home
                 </Button>
                 {/* You can add other header elements here if needed */}
             </HStack>
@@ -341,39 +334,39 @@ function SettingsPage() {
                          <FormControl id="old-password" isInvalid={passwordErrors.oldPassword}>
                               <FormLabel color={mutedTextColor}>Old Password</FormLabel>
                                {/* Using the defined inputFocusBorderColor */}
-                              <Input
-                                  type="password"
-                                  value={oldPassword}
-                                  onChange={(e) => setOldPassword(e.target.value)}
+                       <Input
+                         type="password"
+                         value={oldPassword}
+                         onChange={(e) => setOldPassword(e.target.value)}
                                    focusBorderColor={inputFocusBorderColor}
-                              />
-                              <FormErrorMessage>{passwordErrors.oldPassword}</FormErrorMessage>
-                         </FormControl>
+                       />
+                       <FormErrorMessage>{passwordErrors.oldPassword}</FormErrorMessage>
+                     </FormControl>
                          <FormControl id="new-password" isInvalid={passwordErrors.newPassword}>
                               <FormLabel color={mutedTextColor}>New Password</FormLabel>
                                {/* Using the defined inputFocusBorderColor */}
-                              <Input
-                                  type="password"
-                                  value={newPassword}
-                                  onChange={(e) => setNewPassword(e.target.value)}
+                       <Input
+                         type="password"
+                         value={newPassword}
+                         onChange={(e) => setNewPassword(e.target.value)}
                                    focusBorderColor={inputFocusBorderColor}
-                              />
-                               <FormErrorMessage>{passwordErrors.newPassword}</FormErrorMessage>
-                         </FormControl>
+                       />
+                       <FormErrorMessage>{passwordErrors.newPassword}</FormErrorMessage>
+                     </FormControl>
                          <FormControl id="confirm-new-password" isInvalid={passwordErrors.confirmNewPassword}>
                               <FormLabel color={mutedTextColor}>Confirm New Password</FormLabel>
                                {/* Using the defined inputFocusBorderColor */}
-                              <Input
-                                  type="password"
-                                  value={confirmNewPassword}
-                                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                       <Input
+                         type="password"
+                         value={confirmNewPassword}
+                         onChange={(e) => setConfirmNewPassword(e.target.value)}
                                    focusBorderColor={inputFocusBorderColor}
-                              />
-                               <FormErrorMessage>{passwordErrors.confirmNewPassword}</FormErrorMessage>
-                         </FormControl>
+                       />
+                       <FormErrorMessage>{passwordErrors.confirmNewPassword}</FormErrorMessage>
+                     </FormControl>
                          <Button type="submit" colorScheme="blue" isLoading={passwordChangeLoading}>
-                             Change Password
-                         </Button>
+                       Change Password
+                     </Button>
                          {passwordChangeStatus && (
                              <HStack>
                                   {/* Using the defined successIconColor and warningIconColor */}
@@ -387,8 +380,8 @@ function SettingsPage() {
                                   </Text>
                              </HStack>
                          )}
-                    </VStack>
-                </Box>
+                </VStack>
+            </Box>
 
                  <Divider borderColor={borderColor} /> {/* Add another divider */}
 
@@ -412,11 +405,11 @@ function SettingsPage() {
                          <Button onClick={handleSavePreferences} isLoading={preferencesSaving} colorScheme="blue" alignSelf="flex-start">
                              Save Preferences
                          </Button>
-                          {preferencesStatus && (
+                     {preferencesStatus && (
                               <HStack>
                                    {/* Using the defined successIconColor and warningIconColor */}
-                                  <Icon
-                                      as={preferencesStatus.status === 'success' ? CheckCircleIcon : WarningIcon}
+                            <Icon
+                                as={preferencesStatus.status === 'success' ? CheckCircleIcon : WarningIcon}
                                        color={preferencesStatus.status === 'success' ? successIconColor : warningIconColor}
                                   />
                                    {/* Using the defined successTextColor and warningTextColor */}
@@ -425,8 +418,8 @@ function SettingsPage() {
                                   </Text>
                               </HStack>
                           )}
-                     </VStack>
-                 </Box>
+                </VStack>
+            </Box>
 
 
                 <Divider borderColor={borderColor} /> {/* Add another divider */}
@@ -437,35 +430,35 @@ function SettingsPage() {
                     <Text color="red.400" mb={4}>Deleting your account is irreversible.</Text>
                     <Button colorScheme="red" onClick={onOpen}>
                         Delete Account
-                    </Button>
+                 </Button>
 
-                    {/* Delete Account Confirmation Modal */}
-                    <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                    >
-                        <AlertDialogOverlay>
-                            <AlertDialogContent>
-                                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            {/* Delete Account Confirmation Modal */}
+             <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+             >
+                <AlertDialogOverlay>
+                <AlertDialogContent>
+                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
                                     Delete Account
-                                </AlertDialogHeader>
+                    </AlertDialogHeader>
 
-                                <AlertDialogBody>
-                                    Are you sure you want to delete your account? This action cannot be undone.
-                                </AlertDialogBody>
+                    <AlertDialogBody>
+                    Are you sure you want to delete your account? This action cannot be undone.
+                    </AlertDialogBody>
 
-                                <AlertDialogFooter>
-                                    <Button ref={cancelRef} onClick={onClose}>
-                                        Cancel
-                                    </Button>
-                                    <Button colorScheme="red" onClick={handleDeleteAccount} ml={3}>
-                                        Delete
-                                    </Button>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialogOverlay>
-                    </AlertDialog>
+                    <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose}>
+                        Cancel
+                    </Button>
+                    <Button colorScheme="red" onClick={handleDeleteAccount} ml={3}>
+                        Delete
+                    </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+                </AlertDialogOverlay>
+             </AlertDialog>
                 </Box>
 
             </VStack>

@@ -18,7 +18,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  IconButton,
 } from '@chakra-ui/react';
 import { FaCopy, FaWhatsapp, FaFacebook, FaEnvelope, FaUserPlus, FaGift, FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -118,16 +117,17 @@ function ReferPage() {
     >
       <Container maxW="container.lg" py={8} position="relative" zIndex={2}>
         <VStack spacing={8} align="stretch">
-          {/* Back Button */}
-          <Box>
-            <IconButton
-              aria-label="Back to Home"
-              icon={<FaArrowLeft />}
-              onClick={() => navigate('/home')}
+          {/* Back Button - Replaced IconButton with Button and HStack */}
+          <HStack justify="space-between" align="center" mb={8}>
+            <Button
+              leftIcon={<FaArrowLeft />}
               variant="ghost"
-              size="md"
-            />
-          </Box>
+              onClick={() => navigate('/home')}
+              color={headingColor}
+            >
+              Back to Home
+            </Button>
+          </HStack>
 
           {/* Header Section */}
           <Box textAlign="center">

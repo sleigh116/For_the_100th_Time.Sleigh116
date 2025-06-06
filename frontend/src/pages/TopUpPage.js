@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
+import { FaArrowLeft } from 'react-icons/fa'; // Import FaArrowLeft
 
 // Import Chakra UI Components
 import {
@@ -50,6 +51,8 @@ function TopUpPage() {
   const [minBalance, setMinBalance] = useState('');
   const [autoTopUpAmount, setAutoTopUpAmount] = useState('');
   const [autoTopUpFrequency, setAutoTopUpFrequency] = useState('weekly');
+
+  const [transactionType, setTransactionType] = useState('topup'); // New state for transaction type
 
   const user = auth.getCurrentUser(); // Get current user data
 
@@ -107,9 +110,8 @@ function TopUpPage() {
 
   // Handler for the Top-Up button click
   const handleTopUp = async (e) => {
-    e.preventDefault(); // Prevent default browser form submission
+    e.preventDefault();
 
-    // Basic validation (optional, could add more)
     const topUpAmount = parseFloat(amount);
     if (isNaN(topUpAmount) || topUpAmount <= 0) {
         toast({
@@ -122,39 +124,37 @@ function TopUpPage() {
         return;
     }
 
-    setIsProcessing(true); // Set loading state for button
+    setIsProcessing(true);
 
-    // --- MOCK TOP-UP PROCESS ---
-    console.log('Attempting top-up:', { amount, promoCode, voucherCode });
+    // Log the transaction type along with other details
+    console.log('Attempting transaction:', { 
+        type: transactionType,
+        amount, 
+        promoCode, 
+        voucherCode 
+    });
 
-    // Simulate an API call delay (e.g., 1.5 seconds)
+    // Simulate an API call delay
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Simulate successful top-up and update balance
-    const newBalance = currentBalance + topUpAmount; // Simple addition
+    // Simulate successful transaction and update balance
+    const newBalance = currentBalance + topUpAmount;
     setCurrentBalance(newBalance);
 
-    // Clear form fields after successful top-up
+    // Clear form fields after successful transaction
     setAmount('');
     setPromoCode('');
     setVoucherCode('');
 
-    toast({ // Show success message
-        title: 'Top-Up Successful!',
-        description: `Your new balance is R${newBalance.toFixed(2)}.`, // Format to 2 decimal places
+    toast({
+        title: `${transactionType === 'topup' ? 'Top-Up' : 'Recharge'} Successful!`,
+        description: `Your new balance is R${newBalance.toFixed(2)}.`,
         status: 'success',
         duration: 5000,
         isClosable: true,
     });
-    // --- END MOCK PROCESS ---
 
-
-    setIsProcessing(false); // Reset loading state
-  };
-
-  // Handler for Back to Dashboard button
-  const handleBackToDashboard = () => {
-      navigate('/dashboard');
+    setIsProcessing(false);
   };
 
   // Render loading spinner if user is being checked (though ProtectedRoute handles the redirect)
@@ -199,15 +199,20 @@ function TopUpPage() {
         position="relative" // Needed for zIndex
         zIndex={2} // Ensure content is above overlay
       >
-         {/* Back to Dashboard Button */}
-         <HStack justify="flex-start" w="full" mb={4}>
-             <Button variant="link" colorScheme="blue" onClick={handleBackToDashboard}>
-                &larr; Back to Dashboard
+         {/* Back to Home Button in HStack */}
+         <HStack justify="space-between" w="full" mb={8} align="center">
+             <Button
+               leftIcon={<FaArrowLeft />}
+               variant="ghost"
+               onClick={() => navigate('/home')}
+               color={headingColor}
+             >
+                Back to Home
              </Button>
          </HStack>
 
-
-        <Heading as="h2" size="xl" mb={6} color={headingColor}>
+        {/* Main Heading placed below the HStack */}
+        <Heading as="h2" size="xl" mb={6} color={headingColor} textAlign="center">
           Top-Up / Recharge
         </Heading>
 
@@ -221,6 +226,18 @@ function TopUpPage() {
 
 
         <VStack as="form" spacing={4} onSubmit={handleTopUp} noValidate>
+          {/* Transaction Type Selection */}
+          <FormControl id="transaction-type">
+            <FormLabel>Transaction Type</FormLabel>
+            <Select
+              value={transactionType}
+              onChange={(e) => setTransactionType(e.target.value)}
+            >
+              <option value="topup">Top-Up</option>
+              <option value="recharge">Recharge</option>
+            </Select>
+          </FormControl>
+
           {/* Amount Input */}
           <FormControl id="top-up-amount">
             <FormLabel>Amount (ZAR)</FormLabel>
@@ -260,15 +277,15 @@ function TopUpPage() {
           {/* Top-Up Button */}
           <Button
             type="submit"
-            colorScheme={buttonColorScheme} // Use defined color scheme (green/teal)
+            colorScheme={buttonColorScheme}
             size="lg"
             fontSize="md"
-            isLoading={isProcessing} // Show loading spinner when processing
+            isLoading={isProcessing}
             loadingText="Processing..."
             w="full"
             mt={4}
           >
-            Top-Up Now
+            {transactionType === 'topup' ? 'Top-Up Now' : 'Recharge Now'}
           </Button>
         </VStack>
 

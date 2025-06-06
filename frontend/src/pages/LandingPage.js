@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -27,6 +27,7 @@ import nathiProfile from '../assets/images/IMG Nathii.jpg';
 import okuhleProfile from '../assets/images/sleigh.png';
 import mphoProfile from '../assets/images/Mpho.png';
 import LihleProfile from '../assets/images/Lihle.png';
+import kgothatsoProfile from '../assets/images/kg_img.png';
 import gridXBackground from '../assets/images/GridX-IMG.jpg';
 
 // Create motion components
@@ -51,7 +52,25 @@ const textVariants = {
     y: -20,
     transition: {
       duration: 0.3,
-      ease: "easeIn"
+      ease: "easeInOut"
+    }
+  }
+};
+
+// Define animation variants for the Image container to perform the flip
+const imageContainerFlipVariants = {
+  animate: {
+    rotateY: 0, // Default state: no rotation
+    transition: {
+        duration: 0.3, // Base transition speed for unhover
+        ease: "easeInOut"
+    }
+  },
+  hover: {
+    rotateY: 180, // Flip 180 degrees around the Y-axis on hover
+    transition: {
+      duration: 0.6, // Duration for the flip
+      ease: "easeInOut"
     }
   }
 };
@@ -389,7 +408,6 @@ function LandingPage() {
                   variants={feature.animation}
                   initial="initial"
                   animate="animate"
-                  exit="exit"
                   transition={{ duration: 0.3 }}
                   _hover={{
                     boxShadow: 'lg',
@@ -453,7 +471,6 @@ function LandingPage() {
                   variants={feature.animation}
                   initial="initial"
                   animate="animate"
-                  exit="exit"
                   transition={{ duration: 0.3 }}
                   _hover={{
                     boxShadow: 'lg',
@@ -500,19 +517,19 @@ function LandingPage() {
       </Container>
 
       {/* Meet the Developers Section */}
-      <Box 
-        bg={developerSectionBg} 
-        py={20} 
+      <Box
+        bg={developerSectionBg}
+        py={20}
         px={4}
         position="relative"
         zIndex="2"
       >
         <Container maxW="container.xl">
-          <Heading 
-            as="h2" 
-            size="xl" 
-            textAlign="center" 
-            mb={10} 
+          <Heading
+            as="h2"
+            size="xl"
+            textAlign="center"
+            mb={10}
             color={headingColor}
             textShadow="2px 2px 4px rgba(0, 0, 0, 0.5)"
           >
@@ -532,19 +549,27 @@ function LandingPage() {
                 textAlign="center"
                 width="100%"
                 backdropFilter="blur(10px)"
+                position="relative"
+                overflow="hidden"
                 _hover={{
-                  transform: 'translateY(-5px)',
-                  boxShadow: 'xl',
-                }}
-                transition="all 0.3s ease"
+                   transform: 'translateY(-5px)',
+                   boxShadow: 'xl',
+                 }}
+                 transition="all 0.3s ease"
               >
-                <Box
+                <MotionBox
                   width="100%"
                   height="200px"
                   position="relative"
                   overflow="hidden"
-                  borderRadius="full"
+                  borderRadius="lg"
                   mb={2}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  initial="animate"
+                  whileHover="hover"
+                  variants={imageContainerFlipVariants}
                 >
                   {dev.name === 'Nkosinathi Radebe' ? (
                     <Image
@@ -554,6 +579,9 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : dev.name === 'Okuhle Gadla' ? (
                     <Image
@@ -563,6 +591,9 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : dev.name === 'Mpho Ramokhoase' ? (
                     <Image
@@ -572,6 +603,9 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : dev.name === 'Thembelihle Zulu' ? (
                     <Image
@@ -581,40 +615,63 @@ function LandingPage() {
                       height="100%"
                       objectFit="cover"
                       objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
+                    />
+                  ) : dev.name === 'Kgothatso Mokgashi' ? (
+                    <Image
+                      src={kgothatsoProfile}
+                      alt={dev.name}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      objectPosition="center"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   ) : (
-                    <Avatar 
-                      size="full" 
+                    <Avatar
+                      size="full"
                       name={dev.name}
                       width="100%"
                       height="100%"
+                      display="block"
+                      margin="auto"
+                      borderRadius="lg"
                     />
                   )}
+                </MotionBox>
+
+                <Box>
+                  <Text
+                    fontWeight="bold"
+                    fontSize="lg"
+                    color={greetingColor}
+                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                  >
+                    {dev.name}
+                  </Text>
+                  <Text
+                    fontSize="md"
+                    color={greetingColor}
+                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                    textDecoration="underline"
+                    fontStyle="italic"
+                  >
+                    {dev.role}
+                  </Text>
+                  <Text
+                    fontSize="sm"
+                    color={greetingColor}
+                    textAlign="center"
+                    px={2}
+                    textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
+                  >
+                    {dev.description}
+                  </Text>
                 </Box>
-                <Text 
-                  fontWeight="bold" 
-                  fontSize="lg" 
-                  color={greetingColor}
-                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                >
-                  {dev.name}
-                </Text>
-                <Text 
-                  fontSize="md" 
-                  color={greetingColor}
-                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                >
-                  {dev.role}
-                </Text>
-                <Text 
-                  fontSize="sm" 
-                  color={greetingColor}
-                  textAlign="center"
-                  px={2}
-                  textShadow="1px 1px 2px rgba(0, 0, 0, 0.5)"
-                >
-                  {dev.description}
-                </Text>
               </VStack>
             ))}
           </SimpleGrid>
@@ -633,13 +690,29 @@ function LandingPage() {
         <Container maxW="container.xl">
           <Stack spacing={10}>
             {/* Main Footer Content */}
-            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
+            <SimpleGrid columns={{ base: 1, md: 4 }} spacing={8}>
               {/* Company Info */}
               <Stack spacing={4}>
                 <Heading size="md" color={greetingColor}>GridX</Heading>
                 <Text color={textColor} fontSize="sm">
                   Empowering South Africa with sustainable energy solutions and smart power management.
                 </Text>
+              </Stack>
+
+              {/* Quick Links */}
+              <Stack spacing={4}>
+                <Heading size="sm" color={greetingColor}>Quick Links</Heading>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>About Us</Link>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Services</Link>
+                <Link color={textColor} _hover={{ color: 'blue.400' }}>Contact</Link>
+                <Link 
+                  as={RouterLink} 
+                  to="/support" 
+                  color={textColor} 
+                  _hover={{ color: 'blue.400' }}
+                >
+                  Support
+                </Link>
               </Stack>
 
               {/* Services */}

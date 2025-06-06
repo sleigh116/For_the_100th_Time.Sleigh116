@@ -42,7 +42,6 @@ import {
 // Import Icons from react-icons/fa
 import {
   FaArrowLeft,
-  FaSignOutAlt,
   FaLightbulb, // Example icon for energy tips
   FaDollarSign, // Use for Top-Up
   FaChartBar, // Use for Usage Graph
@@ -145,12 +144,6 @@ function DashboardPage() {
     return () => clearInterval(interval);
   }, [energyTips]); // energyTips is now stable
 
-  // Handle logout
-  const handleLogout = () => {
-    auth.logout();
-    navigate('/login');
-  };
-
   // Handle Top-Up submission
   const handleTopUp = async () => {
       setIsToppingUp(true);
@@ -207,21 +200,14 @@ function DashboardPage() {
             leftIcon={<FaArrowLeft />}
             variant="ghost"
             onClick={() => navigate('/home')}
+            color={headingColor}
           >
             Back to Home
-          </Button>
-          <Button
-            leftIcon={<FaSignOutAlt />}
-            colorScheme="red"
-            variant="outline"
-            onClick={handleLogout}
-          >
-            Logout
           </Button>
         </Flex>
 
         {/* Dashboard Content */}
-        <Heading as="h1" size="xl" color={headingColor} mb={6}>
+        <Heading as="h1" size="xl" color={headingColor} mb={6} textAlign="center">
           Dashboard
         </Heading>
 

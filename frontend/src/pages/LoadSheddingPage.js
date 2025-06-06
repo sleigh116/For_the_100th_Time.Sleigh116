@@ -7,10 +7,6 @@ import {
   Box,
   Flex,
   Heading,
-  Text,
-  FormControl,
-  FormLabel,
-  Input,
   Button,
   VStack,
   useToast,
@@ -28,8 +24,8 @@ import {
   Tr,
   Th,
   Td,
-  Badge,
-  Container
+  Container,
+  Badge
 } from '@chakra-ui/react';
 
 // Import Icons
@@ -48,7 +44,6 @@ function LoadSheddingPage() {
 
   // Color mode values
   const bgColor = useColorModeValue('gray.50', 'gray.900');
-  const textColor = useColorModeValue('gray.600', 'gray.400');
   const headingColor = useColorModeValue('gray.800', 'white');
   const cardBg = useColorModeValue('white', 'gray.800');
   const cardBorderColor = useColorModeValue('gray.200', 'gray.700');
@@ -123,11 +118,6 @@ function LoadSheddingPage() {
     setIsLoading(false);
   };
 
-  // Handler for Back to Dashboard button
-  const handleBackToDashboard = () => {
-    navigate('/dashboard');
-  };
-
   if (!user) {
     return (
       <Flex minH="100vh" align="center" justify="center" bg={bgColor}>
@@ -144,9 +134,10 @@ function LoadSheddingPage() {
           <Button
             leftIcon={<FaArrowLeft />}
             variant="ghost"
-            onClick={handleBackToDashboard}
+            onClick={() => navigate('/home')}
+            color={headingColor}
           >
-            Back to Dashboard
+            Back to Home
           </Button>
         </HStack>
 
@@ -165,20 +156,17 @@ function LoadSheddingPage() {
           mb={6}
         >
           <VStack spacing={4}>
-            <FormControl>
-              <FormLabel>Select Your Location</FormLabel>
-              <Select
-                placeholder="Choose your city or suburb"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              >
-                {locations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
+            <Select
+              placeholder="Choose your city or suburb"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            >
+              {locations.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </Select>
 
             <Button
               colorScheme="blue"

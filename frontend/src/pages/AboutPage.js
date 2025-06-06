@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -8,9 +9,12 @@ import {
   HStack,
   Avatar,
   useColorModeValue,
+  Button,
 } from '@chakra-ui/react';
+import { FaArrowLeft } from 'react-icons/fa';
 
 function AboutPage() {
+  const navigate = useNavigate();
   const bgColor = useColorModeValue('gray.50', 'gray.900');
   const cardBg = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.700', 'gray.200');
@@ -41,8 +45,18 @@ function AboutPage() {
         borderColor={borderColor}
         textAlign="center"
       >
-        {/* Title */}
-        <Heading as="h1" size="xl" mb={6} color={headingColor}>
+        <HStack justify="space-between" align="center" mb={8}>
+          <Button
+            leftIcon={<FaArrowLeft />}
+            variant="ghost"
+            onClick={() => navigate('/home')}
+            color={headingColor}
+          >
+            Back to Home
+          </Button>
+        </HStack>
+
+        <Heading as="h1" size="xl" color={headingColor} mb={8}>
           About Us
         </Heading>
 

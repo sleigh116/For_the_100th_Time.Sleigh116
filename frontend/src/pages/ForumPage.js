@@ -96,6 +96,7 @@ function ForumPage() {
   const cardBorderColor = useColorModeValue('gray.200', 'gray.700');
   const buttonScheme = useColorModeValue('teal', 'blue');
    const replyInputBg = useColorModeValue('gray.100', 'gray.700');
+   const spinnerColor = useColorModeValue('blue.500', 'blue.300');
 
 
   // Redirect if not authenticated
@@ -203,7 +204,7 @@ function ForumPage() {
   if (!user) {
     return (
       <Flex minH="100vh" align="center" justify="center" bg={bgColor}>
-        <Spinner size="xl" color="blue.500" />
+        <Spinner size="xl" color={spinnerColor} />
       </Flex>
     );
   }
@@ -211,14 +212,25 @@ function ForumPage() {
   return (
     <Box
       minH="100vh"
-      backgroundImage="linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/path-to-your-background-image.jpg')"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
       backgroundSize="cover"
       backgroundPosition="center"
+      backgroundAttachment="fixed"
       position="relative"
+      _before={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+      }}
     >
       <Container maxW="container.xl" py={8} position="relative" zIndex={2}>
-         {/* Header with Back to Home button */}
-        <Flex justify="space-between" align="center" mb={8}>
+         {/* Header with Back button and other actions in HStack */}
+        <HStack justify="space-between" align="center" mb={8}>
            <Button
             leftIcon={<FaArrowLeft />}
             variant="ghost"
@@ -229,6 +241,7 @@ function ForumPage() {
                     navigate('/home'); // Go back to home if on topic list
                  }
             }}
+            color={headingColor}
           >
             {selectedTopic ? 'Back to Topics' : 'Back to Home'}
           </Button>
@@ -242,8 +255,9 @@ function ForumPage() {
                     Cancel
                 </Button>
              )}
-        </Flex>
+        </HStack>
 
+        {/* Main Heading placed below the HStack */}
         <Heading as="h1" size="xl" color={headingColor} mb={6}>
           {selectedTopic ? selectedTopic.title : 'Community Forum'}
         </Heading>
