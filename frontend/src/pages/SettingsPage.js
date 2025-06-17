@@ -247,7 +247,7 @@ function SettingsPage() {
 
   // Handle Back to Dashboard button
   const handleBackToDashboard = () => {
-      navigate('/dashboard');
+      navigate('/home');
   };
 
 

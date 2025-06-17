@@ -90,11 +90,7 @@ function SupportPage() {
 
   // Update the back button handler
   const handleBackClick = () => {
-    if (!user) {
-      navigate('/');  // Go to landing page if not logged in
-    } else {
-      navigate('/home');  // Go to home page if logged in
-    }
+    navigate('/home');
   };
 
   // Handle Contact Form Submission

@@ -120,13 +120,13 @@ function ReferPage() {
         <VStack spacing={8} align="stretch">
           {/* Back Button */}
           <Box>
-            <IconButton
-              aria-label="Back to Home"
-              icon={<FaArrowLeft />}
-              onClick={() => navigate('/home')}
+            <Button
+              leftIcon={<FaArrowLeft />}
               variant="ghost"
-              size="md"
-            />
+              onClick={() => navigate('/home')}
+            >
+              Back to Home
+            </Button>
           </Box>
 
           {/* Header Section */}
