@@ -127,20 +127,37 @@ function SupportPage() {
   }
 
   return (
-    <Box minH="100vh" bg={bgColor}>
-      <Container maxW="container.xl" py={8}>
-         {/* Header with Back to Home button */}
-        <Flex justify="flex-start" align="center" mb={8}>
-          <Button
-            leftIcon={<FaArrowLeft />}
-            variant="ghost"
-            onClick={handleBackClick}
-          >
-            Back
-          </Button>
-        </Flex>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+        content: '""',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        bg: "rgba(0, 0, 0, 0.5)",
+        zIndex: 1,
+      }}
+    >
+      <Container maxW="container.xl" py={8} position="relative" zIndex={2}>
+        <Button
+          leftIcon={<FaArrowLeft />}
+          variant="ghost"
+          mb={8}
+          onClick={handleBackClick}
+          color="white"
+          _hover={{ bg: 'whiteAlpha.200' }}
+        >
+          Back
+        </Button>
 
-        <Heading as="h1" size="xl" color={headingColor} mb={6}>
+        <Heading as="h1" size="xl" color="white" mb={6}>
           Support and Help Center
         </Heading>
 

@@ -53,6 +53,21 @@ const ForumPage = () => {
     }
   ];
 
+  // Pre-define the topic card styles
+  const topicCardStyles = {
+    p: 6,
+    bg: cardBg,
+    borderRadius: "lg",
+    shadow: "md",
+    cursor: "pointer",
+    _hover: { transform: 'translateY(-2px)', shadow: 'lg' },
+    transition: "all 0.2s"
+  };
+
+  // Pre-define text styles
+  const authorTextStyle = { color: subTextColor };
+  const metaTextStyle = { fontSize: "sm", color: metaTextColor };
+
   const handlePostMessage = () => {
     if (!newMessage.trim()) {
       toast({
@@ -82,23 +97,17 @@ const ForumPage = () => {
       {topics.map((topic) => (
         <Box
           key={topic.id}
-          p={6}
-          bg={cardBg}
-          borderRadius="lg"
-          shadow="md"
-          cursor="pointer"
+          {...topicCardStyles}
           onClick={() => setSelectedTopic(topic)}
-          _hover={{ transform: 'translateY(-2px)', shadow: 'lg' }}
-          transition="all 0.2s"
         >
           <Heading size="md" mb={2} color={textColor}>
             {topic.title}
           </Heading>
-          <Flex justify="space-between" color={subTextColor}>
-            <Text>By {topic.author}</Text>
-            <Text>{topic.replies} replies</Text>
+          <Flex justify="space-between">
+            <Text {...authorTextStyle}>By {topic.author}</Text>
+            <Text {...authorTextStyle}>{topic.replies} replies</Text>
           </Flex>
-          <Text fontSize="sm" color={metaTextColor}>
+          <Text {...metaTextStyle}>
             Last activity: {topic.lastActivity}
           </Text>
         </Box>

@@ -19,7 +19,6 @@ const ExpensesPage = () => {
   const navigate = useNavigate();
   
   // Move all useColorModeValue hooks to the top level
-  const bgColor = useColorModeValue('gray.50', 'gray.800');
   const cardBg = useColorModeValue('white', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const itemBg = useColorModeValue('gray.50', 'gray.600');
@@ -51,19 +50,38 @@ const ExpensesPage = () => {
   ]);
 
   return (
-    <Box minH="100vh" bg={bgColor}>
-      <Container maxW="container.xl" py={8}>
+    <Box
+      minH="100vh"
+      backgroundImage="linear-gradient(to bottom right, #FF8C42, #4A00E0)"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+        content: '""',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        bg: "rgba(0, 0, 0, 0.5)",
+        zIndex: 1,
+      }}
+    >
+      <Container maxW="container.xl" py={8} position="relative" zIndex={2}>
         <Button
           leftIcon={<FaArrowLeft />}
           variant="ghost"
           mb={8}
           onClick={() => navigate('/home')}
+          color="white"
+          _hover={{ bg: 'whiteAlpha.200' }}
         >
           Back to Home
         </Button>
 
         <VStack spacing={8} align="stretch">
-          <Heading size="xl">Expenses</Heading>
+          <Heading size="xl" color="white">Expenses</Heading>
 
           {/* Summary Cards */}
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>

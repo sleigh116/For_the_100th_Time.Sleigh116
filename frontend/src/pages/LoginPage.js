@@ -58,15 +58,14 @@ function LoginPage() {
     try {
       const response = await auth.login(email, password); // Call backend API
       if (response.success) {
-        // auth.login should handle storing token and user in localStorage
         toast({ // Show success message
             title: 'Login Successful!',
-            description: 'Redirecting to dashboard...',
+            description: 'Welcome back!',
             status: 'success',
             duration: 3000,
             isClosable: true,
         });
-        navigate('/dashboard'); // Changed back to '/dashboard'
+        navigate('/home'); // Changed to '/home'
       } else {
         toast({ // Show error message from backend
             title: 'Login Failed.',
