@@ -56,16 +56,19 @@ def execute_query(operation=None, query=None, params=None):
 def create_user(email, password_hash, full_name=None, phone=None, is_installer=False):
     """Create a new user account"""
     query = """
-    INSERT INTO users (email, password_hash, full_name, phone, is_installer)
-    VALUES (%s, %s, %s, %s, %s) RETURNING id
+    INSERT INTO users (email, password_hash, full_name, phone)
+    VALUES (%s, %s, %s, %s) RETURNING id
     """
-    return execute_query('insert', query, (email, password_hash, full_name, phone, is_installer))
+    return execute_query('insert', query, (email, password_hash, full_name, phone))
 
 def get_user_by_email(email):
     """Get user by email address"""
-    query = "SELECT * FROM users WHERE email = %s"
+    query = "SELECT id, email, password_hash, full_name, phone FROM users WHERE email = %s"
     result = execute_query('search', query, (email,))
-    return result[0] if result else None
+    if result:
+        columns = ['id', 'email', 'password_hash', 'full_name', 'phone']
+        return dict(zip(columns, result[0]))
+    return None
 
 # ================== SOLAR SYSTEM OPERATIONS ==================
 def add_solar_system(installer_id, capacity_kw, components=None, installation_date=None):
@@ -195,3 +198,15 @@ def initialize_db():
 
 # Initialize when imported
 initialize_db()
+
+# Temporarily add this test to support.py
+if __name__ == "__main__":
+    try:
+        conn, cur = connect_db()
+        print("✅ Database connection successful!")
+        cur.execute("SELECT version()")
+        print("PostgreSQL version:", cur.fetchone()[0])
+    except Exception as e:
+        print("🚨 Database connection failed:", e)
+    finally:
+        if conn: conn.close()

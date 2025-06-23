@@ -8,7 +8,7 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    timeout: 10000, // 10 second timeout
+    timeout: 20000, // 20 second timeout
 });
 
 // Add a request interceptor to add the auth token to requests
@@ -47,6 +47,7 @@ export const auth = {
             if (response.data.success) {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('user', JSON.stringify(response.data.user));
+                window.location.href = '/dashboard';
             }
             return response.data;
         } catch (error) {
@@ -57,15 +58,22 @@ export const auth = {
         }
     },
 
-    register: async (name, email, password) => {
+    register: async (userData) => {
         try {
-            const response = await api.post('/auth/register', { name, email, password });
+            const response = await api.post('/auth/register', {
+                name: userData.name,
+                username: userData.username,
+                email: userData.email,
+                password: userData.password,
+                phone: userData.phone  // Changed from phone_number to phone
+            });
             return response.data;
         } catch (error) {
-            if (error.response?.data?.message) {
-                throw new Error(error.response.data.message);
-            }
-            throw error;
+            const message = error.response?.data?.message || 
+                error.response?.data?.error ||  // Add error field check
+                error.message || 
+                'Could not connect to server';
+            throw new Error(message);
         }
     },
 
@@ -78,15 +86,6 @@ export const auth = {
         const user = localStorage.getItem('user');
         return user ? JSON.parse(user) : null;
     }
-};
-
-export const registerUser = async (userData) => {
-    const response = await fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-    });
-    return response.json();
 };
 
 export default api;

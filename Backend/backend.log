@@ -1,0 +1,93 @@
+2025-06-23 16:21:40,832 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 16:21:40,837 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 16:21:40,843 - INFO -  * Restarting with stat
+2025-06-23 16:21:58,672 - WARNING -  * Debugger is active!
+2025-06-23 16:21:58,678 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 16:22:47,853 - INFO - 127.0.0.1 - - [23/Jun/2025 16:22:47] "OPTIONS /api/auth/register HTTP/1.1" 200 -
+2025-06-23 16:22:48,220 - INFO - Registration attempt for saa@gmail.com
+2025-06-23 16:22:48,641 - INFO - 127.0.0.1 - - [23/Jun/2025 16:22:48] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-06-23 16:32:04,557 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 16:32:04,558 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 16:32:04,567 - INFO -  * Restarting with stat
+2025-06-23 16:32:24,734 - WARNING -  * Debugger is active!
+2025-06-23 16:32:24,741 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 16:35:48,938 - INFO - 127.0.0.1 - - [23/Jun/2025 16:35:48] "OPTIONS /api/auth/register HTTP/1.1" 200 -
+2025-06-23 16:35:49,445 - INFO - Registration attempt for Nathisduv@gmail.com
+2025-06-23 16:35:50,057 - INFO - 127.0.0.1 - - [23/Jun/2025 16:35:50] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-06-23 16:38:16,353 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 16:38:16,355 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 16:38:16,359 - INFO -  * Restarting with stat
+2025-06-23 16:38:40,579 - WARNING -  * Debugger is active!
+2025-06-23 16:38:40,606 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 16:38:46,984 - INFO - 127.0.0.1 - - [23/Jun/2025 16:38:46] "OPTIONS /api/auth/register HTTP/1.1" 200 -
+2025-06-23 16:38:47,299 - INFO - Registration attempt for Nathilll@gmail.com
+2025-06-23 16:38:48,238 - INFO - 127.0.0.1 - - [23/Jun/2025 16:38:48] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-06-23 16:41:56,054 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 16:41:56,056 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 16:41:56,063 - INFO -  * Restarting with stat
+2025-06-23 16:42:17,305 - WARNING -  * Debugger is active!
+2025-06-23 16:42:17,313 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 16:43:33,621 - INFO - 127.0.0.1 - - [23/Jun/2025 16:43:33] "OPTIONS /api/auth/register HTTP/1.1" 200 -
+2025-06-23 16:43:33,937 - INFO - Registration attempt for Nathiljjll@gmail.com
+2025-06-23 16:43:34,178 - INFO - 127.0.0.1 - - [23/Jun/2025 16:43:34] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-06-23 16:47:03,533 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\app\\routes\\auth.py', reloading
+2025-06-23 16:47:04,532 - INFO -  * Restarting with stat
+2025-06-23 16:47:54,016 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 16:47:54,016 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 16:47:54,018 - INFO -  * Restarting with stat
+2025-06-23 16:48:05,818 - WARNING -  * Debugger is active!
+2025-06-23 16:48:05,820 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 16:48:51,119 - INFO - 127.0.0.1 - - [23/Jun/2025 16:48:51] "OPTIONS /api/auth/register HTTP/1.1" 200 -
+2025-06-23 16:48:51,437 - INFO - Registration attempt for lhukft@gmail.com
+2025-06-23 16:48:51,679 - INFO - 127.0.0.1 - - [23/Jun/2025 16:48:51] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-06-23 16:56:06,915 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 16:56:06,916 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 16:56:06,917 - INFO -  * Restarting with stat
+2025-06-23 16:56:17,389 - WARNING -  * Debugger is active!
+2025-06-23 16:56:17,399 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 16:57:48,741 - INFO - 127.0.0.1 - - [23/Jun/2025 16:57:48] "OPTIONS /api/auth/register HTTP/1.1" 200 -
+2025-06-23 16:57:49,066 - INFO - Registration attempt for lhukkukft@gmail.com
+2025-06-23 16:57:49,426 - INFO - 127.0.0.1 - - [23/Jun/2025 16:57:49] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 201 -
+2025-06-23 16:57:56,376 - INFO - 127.0.0.1 - - [23/Jun/2025 16:57:56] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-23 16:57:56,757 - INFO - 127.0.0.1 - - [23/Jun/2025 16:57:56] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-06-23 16:58:12,194 - INFO - 127.0.0.1 - - [23/Jun/2025 16:58:12] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-23 16:58:12,571 - INFO - 127.0.0.1 - - [23/Jun/2025 16:58:12] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-06-23 17:03:00,084 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 17:03:00,085 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 17:03:00,086 - INFO -  * Restarting with stat
+2025-06-23 17:03:08,765 - WARNING -  * Debugger is active!
+2025-06-23 17:03:08,770 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 17:03:17,910 - INFO - 127.0.0.1 - - [23/Jun/2025 17:03:17] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-23 17:03:18,211 - ERROR - Login error: cannot convert dictionary update sequence element #0 to a sequence
+2025-06-23 17:03:18,212 - INFO - 127.0.0.1 - - [23/Jun/2025 17:03:18] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-06-23 17:03:57,946 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\support.py', reloading
+2025-06-23 17:03:58,946 - INFO -  * Restarting with stat
+2025-06-23 17:04:09,789 - WARNING -  * Debugger is active!
+2025-06-23 17:04:09,792 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 17:04:40,417 - INFO - 127.0.0.1 - - [23/Jun/2025 17:04:40] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-23 17:04:40,856 - INFO - 127.0.0.1 - - [23/Jun/2025 17:04:40] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-23 17:07:35,486 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 17:07:35,487 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 17:07:35,489 - INFO -  * Restarting with stat
+2025-06-23 17:07:43,582 - WARNING -  * Debugger is active!
+2025-06-23 17:07:43,586 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 17:08:24,685 - INFO - 127.0.0.1 - - [23/Jun/2025 17:08:24] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-23 17:08:25,174 - ERROR - Login error: Could not build url for endpoint 'home.home_page'. Did you mean 'auth.google_login' instead?
+2025-06-23 17:08:25,175 - INFO - 127.0.0.1 - - [23/Jun/2025 17:08:25] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-06-23 17:11:16,550 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 17:11:16,551 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 17:11:16,552 - INFO -  * Restarting with stat
+2025-06-23 17:11:24,789 - WARNING -  * Debugger is active!
+2025-06-23 17:11:24,792 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 17:12:21,190 - INFO - 127.0.0.1 - - [23/Jun/2025 17:12:21] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-23 17:12:21,638 - INFO - 127.0.0.1 - - [23/Jun/2025 17:12:21] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-23 17:27:42,468 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\main.py', reloading

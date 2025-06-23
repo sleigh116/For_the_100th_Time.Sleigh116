@@ -12,12 +12,14 @@ from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 import threading
 import uvicorn
 from flask import Blueprint, url_for, session
 from email_utils import send_welcome_email
 from app import create_app
+from hugging_services import HuggingFaceChatbot
+from app.routes.home import home_bp  # Add this line
 
 # Load environment variables (same as support.py)
 load_dotenv()
@@ -40,16 +42,19 @@ flask_app.config.update(
 flask_app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 flask_app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 flask_app.config['JWT_ERROR_MESSAGE_KEY'] = 'message'
+flask_app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
+flask_app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
+flask_app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
 # Initialize extensions
 CORS(flask_app, 
-     resources={r"/api/*": {"origins": ["http://localhost:3000"], 
-                           "supports_credentials": True,
-                           "allow_headers": ["Content-Type", "Authorization"],
-                           "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]}},
-     expose_headers=["Set-Cookie"],
+     resources={r"/api/*": {"origins": "http://localhost:3000"}},
+     expose_headers=["Authorization"],
      supports_credentials=True)
 jwt = JWTManager(flask_app)
+
+# Register blueprints
+flask_app.register_blueprint(home_bp)  # Add this line
 
 # Database connection helper (PostgreSQL)
 def get_db():
@@ -150,7 +155,8 @@ def flask_login():
                     'id': user[0],
                     'name': user[3],  # full_name
                     'email': user[1]
-                }
+                },
+                'redirect': '/'  # Simple frontend route
             })
 
         return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
@@ -198,12 +204,12 @@ def flask_get_contracts():
     # ... implementation ...
 
 # ================= FASTAPI APP =================
-fastapi_app = FastAPI(title="Lumina Solar FastAPI")
+app = FastAPI(title="Lumina Solar FastAPI")
 
-# CORS (match Flask's config)
-fastapi_app.add_middleware(
+# Configure CORS for development
+app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -224,7 +230,7 @@ class UserLogin(BaseModel):
     password: str
 
 # --- FastAPI Routes ---
-@fastapi_app.post("/fastapi/auth/register")
+@app.post("/fastapi/auth/register")
 async def fastapi_register(user: UserRegister):
     """FastAPI version of /api/auth/register"""
     conn = None
@@ -253,7 +259,7 @@ async def fastapi_register(user: UserRegister):
     finally:
         if conn: conn.close()
 
-@fastapi_app.post("/fastapi/auth/login")
+@app.post("/fastapi/auth/login")
 async def fastapi_login(user: UserLogin):
     """FastAPI version of /api/auth/login"""
     conn = None
@@ -278,6 +284,21 @@ async def fastapi_login(user: UserLogin):
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         if conn: conn.close()
+
+# Initialize chatbot
+chatbot = HuggingFaceChatbot()
+
+class ChatMessage(BaseModel):
+    message: str
+    history: List[dict]
+
+@app.post("/api/chat")
+async def chat_endpoint(chat_message: ChatMessage):
+    try:
+        response = chatbot.get_response(chat_message.message)
+        return {"response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ================= RUN BOTH APPS =================
 if __name__ == '__main__':

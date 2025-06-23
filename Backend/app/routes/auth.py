@@ -3,8 +3,22 @@ from app import oauth
 from support import get_user_by_email, create_user
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
+import time
+import logging
+from datetime import datetime
+from flask_jwt_extended import create_access_token
 
 auth_bp = Blueprint('auth', __name__, url_prefix="/api/auth")
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('backend.log'),
+        logging.StreamHandler()
+    ]
+)
 
 def create_response(message=None, status=200):
     return jsonify({"message": message}), status
@@ -75,13 +89,16 @@ def google_callback():
             else:
                 # Login successful, redirect to home
                 session['user_id'] = email
-                return f"""
-                <html>
-                <script>
-                    window.location.href = '{frontend_url}/home';
-                </script>
-                </html>
-                """
+                access_token = create_access_token(identity=email)
+                return jsonify({
+                    "success": True,
+                    "token": access_token,
+                    "user": {
+                        "email": email,
+                        "name": name
+                    },
+                    "redirect": url_for('home.home_page')
+                })
             
     except Exception as e:
         frontend_url = os.getenv('FRONTEND_URL', 'http://localhost:3000')
@@ -124,7 +141,42 @@ def login():
         if not user or not check_password_hash(user['password_hash'], data['password']):
             return create_response("Invalid credentials", 401)
 
-        session['user_id'] = user['email']
-        return create_response("Login successful")
-    except Exception:
-        return create_response("Login failed", 500) 
+        access_token = create_access_token(identity=user['email'])
+        return jsonify({
+            "success": True,
+            "token": access_token,
+            "user": {
+                "email": user['email'],
+                "name": user['full_name']
+            },
+            "redirect": url_for('home.home_page')
+        })
+    except Exception as e:
+        logging.error(f"Login error: {str(e)}")
+        return create_response("Login failed", 500)
+
+@auth_bp.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    # Validate required fields (remove phone_number from required)
+    if not all(key in data for key in ['name', 'email', 'password']):
+        return jsonify({"error": "Missing required fields"}), 400
+        
+    # Check if user exists
+    if get_user_by_email(data['email']):
+        return jsonify({"error": "Email already registered"}), 409
+        
+    # Create user with optional phone_number
+    try:
+        logging.info(f"Registration attempt for {data['email']}")
+        start_time = time.time()
+        create_user(
+            email=data['email'],
+            password_hash=generate_password_hash(data['password']),
+            full_name=data['name'],
+            phone=data.get('phone')
+        )
+        print(f"User creation time: {time.time() - start_time:.2f}s")
+        return jsonify({"message": "User created successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500 

@@ -23,7 +23,6 @@ import {
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');  // Make sure this is defined
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({}); // State for validation errors
   const navigate = useNavigate();
@@ -94,52 +93,6 @@ function LoginPage() {
   const handleGoogleLogin = () => {
     const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
     window.location.href = `${backendUrl}/api/auth/google?action=login`;
-  };
-
-  const handleGoogleRegister = () => {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
-    const width = 500;
-    const height = 600;
-    const left = (window.screen.width / 2) - (width / 2);
-    const top = (window.screen.height / 2) - (height / 2);
-    
-    const googlePopup = window.open(
-        `${backendUrl}/api/auth/google?action=register`,
-        'Google Register',
-        `width=${width},height=${height},top=${top},left=${left}`
-    );
-
-    const checkPopup = setInterval(() => {
-        if (googlePopup.closed) {
-            clearInterval(checkPopup);
-            fetch(`${backendUrl}/api/auth/user`, {
-                credentials: 'include'
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.user) {
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    toast({
-                        title: 'Registration Successful',
-                        status: 'success',
-                        duration: 2000,
-                        isClosable: true,
-                        position: 'top',
-                    });
-                    navigate('/home');
-                }
-            })
-            .catch(() => {
-                toast({
-                    title: 'Registration Failed',
-                    status: 'error',
-                    duration: 2000,
-                    isClosable: true,
-                    position: 'top',
-                });
-            });
-        }
-    }, 1000);
   };
 
   // Update color mode values for glassmorphism effect
