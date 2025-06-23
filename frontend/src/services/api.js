@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 // Create an axios instance with default config
 const api = axios.create({
@@ -9,6 +9,7 @@ const api = axios.create({
         'Content-Type': 'application/json',
     },
     timeout: 20000, // 20 second timeout
+    withCredentials: true, // Added for JWT cookies
 });
 
 // Add a request interceptor to add the auth token to requests
@@ -43,7 +44,7 @@ api.interceptors.response.use(
 export const auth = {
     login: async (email, password) => {
         try {
-            const response = await api.post('/auth/login', { email, password });
+            const response = await api.post('/api/auth/login', { email, password });
             if (response.data.success) {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -54,13 +55,13 @@ export const auth = {
             if (error.response?.data?.message) {
                 throw new Error(error.response.data.message);
             }
-            throw error;
+            throw new Error('Failed to connect to the server');
         }
     },
 
     register: async (userData) => {
         try {
-            const response = await api.post('/auth/register', {
+            const response = await api.post('/api/auth/register', {
                 name: userData.name,
                 username: userData.username,
                 email: userData.email,
@@ -69,11 +70,10 @@ export const auth = {
             });
             return response.data;
         } catch (error) {
-            const message = error.response?.data?.message || 
-                error.response?.data?.error ||  // Add error field check
-                error.message || 
-                'Could not connect to server';
-            throw new Error(message);
+            if (error.response?.data?.message) {
+                throw new Error(error.response.data.message);
+            }
+            throw new Error('Failed to connect to the server');
         }
     },
 

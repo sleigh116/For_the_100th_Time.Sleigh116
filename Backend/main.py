@@ -19,7 +19,8 @@ from flask import Blueprint, url_for, session
 from email_utils import send_welcome_email
 from app import create_app
 from hugging_services import HuggingFaceChatbot
-from app.routes.home import home_bp  # Add this line
+from app.routes.home import home_bp
+from app.routes.auth import auth_bp
 
 # Load environment variables (same as support.py)
 load_dotenv()
@@ -54,7 +55,17 @@ CORS(flask_app,
 jwt = JWTManager(flask_app)
 
 # Register blueprints
-flask_app.register_blueprint(home_bp)  # Add this line
+flask_app.register_blueprint(home_bp)
+flask_app.register_blueprint(auth_bp, name='auth_bp')
+
+# Add after request handler
+@flask_app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    return response
 
 # Database connection helper (PostgreSQL)
 def get_db():
@@ -63,7 +74,7 @@ def get_db():
             host=os.getenv('DB_HOST', 'localhost'),
             database=os.getenv('DB_NAME', 'Fintech_Solar'),
             user=os.getenv('DB_USER', 'postgres'),
-            password=os.getenv('DB_PASSWORD', ''),
+            password=os.getenv('DB_PASSWORD', 'your_password_here'),
             port=os.getenv('DB_PORT', '5432')
         )
         return conn
@@ -202,6 +213,10 @@ def flask_get_contracts():
     current_user = get_jwt_identity()
     # Add authorization and call support.py's get_user_contracts()
     # ... implementation ...
+
+@flask_app.errorhandler(404)
+def not_found(e):
+    return jsonify(error="Route not found"), 404
 
 # ================= FASTAPI APP =================
 app = FastAPI(title="Lumina Solar FastAPI")

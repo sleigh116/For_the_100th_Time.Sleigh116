@@ -91,3 +91,25 @@
 2025-06-23 17:12:21,190 - INFO - 127.0.0.1 - - [23/Jun/2025 17:12:21] "OPTIONS /api/auth/login HTTP/1.1" 200 -
 2025-06-23 17:12:21,638 - INFO - 127.0.0.1 - - [23/Jun/2025 17:12:21] "POST /api/auth/login HTTP/1.1" 200 -
 2025-06-23 17:27:42,468 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\main.py', reloading
+2025-06-23 17:27:43,378 - INFO -  * Restarting with stat
+2025-06-23 17:27:51,922 - WARNING -  * Debugger is active!
+2025-06-23 17:27:51,926 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 17:55:33,625 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\main.py', reloading
+2025-06-23 17:55:34,619 - INFO -  * Restarting with stat
+2025-06-23 17:55:43,471 - WARNING -  * Debugger is active!
+2025-06-23 17:55:43,475 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 18:29:30,585 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 18:29:30,586 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 18:29:30,588 - INFO -  * Restarting with stat
+2025-06-23 18:29:38,469 - WARNING -  * Debugger is active!
+2025-06-23 18:29:38,473 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 18:29:54,503 - INFO - 127.0.0.1 - - [23/Jun/2025 18:29:54] "[33mOPTIONS /auth/login HTTP/1.1[0m" 404 -
+2025-06-23 18:31:34,357 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-23 18:31:34,357 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-23 18:31:34,358 - INFO -  * Restarting with stat
+2025-06-23 18:31:43,701 - WARNING -  * Debugger is active!
+2025-06-23 18:31:43,706 - INFO -  * Debugger PIN: 240-196-647
+2025-06-23 18:31:45,971 - INFO - 127.0.0.1 - - [23/Jun/2025 18:31:45] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-23 18:31:46,608 - INFO - 127.0.0.1 - - [23/Jun/2025 18:31:46] "POST /api/auth/login HTTP/1.1" 200 -

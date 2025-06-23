@@ -154,7 +154,7 @@ function TopUpPage() {
         isClosable: true,
     });
 
-    setIsProcessing(false);
+    setIsProcessing(false); // Reset loading state
   };
 
   // Render loading spinner if user is being checked (though ProtectedRoute handles the redirect)
