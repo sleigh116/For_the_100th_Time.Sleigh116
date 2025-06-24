@@ -134,11 +134,31 @@ def logout():
 def login():
     try:
         data = request.get_json()
-        if not data or 'email' not in data or 'password' not in data:
+        if not data:
+            logging.error("No JSON data received in login request")
+            return create_response("Invalid credentials", 400)
+
+        # Check for nested data and try to extract it
+        if 'email' in data and isinstance(data['email'], dict):
+            logging.error(f"Nested data detected: {data}. Attempting to extract...")
+            if 'email' in data['email'] and 'password' in data['email']:
+                data = data['email']  # Extract the nested dictionary
+                logging.warning("Extracted nested data for processing")
+            else:
+                logging.error(f"Invalid nested structure: {data}")
+                return create_response("Invalid request data", 400)
+
+        if 'email' not in data or 'password' not in data:
+            logging.error(f"Missing required fields in data: {data}")
             return create_response("Invalid credentials", 400)
 
         user = get_user_by_email(data['email'])
-        if not user or not check_password_hash(user['password_hash'], data['password']):
+        if not user:
+            logging.error(f"User not found for email: {data['email']}")
+            return create_response("Invalid credentials", 401)
+
+        if not check_password_hash(user['password_hash'], data['password']):
+            logging.error(f"Password mismatch for email: {data['email']}")
             return create_response("Invalid credentials", 401)
 
         access_token = create_access_token(identity=user['email'])
@@ -152,7 +172,7 @@ def login():
             "redirect": url_for('home.home_page')
         })
     except Exception as e:
-        logging.error(f"Login error: {str(e)}")
+        logging.error(f"Login error: {str(e)} - Request data: {data}")
         return create_response("Login failed", 500)
 
 @auth_bp.route('/register', methods=['POST'])

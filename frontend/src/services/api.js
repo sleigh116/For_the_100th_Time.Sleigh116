@@ -48,7 +48,8 @@ export const auth = {
             if (response.data.success) {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('user', JSON.stringify(response.data.user));
-                window.location.href = '/dashboard';
+                // Removed redirection to let the component handle navigation
+                // window.location.href = '/dashboard';
             }
             return response.data;
         } catch (error) {
