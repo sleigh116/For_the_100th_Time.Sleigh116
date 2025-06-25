@@ -6,10 +6,14 @@ from flask_cors import CORS
 from hugging_services import HuggingFaceChatbot
 import logging
 from agent import EnergyUsageOptimizerAgent
+from sys import stdout  # Import for StreamHandler
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
+# Set up logging to console only
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler(stdout)  # Log to console
+handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))  # Optional formatting
+logger.addHandler(handler)  # Add the handler
 
 load_dotenv()  # Load .env variables
 
