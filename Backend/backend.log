@@ -1,0 +1,82 @@
+2025-06-25 15:43:11,895 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-25 15:43:11,896 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-25 15:43:11,899 - INFO -  * Restarting with stat
+2025-06-25 15:43:32,458 - WARNING -  * Debugger is active!
+2025-06-25 15:43:32,467 - INFO -  * Debugger PIN: 240-196-647
+2025-06-25 15:44:29,405 - INFO - 127.0.0.1 - - [25/Jun/2025 15:44:29] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 15:44:30,284 - ERROR - Password mismatch for email: nathiradebe201@gmail.com
+2025-06-25 15:44:30,286 - INFO - 127.0.0.1 - - [25/Jun/2025 15:44:30] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 15:44:33,718 - ERROR - Password mismatch for email: nathiradebe201@gmail.com
+2025-06-25 15:44:33,720 - INFO - 127.0.0.1 - - [25/Jun/2025 15:44:33] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 15:44:36,700 - INFO - 127.0.0.1 - - [25/Jun/2025 15:44:36] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 15:44:37,748 - ERROR - Password mismatch for email: nathiradebe201@gmail.com
+2025-06-25 15:44:37,749 - INFO - 127.0.0.1 - - [25/Jun/2025 15:44:37] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 15:45:37,643 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\app\\routes\\auth.py', reloading
+2025-06-25 15:45:39,080 - INFO -  * Restarting with stat
+2025-06-25 15:46:02,082 - WARNING -  * Debugger is active!
+2025-06-25 15:46:02,095 - INFO -  * Debugger PIN: 240-196-647
+2025-06-25 19:57:33,029 - INFO - 127.0.0.1 - - [25/Jun/2025 19:57:33] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 19:57:33,353 - ERROR - Login error: 'str' object has no attribute 'get' - Request data structure: <class 'dict'>
+2025-06-25 19:57:33,355 - INFO - 127.0.0.1 - - [25/Jun/2025 19:57:33] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-06-25 19:57:34,865 - ERROR - Login error: 'str' object has no attribute 'get' - Request data structure: <class 'dict'>
+2025-06-25 19:57:34,865 - INFO - 127.0.0.1 - - [25/Jun/2025 19:57:34] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-06-25 19:58:30,128 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\app\\routes\\auth.py', reloading
+2025-06-25 19:58:32,262 - INFO -  * Restarting with stat
+2025-06-25 19:58:44,997 - WARNING -  * Debugger is active!
+2025-06-25 19:58:45,001 - INFO -  * Debugger PIN: 240-196-647
+2025-06-25 19:59:38,556 - INFO - 127.0.0.1 - - [25/Jun/2025 19:59:38] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 19:59:38,868 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 19:59:39,101 - ERROR - Password mismatch for email: nathiradebe201@gmail.com
+2025-06-25 19:59:39,102 - INFO - 127.0.0.1 - - [25/Jun/2025 19:59:39] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 19:59:41,303 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 19:59:41,510 - ERROR - Password mismatch for email: nathiradebe201@gmail.com
+2025-06-25 19:59:41,511 - INFO - 127.0.0.1 - - [25/Jun/2025 19:59:41] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:00:28,924 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\app\\routes\\auth.py', reloading
+2025-06-25 20:00:30,107 - INFO -  * Restarting with stat
+2025-06-25 20:00:40,820 - WARNING -  * Debugger is active!
+2025-06-25 20:00:40,823 - INFO -  * Debugger PIN: 240-196-647
+2025-06-25 20:00:47,431 - INFO - 127.0.0.1 - - [25/Jun/2025 20:00:47] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 20:00:47,744 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:00:47,790 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:00:47,926 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:00:47,927 - INFO - 127.0.0.1 - - [25/Jun/2025 20:00:47] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:00:49,622 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:00:49,671 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:00:49,818 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:00:49,819 - INFO - 127.0.0.1 - - [25/Jun/2025 20:00:49] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:00:51,484 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:00:51,593 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:00:51,861 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:00:51,861 - INFO - 127.0.0.1 - - [25/Jun/2025 20:00:51] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:01:31,956 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\app\\routes\\auth.py', reloading
+2025-06-25 20:01:32,892 - INFO -  * Restarting with stat
+2025-06-25 20:01:43,366 - WARNING -  * Debugger is active!
+2025-06-25 20:01:43,371 - INFO -  * Debugger PIN: 240-196-647
+2025-06-25 20:01:44,756 - INFO - 127.0.0.1 - - [25/Jun/2025 20:01:44] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 20:01:45,069 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:01:45,225 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:01:45,363 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:01:45,364 - INFO - 127.0.0.1 - - [25/Jun/2025 20:01:45] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:01:47,044 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:01:47,096 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:01:47,301 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:01:47,302 - INFO - 127.0.0.1 - - [25/Jun/2025 20:01:47] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:02:41,108 - INFO -  * Detected change in 'C:\\Users\\Nkosinathi Radebe\\Videos\\cleanv1\\cleanv1\\for-the-100th-time-main\\for-the-100th-time\\Backend\\app\\routes\\auth.py', reloading
+2025-06-25 20:02:42,149 - INFO -  * Restarting with stat
+2025-06-25 20:02:52,413 - WARNING -  * Debugger is active!
+2025-06-25 20:02:52,418 - INFO -  * Debugger PIN: 240-196-647
+2025-06-25 20:03:04,094 - INFO - 127.0.0.1 - - [25/Jun/2025 20:03:04] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 20:03:04,420 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:03:04,577 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:03:04,721 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:03:04,722 - INFO - 127.0.0.1 - - [25/Jun/2025 20:03:04] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:03:08,620 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:03:08,690 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:03:08,932 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:03:08,933 - INFO - 127.0.0.1 - - [25/Jun/2025 20:03:08] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-25 20:03:20,845 - INFO - 127.0.0.1 - - [25/Jun/2025 20:03:20] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-25 20:03:21,151 - INFO - Attempting login for email: nathiradebe201@gmail.com
+2025-06-25 20:03:21,325 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
+2025-06-25 20:03:21,529 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
+2025-06-25 20:03:21,530 - INFO - 127.0.0.1 - - [25/Jun/2025 20:03:21] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
