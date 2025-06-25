@@ -9,9 +9,11 @@ import {
   Heading,
   useToast,
   Avatar,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { FaPaperPlane, FaTimes, FaCommentDots, FaMicrophone } from 'react-icons/fa';
 import RecordRTC from 'recordrtc';
+import langaImage from '../assets/images/langa.png';
 
 const SupportBot = () => {
   console.log('SupportBot component is mounting');  // Existing debug log
@@ -22,12 +24,17 @@ const SupportBot = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [typing, setTyping] = useState(false);
+
+  // For recording with RecordRTC
   const [recorder, setRecorder] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
 
   const toast = useToast();
 
-  console.log('SupportBot is preparing to render');  // New debug log before return
+  const bgColor = useColorModeValue('gray.100', 'gray.700');  // For bot messages
+  const userBgColor = useColorModeValue('blue.100', 'blue.800');  // For user messages
+  const textColor = useColorModeValue('black', 'white');  // For text color
 
   const handleSendMessage = async (messageText = null) => {
     const textToSend = messageText || inputMessage.trim();
@@ -36,6 +43,7 @@ const SupportBot = () => {
     setMessages(prev => [...prev, { text: textToSend, sender: 'user' }]);
     setInputMessage('');
     setIsLoading(true);
+    setTyping(true);
 
     try {
       const response = await fetch('http://localhost:5000/api/chat', {
@@ -58,6 +66,8 @@ const SupportBot = () => {
         text: data.response,
         sender: 'bot'
       }]);
+
+      setTyping(false);  // Set typing to false immediately after adding the response
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev, {
@@ -243,33 +253,16 @@ const SupportBot = () => {
               }
             }}
           >
-            {messages.map((msg, idx) => (
-              <Flex
-                key={idx}
-                justify={msg.sender === "bot" ? "flex-start" : "flex-end"}
-                align="flex-end"
-              >
-                {msg.sender === "bot" && (
-                  <Avatar size="sm" mr={2} />
-                )}
-                <Box
-                  bg={msg.sender === "bot" ? "teal.600" : "blue.400"}
-                  color="white"
-                  px={4}
-                  py={2}
-                  borderRadius="xl"
-                  maxW="75%"
-                  boxShadow="md"
-                  fontSize="md"
-                  fontWeight="medium"
-                >
-                  {msg.text}
+            {messages.map((message) => (
+              <Flex key={message.id} justify={message.sender === 'bot' ? 'flex-start' : 'flex-end'} align="center">
+                {message.sender === 'bot' && <Avatar name="SolarBot" src={langaImage} size="sm" mr={2} />}
+                <Box bg={message.sender === 'bot' ? bgColor : userBgColor} color={textColor} p={3} borderRadius="md">
+                  {message.text}
                 </Box>
-                {msg.sender === "user" && (
-                  <Avatar name="You" bg="blue.500" size="sm" ml={2} />
-                )}
+                {message.sender === 'user' && <Avatar name="You" bg="blue.500" size="sm" ml={2} />}
               </Flex>
             ))}
+            {typing && <Text fontStyle="italic" color="gray.500">Bot is typing...</Text>}
           </VStack>
 
           {/* Input */}
