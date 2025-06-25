@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaPaperPlane } from 'react-icons/fa';
@@ -15,7 +16,6 @@ import {
 } from '@chakra-ui/react';
 
 const ForumPage = () => {
-  const navigate = useNavigate();
   const toast = useToast();
   
   // Move all useColorModeValue hooks to the top level
@@ -27,6 +27,7 @@ const ForumPage = () => {
 
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [newMessage, setNewMessage] = useState('');
+  const [replies, setReplies] = useState({});  // Initialize as an empty object to store replies by topic ID
 
   // Mock data for forum topics
   const topics = [
@@ -68,6 +69,9 @@ const ForumPage = () => {
   const authorTextStyle = { color: subTextColor };
   const metaTextStyle = { fontSize: "sm", color: metaTextColor };
 
+  // Edit: Add useNavigate hook to define navigate
+  const navigate = useNavigate();
+
   const handlePostMessage = () => {
     if (!newMessage.trim()) {
       toast({
@@ -80,7 +84,20 @@ const ForumPage = () => {
       return;
     }
 
-    // Here you would typically send the message to your backend
+    const userName = localStorage.getItem('forumUserName') || 'You';
+    const topicId = selectedTopic.id;
+
+    // Edit: Now that replies is defined, this will work correctly
+    const newReplies = { ...replies };
+    if (!newReplies[topicId]) newReplies[topicId] = [];
+    newReplies[topicId].push({
+      name: userName,
+      message: newMessage,
+      timestamp: Date.now(),
+    });
+
+    setReplies(newReplies);  // Now setReplies is defined and can be used
+
     toast({
       title: 'Message Posted',
       description: 'Your message has been posted successfully',

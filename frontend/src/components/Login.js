@@ -13,7 +13,7 @@ function Login() {
   useEffect(() => {
     const user = auth.getCurrentUser();
     if (user) {
-      navigate('/dashboard');
+      navigate('/home');
     }
 
     // Check for error parameter in URL
@@ -30,16 +30,15 @@ function Login() {
     setError('');
     
     try {
-      const response = await auth.login(email, password);
-      if (response.success) {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        navigate('/dashboard');
+      await auth.login(email, password);
+      const user = auth.getCurrentUser();
+      if (user) {
+        navigate('/home');
       } else {
-        setError(response.message || 'Login failed');
+        setError('User not authenticated after login. Please try again.');
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed');
+      setError('Invalid email or password');
     } finally {
       setLoading(false);
     }

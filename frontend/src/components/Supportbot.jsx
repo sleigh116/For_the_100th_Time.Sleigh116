@@ -4,28 +4,31 @@ import {
   Flex,
   VStack,
   HStack,
-  Text,
   IconButton,
   Input,
   Heading,
   useToast,
+  Avatar,
 } from '@chakra-ui/react';
 import { FaPaperPlane, FaTimes, FaCommentDots, FaMicrophone } from 'react-icons/fa';
 import RecordRTC from 'recordrtc';
+import langaImage from '../assets/images/langa.png';  // Adjust the path if needed, e.g., if it's in a different subdirectory
 
 const SupportBot = () => {
+  console.log('SupportBot component is mounting');  // Existing debug log
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { text: "Hi! I'm Langa. How can I help you today?", sender: 'bot' }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  // For recording with RecordRTC
   const [recorder, setRecorder] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
 
   const toast = useToast();
+
+  console.log('SupportBot is preparing to render');  // New debug log before return
 
   const handleSendMessage = async (messageText = null) => {
     const textToSend = messageText || inputMessage.trim();
@@ -164,105 +167,141 @@ const SupportBot = () => {
   };
 
   return (
-    <Box 
-      position="fixed" 
-      bottom="20px" 
-      right="20px" 
-      zIndex="9999"
+    <Box
+      position="fixed"
+      bottom="24px"
+      right="24px"
+      zIndex="9999"  // Ensure this is high enough; you can try increasing to 10000 if needed
+      width={["95vw", "350px"]}
+      maxWidth="100vw"
+      height="520px"
+      bg="white"
+      borderRadius="2xl"
+      boxShadow="2xl"
+      overflow="hidden"
+      display="flex"
+      flexDirection="column"
+      opacity={isOpen ? 1 : 0}  // Only affects the full chat window
+      transition="opacity 0.3s"
+      visibility="visible"  // Added to force visibility as a debug measure
     >
       {!isOpen ? (
-        <IconButton
-          aria-label="Chat with Langa"
-          icon={<FaCommentDots />}
-          size="lg"
-          colorScheme="teal"
-          isRound
-          boxShadow="lg"
-          onClick={() => setIsOpen(true)}
-        />
+        <>
+          <IconButton
+            aria-label="Chat with Langa"
+            icon={<FaCommentDots />}
+            size="lg"
+            colorScheme="teal"
+            isRound
+            boxShadow="lg"
+            onClick={() => setIsOpen(true)}
+          />
+        </>
       ) : (
-        <Box
-          width="350px"
-          height="500px"
-          bg="white"
-          borderRadius="lg"
-          boxShadow="2xl"
-          display="flex"
-          flexDirection="column"
-        >
+        <>
           <Flex
-            bg="teal.500"
-            color="white"
-            p={3}
-            borderTopRadius="lg"
-            justify="space-between"
-            align="center"
+            align={"center"}
+            justify={"space-between"}
+            bgGradient={"linear(to-r, teal.500, teal.400)"}
+            color={"white"}
+            p={4}
+            boxShadow={"md"}
           >
-            <Heading size="md">Langa</Heading>
+            <HStack>
+              <Avatar src={langaImage} size="md" border="2px solid white" />
+              <Heading size="md" fontWeight="bold" letterSpacing="wide">
+                Langa
+              </Heading>
+            </HStack>
             <IconButton
               icon={<FaTimes />}
               variant="ghost"
               color="white"
               onClick={() => setIsOpen(false)}
               size="sm"
-              _hover={{ bg: 'teal.600' }}
+              _hover={{ bg: "teal.600" }}
             />
           </Flex>
 
+          {/* Messages */}
           <VStack
-            flex="1"
-            spacing={4}
-            p={4}
+            flex={1}
+            spacing={3}
+            px={3}
+            py={2}
             overflowY="auto"
-            bg="gray.50"
             align="stretch"
+            bg="gray.50"
+            sx={{
+              "&::-webkit-scrollbar": {
+                width: "6px",
+                background: "#e0e0e0",
+                borderRadius: "8px"
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "#b2b2b2",
+                borderRadius: "8px"
+              }
+            }}
           >
-            {messages.map((message, index) => (
+            {messages.map((msg, idx) => (
               <Flex
-                key={index}
-                justify={message.sender === 'user' ? 'flex-end' : 'flex-start'}
+                key={idx}
+                justify={msg.sender === "bot" ? "flex-start" : "flex-end"}
+                align="flex-end"
               >
+                {msg.sender === "bot" && (
+                  <Avatar src={langaImage} size="sm" mr={2} />
+                )}
                 <Box
-                  maxW="80%"
-                  bg={message.sender === 'user' ? 'teal.500' : 'white'}
-                  color={message.sender === 'user' ? 'white' : 'black'}
-                  p={3}
-                  borderRadius="lg"
+                  bg={msg.sender === "bot" ? "teal.600" : "blue.400"}
+                  color="white"
+                  px={4}
+                  py={2}
+                  borderRadius="xl"
+                  maxW="75%"
                   boxShadow="md"
+                  fontSize="md"
+                  fontWeight="medium"
                 >
-                  <Text>{message.text}</Text>
+                  {msg.text}
                 </Box>
+                {msg.sender === "user" && (
+                  <Avatar name="You" bg="blue.500" size="sm" ml={2} />
+                )}
               </Flex>
             ))}
           </VStack>
 
-          <HStack p={4} bg="white" borderTop="1px" borderColor="gray.200" spacing={3}>
+          {/* Input */}
+          <Flex
+            p={3}
+            bg="gray.100"
+            borderTop="1px solid"
+            borderColor="gray.200"
+            align="center"
+          >
             <Input
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
+              onChange={e => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Type your message..."
               size="md"
               bg="white"
-              color="black"
-              borderColor="gray.300"
-              _hover={{ borderColor: 'teal.500' }}
-              _focus={{ 
-                borderColor: 'teal.500', 
-                boxShadow: 'none',
-                color: 'black'
-              }}
-              _placeholder={{ color: 'gray.500' }}
+              borderRadius="full"
+              mr={2}
+              _focus={{ borderColor: "teal.400" }}
               disabled={isLoading || isRecording}
-              style={{ caretColor: 'black' }}
             />
             <IconButton
-              colorScheme={isRecording ? 'red' : 'teal'}
-              aria-label={isRecording ? 'Stop recording' : 'Start recording'}
+              colorScheme={isRecording ? "red" : "teal"}
+              aria-label={isRecording ? "Stop recording" : "Start recording"}
               icon={<FaMicrophone />}
               onClick={handleVoiceRecording}
               isLoading={isLoading}
               disabled={isLoading}
+              borderRadius="full"
+              mr={2}
             />
             <IconButton
               colorScheme="teal"
@@ -271,9 +310,10 @@ const SupportBot = () => {
               onClick={() => handleSendMessage()}
               isLoading={isLoading}
               disabled={isLoading || !inputMessage.trim() || isRecording}
+              borderRadius="full"
             />
-          </HStack>
-        </Box>
+          </Flex>
+        </>
       )}
     </Box>
   );
