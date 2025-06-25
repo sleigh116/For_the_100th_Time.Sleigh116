@@ -9,17 +9,10 @@ import {
   VStack,
   Progress,
   useColorModeValue,
-  Card,
-  CardHeader,
-  CardBody,
-  Stat,
-  StatLabel,
-  StatNumber,
-  Icon,
 } from '@chakra-ui/react';
 import { FaArrowLeft, FaSolarPanel, FaCoins, FaTree, FaBolt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { DashboardProvider } from '../context/DashboardContext';
+import { DashboardProvider, useDashboard } from '../context/DashboardContext';
 import EnergyModeToggle from '../components/widgets/EnergyModeToggle';
 import BudgetDial from '../components/widgets/BudgetDial';
 import DailyForecast from '../components/widgets/DailyForecast';
@@ -31,42 +24,65 @@ import ActivityReport from '../components/widgets/ActivityReport';
 import AITipsPanel from '../components/AITipsPanel';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { LineChart, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Line } from 'recharts';
+import DashboardCard from '../components/DashboardCard';
 
-// Mock Data
+// Comment out or remove these lines:
+// import StatusIndicator from '../components/widgets/StatusIndicator';
+// import FinancialMetric from '../components/widgets/FinancialMetric';
+// import ImpactMetrics from '../components/widgets/ImpactMetrics';
+
+// Add missing variable declarations at the top
 const dailySpend = 45.00;
 const monthlyBudget = 1500;
 const co2Saved = 120;
 const treesEquivalent = 85;
-const solarProduction = 8.2;
-const batteryLevel = 75;
-const gridConsumption = 1.5;
 
-const energyData = [
-  { time: '00:00', usage: 45 },
-  { time: '06:00', usage: 30 },
-  { time: '12:00', usage: 25 },
-  { time: '18:00', usage: 40 }
-];
+// Keep only one declaration at the top with other mock values
+const solarProduction = 8.2;  // kW
+const batteryLevel = 75;      // %
+const gridConsumption = 1.5;  // kW
 
 function DashboardContent() {
   const navigate = useNavigate();
-  const cardBg = useColorModeValue('white', 'gray.700');
-  const textColor = useColorModeValue('gray.600', 'gray.100');
-  const headingColor = useColorModeValue('gray.800', 'white');
-  const subtleTextColor = useColorModeValue('gray.500', 'gray.400');
+  const { headingColor, currentThemeConfig } = useDashboard();
+
+  // Color mode values correctly inside component
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'whiteAlpha.900');
+
+  // Move mock data either inside component or keep outside if static
+  const energyData = [
+    { time: '00:00', usage: 45 },
+    { time: '06:00', usage: 30 },
+    { time: '12:00', usage: 25 },
+    { time: '18:00', usage: 40 }
+  ];
 
   return (
     <Box
       minH="100vh"
-      bg={useColorModeValue('gray.50', 'gray.800')}
-      py={{ base: 4, md: 8 }}
+      backgroundImage={currentThemeConfig.gradients.main}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundAttachment="fixed"
+      position="relative"
+      _before={{
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        bg: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 1,
+      }}
     >
       <Box maxW="1400px" mx="auto" px={{ base: 4, md: 6, lg: 8 }}>
         <Flex justify="space-between" align="center" mb={8}>
           <Button
             leftIcon={<FaArrowLeft />}
             variant="link"
-            color={subtleTextColor}
+            color={textColor}
             onClick={() => navigate('/home')}
           >
             Back to Home
@@ -77,117 +93,127 @@ function DashboardContent() {
           Energy Dashboard
         </Heading>
 
+        {/* Dashboard Grid */}
         <ErrorBoundary>
           <SimpleGrid 
             columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
-            spacing={6}
+            spacing={4}
+            autoRows="minmax(200px, auto)"
           >
             {/* System Status Card */}
-            <Card bg={cardBg} borderRadius="lg" boxShadow="md">
-              <CardHeader>
-                <Heading size="md" color={headingColor}>
-                  <Icon as={FaSolarPanel} mr={2} color="blue.400" />
-                  System Status
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <VStack spacing={4} align="stretch">
-                  <Stat>
-                    <StatLabel color={subtleTextColor}>Solar Production</StatLabel>
-                    <StatNumber color={textColor}>{solarProduction} kW</StatNumber>
-                  </Stat>
-                  <Stat>
-                    <StatLabel color={subtleTextColor}>Battery Level</StatLabel>
-                    <StatNumber color={textColor}>{batteryLevel}%</StatNumber>
-                  </Stat>
-                  <Stat>
-                    <StatLabel color={subtleTextColor}>Grid Consumption</StatLabel>
-                    <StatNumber color={textColor}>{gridConsumption} kW</StatNumber>
-                  </Stat>
-                </VStack>
-              </CardBody>
-            </Card>
-            
+            <ErrorBoundary>
+              <DashboardCard
+                title="System Status"
+                icon={FaSolarPanel}
+                colSpan={1}
+              >
+                <Box p={4} bg={cardBg} borderRadius="md">
+                  <Text fontWeight="bold" color={textColor}>System Status</Text>
+                  <Text color={textColor}>Solar: {solarProduction}kW</Text>
+                  <Text color={textColor}>Battery: {batteryLevel}%</Text>
+                  <Text color={textColor}>Grid: {gridConsumption}kW</Text>
+                </Box>
+              </DashboardCard>
+            </ErrorBoundary>
+
             {/* Energy Usage Card */}
-            <Card bg={cardBg} borderRadius="lg" boxShadow="md" gridColumn={{ base: 'auto', lg: 'span 3' }}>
-              <CardHeader>
-                <Heading size="md" color={headingColor}>
-                  <Icon as={FaBolt} mr={2} color="yellow.400" />
-                  Energy Usage Trend
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <Box h={{ base: "300px", md: "320px" }}>
+            <ErrorBoundary>
+              <DashboardCard
+                title="Energy Usage"
+                icon={FaBolt}
+                colSpan={1}
+              >
+                <Box h="300px">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={energyData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={useColorModeValue('gray.200', 'gray.600')} />
-                      <XAxis dataKey="time" stroke={subtleTextColor} />
-                      <YAxis stroke={subtleTextColor} />
-                      <Tooltip contentStyle={{ backgroundColor: cardBg, borderColor: useColorModeValue('gray.200', 'gray.600') }} />
-                      <Line type="monotone" dataKey="usage" stroke="#8884d8" strokeWidth={2} />
+                    <LineChart data={energyData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="time" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line 
+                        type="monotone" 
+                        dataKey="usage" 
+                        stroke="#8884d8" 
+                        strokeWidth={2}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </Box>
-              </CardBody>
-            </Card>
+              </DashboardCard>
+            </ErrorBoundary>
 
-            {/* Environmental Impact Card */}
-            <Card bg={cardBg} borderRadius="lg" boxShadow="md">
-              <CardHeader>
-                <Heading size="md" color={headingColor}>
-                  <Icon as={FaTree} mr={2} color="teal.400" />
-                  Environmental Impact
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <VStack spacing={4} align="stretch">
-                  <Stat>
-                    <StatLabel color={subtleTextColor}>CO₂ Saved</StatLabel>
-                    <StatNumber color={textColor}>{co2Saved} kg</StatNumber>
-                  </Stat>
-                  <Stat>
-                    <StatLabel color={subtleTextColor}>Trees Equivalent</StatLabel>
-                    <StatNumber color={textColor}>{treesEquivalent}</StatNumber>
-                  </Stat>
-                </VStack>
-              </CardBody>
-            </Card>
+            {/* Financial Overview Card */}
+            <ErrorBoundary>
+              <DashboardCard
+                title="Financial Overview"
+                icon={FaCoins}
+                colSpan={1}
+              >
+                <Box p={4} bg={cardBg} borderRadius="md">
+                  <VStack align="stretch" spacing={3}>
+                    <Text fontWeight="bold" color={textColor}>Monthly Budget</Text>
+                    <Text fontSize="2xl" color={textColor}>R{monthlyBudget}</Text>
+                    <Progress value={(dailySpend * 30 / monthlyBudget) * 100} size="sm" colorScheme="blue" />
+                    <Text fontSize="sm" color={textColor} opacity={0.7}>Daily Average: R{dailySpend}</Text>
+                  </VStack>
+                </Box>
+              </DashboardCard>
+            </ErrorBoundary>
 
-            {/* Other Widgets */}
-            <ErrorBoundary><EnergyModeToggle /></ErrorBoundary>
-            <ErrorBoundary><BudgetDial /></ErrorBoundary>
-            <ErrorBoundary><SolarOutput /></ErrorBoundary>
-            <ErrorBoundary><DailyForecast /></ErrorBoundary>
-            <ErrorBoundary><WidgetLayout /></ErrorBoundary>
-            <ErrorBoundary><ThemeSwitcher /></ErrorBoundary>
-            <ErrorBoundary><EnergyAvatar /></ErrorBoundary>
-            <ErrorBoundary><ActivityReport /></ErrorBoundary>
-            <ErrorBoundary><AITipsPanel /></ErrorBoundary>
+            {/* Additional Cards */}
+            <ErrorBoundary>
+              <DashboardCard
+                title="Environmental Impact"
+                icon={FaTree}
+                colSpan={1}
+              >
+                <Box p={4} bg={cardBg} borderRadius="md">
+                  <Text fontWeight="bold" color={textColor}>Environmental Impact</Text>
+                  <Text color={textColor}>CO₂ Saved: {co2Saved}kg</Text>
+                  <Text color={textColor}>Trees Equivalent: {treesEquivalent}</Text>
+                </Box>
+              </DashboardCard>
+            </ErrorBoundary>
 
-            {/* Financial Overview Card - Moved to the end */}
-            <Card bg={cardBg} borderRadius="lg" boxShadow="md">
-              <CardHeader>
-                <Heading size="md" color={headingColor}>
-                  <Icon as={FaCoins} mr={2} color="green.400" />
-                  Financial Overview
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <VStack align="stretch" spacing={5}>
-                    <Stat>
-                        <StatLabel color={subtleTextColor}>Monthly Budget</StatLabel>
-                        <StatNumber color={textColor}>R{monthlyBudget}</StatNumber>
-                    </Stat>
-                    <Box>
-                        <Flex justify="space-between">
-                            <Text fontSize="sm" color={subtleTextColor}>Daily Avg</Text>
-                            <Text fontSize="sm" color={textColor}>R{dailySpend}</Text>
-                        </Flex>
-                        <Progress value={(dailySpend * 30 / monthlyBudget) * 100} size="sm" colorScheme="blue" borderRadius="full" mt={1} />
-                    </Box>
-                </VStack>
-              </CardBody>
-            </Card>
+            {/* First Row - Key Controls */}
+            <ErrorBoundary>
+              <EnergyModeToggle />
+            </ErrorBoundary>
+            
+            <ErrorBoundary>
+              <BudgetDial />
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+              <ThemeSwitcher />
+            </ErrorBoundary>
+
+            {/* Second Row - Visualizations */}
+            <ErrorBoundary>
+              <SolarOutput />
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+              <DailyForecast />
+            </ErrorBoundary>
+
+            {/* Third Row - Status & Activity */}
+            <ErrorBoundary>
+              <WidgetLayout />
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+              <EnergyAvatar />
+            </ErrorBoundary>
+
+            <ErrorBoundary>
+              <ActivityReport />
+            </ErrorBoundary>
+
+            {/* Full Width Bottom Row */}
+            <ErrorBoundary>
+              <AITipsPanel />
+            </ErrorBoundary>
           </SimpleGrid>
         </ErrorBoundary>
       </Box>

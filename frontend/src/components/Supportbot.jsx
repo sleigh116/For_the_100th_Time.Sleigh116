@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { FaPaperPlane, FaTimes, FaCommentDots, FaMicrophone } from 'react-icons/fa';
 import RecordRTC from 'recordrtc';
-import langaImage from '../assets/images/langa.png';  // Adjust the path if needed, e.g., if it's in a different subdirectory
 
 const SupportBot = () => {
   console.log('SupportBot component is mounting');  // Existing debug log
@@ -208,7 +207,7 @@ const SupportBot = () => {
             boxShadow={"md"}
           >
             <HStack>
-              <Avatar src={langaImage} size="md" border="2px solid white" />
+              <Avatar size="md" border="2px solid white" />
               <Heading size="md" fontWeight="bold" letterSpacing="wide">
                 Langa
               </Heading>
@@ -251,7 +250,7 @@ const SupportBot = () => {
                 align="flex-end"
               >
                 {msg.sender === "bot" && (
-                  <Avatar src={langaImage} size="sm" mr={2} />
+                  <Avatar size="sm" mr={2} />
                 )}
                 <Box
                   bg={msg.sender === "bot" ? "teal.600" : "blue.400"}
