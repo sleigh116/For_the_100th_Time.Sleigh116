@@ -21,6 +21,7 @@ import {
 
 const ForumPage = () => {
   const toast = useToast();
+  const navigate = useNavigate();
   
   const textColor = useColorModeValue('gray.800', 'white');
   const subTextColor = useColorModeValue('gray.600', 'gray.300');
@@ -33,6 +34,7 @@ const ForumPage = () => {
   const [newMessage, setNewMessage] = useState('');
   const [summary, setSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [replies, setReplies] = useState({});
 
   // Mock data for forum topics
   const topics = [
