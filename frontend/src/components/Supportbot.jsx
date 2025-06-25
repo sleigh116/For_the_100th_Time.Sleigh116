@@ -7,6 +7,7 @@ import {
   IconButton,
   Input,
   Heading,
+  Text,
   useToast,
   Avatar,
   useColorModeValue,
