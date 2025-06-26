@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import React from 'react';
 import {
   Box,
@@ -6,17 +7,16 @@ import {
   Flex,
   Heading,
   Text,
-  Progress,
-  useColorModeValue,
-  Badge,
+  ColorModeScript,
+  useColorMode
 } from '@chakra-ui/react';
-import { FaArrowLeft, FaSolarPanel, FaCoins, FaTree, FaBolt } from 'react-icons/fa';
+import { FaBolt, FaHome, FaTachometerAlt, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { DashboardProvider, useDashboard } from '../context/DashboardContext';
 import EnergyModeToggle from '../components/widgets/EnergyModeToggle';
 import BudgetDial from '../components/widgets/BudgetDial';
 import DailyForecast from '../components/widgets/DailyForecast';
-import ThemeSwitcher from '../components/widgets/ThemeSwitcher';
 import SolarOutput from '../components/widgets/SolarOutput';
 import WidgetLayout from '../components/widgets/WidgetLayout';
 import EnergyAvatar from '../components/widgets/EnergyAvatar';
@@ -32,23 +32,19 @@ import { LineChart, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, L
 // import ImpactMetrics from '../components/widgets/ImpactMetrics';
 
 // Add missing variable declarations at the top
-const dailySpend = 45.00;
-const monthlyBudget = 1500;
-const co2Saved = 120;
-const treesEquivalent = 85;
 
 // Keep only one declaration at the top with other mock values
-const solarProduction = 8.2;  // kW
-const batteryLevel = 75;      // %
-const gridConsumption = 1.5;  // kW
 
 function DashboardContent() {
   const navigate = useNavigate();
-  const { headingColor, currentThemeConfig, setEnabledWidgets, enabledWidgets } = useDashboard();
+  const { setEnabledWidgets, enabledWidgets } = useDashboard();
+  const { colorMode, toggleColorMode } = useColorMode();
 
-  // Color mode values correctly inside component
-  const cardBg = useColorModeValue('white', 'gray.700');
-  const textColor = useColorModeValue('gray.800', 'whiteAlpha.900');
+  // Update theme variables to be dynamic based on color mode
+  const backgroundColor = colorMode === 'light' ? '#ffffff' : '#1e1e2f';  // Light: white, Dark: dark background
+  const cardBg = colorMode === 'light' ? '#ffffff' : '#2b2b3d';  // Light: white, Dark: dark card
+  const textColor = colorMode === 'light' ? '#000000' : '#ffffff';  // Light: black, Dark: white
+  const accentColor = 'teal.300';  // Keep accent as is
 
   // Updated energyData to end at 17:00
   const energyData = [
@@ -80,158 +76,214 @@ function DashboardContent() {
   return (
     <Box
       minH="100vh"
-      backgroundImage={currentThemeConfig.gradients.main}
-      backgroundSize="cover"
-      backgroundPosition="center"
-      backgroundAttachment="fixed"
-      position="relative"
+      bg={backgroundColor}
+      color={textColor}
+      overflowY="auto"
+      px={{ base: 4, md: 8 }}
+      py={6}
     >
-      <Box maxW="1400px" mx="auto" px={{ base: 4, md: 6, lg: 8 }}>
-        <Flex justify="flex-end" align="center" mb={8}>
-          <Button
-            leftIcon={<FaArrowLeft />}
-            color={textColor}
-            onClick={() => navigate('/home')}
-          >
-            Back to Home
-          </Button>
-        </Flex>
-
-        <Heading as="h1" size="xl" color={headingColor} mb={8}>
-          Energy Dashboard
-        </Heading>
-
-        {/* Moved cards to the top */}
-        <Box mb={8}>
-          <ErrorBoundary>
-            <DashboardCard
-              title="Financial Overview"
-              icon={FaCoins}
-              colSpan={1}
-            >
-              <Box p={4} bg={cardBg} borderRadius="md">
-                <Text fontWeight="bold" color={textColor}>Monthly Budget</Text>
-                <Text fontSize="2xl" color={textColor}>R{monthlyBudget}</Text>
-                <Progress value={(dailySpend * 30 / monthlyBudget) * 100} size="sm" colorScheme="teal" />
-                <Text fontSize="sm" color={textColor} opacity={0.7}>Daily Average: R{dailySpend}</Text>
-                <Badge colorScheme="teal" mt={2}>Budget Status</Badge>
-              </Box>
-            </DashboardCard>
-          </ErrorBoundary>
-          
-          <ErrorBoundary>
-            <DashboardCard
-              title="Environmental Impact"
-              icon={FaTree}
-              colSpan={1}
-            >
-              <Box p={4} bg={cardBg} borderRadius="md">
-                <Text fontWeight="bold" color={textColor}>Environmental Impact</Text>
-                <Text fontSize="2xl" color={textColor}>CO₂ Saved: {co2Saved}kg</Text>
-                <Text fontSize="sm" color={textColor} opacity={0.7}>Trees Equivalent: {treesEquivalent}</Text>
-                <Badge colorScheme="teal" mt={2}>Impact Status</Badge>
-              </Box>
-            </DashboardCard>
-          </ErrorBoundary>
+      <Flex direction="row" w="full" maxW="1400px" mx="auto">
+        {/* Vertical Sidebar with theme-aware styles */}
+        <Box
+          as="nav"
+          w={{ base: '60px', md: '200px' }}
+          bg={backgroundColor}  // Use dynamic background color
+          color={textColor}  // Use dynamic text color
+          h="100vh"
+          position="fixed"
+          left={0}
+          p={4}
+          borderRightWidth="1px"
+          borderColor={colorMode === 'light' ? 'gray.300' : 'gray.700'}  // Dynamic border color based on mode
+        >
+          <Flex direction="column" align="center" gap={6}>
+            <Text fontSize="lg" fontWeight="bold">Menu</Text>
+            <Button variant="ghost" onClick={() => navigate('/home')} leftIcon={<FaHome />} />
+            <Button variant="ghost" onClick={() => navigate('/dashboard')} leftIcon={<FaTachometerAlt />} />
+            <Button variant="ghost" onClick={() => navigate('/settings')} leftIcon={<FaCog />} />
+            <Button variant="ghost" onClick={() => navigate('/logout')} leftIcon={<FaSignOutAlt />} />
+          </Flex>
         </Box>
 
-        {/* Dashboard Grid with conditional widget rendering */}
-        <ErrorBoundary>
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={4} autoRows="minmax(200px, auto)">
-            {/* System Status Card - Always render or add to enabled list if needed */}
-            <ErrorBoundary>
-              <DashboardCard
-                title="System Status"
-                icon={FaSolarPanel}
-                colSpan={1}
-              >
-                <Box p={4} bg={cardBg} borderRadius="md">
-                  <Text fontWeight="bold" color={textColor}>System Status</Text>
-                  <Text color={textColor}>Solar: {solarProduction}kW</Text>
-                  <Text color={textColor}>Battery: {batteryLevel}%</Text>
-                  <Text color={textColor}>Grid: {gridConsumption}kW</Text>
-                  <Badge colorScheme="teal" mt={2}>System Health</Badge>
-                </Box>
-              </DashboardCard>
-            </ErrorBoundary>
-            
+        {/* Main Content with Padding for Sidebar */}
+        <Box ml={{ base: 0, md: '200px' }} w="full" px={8} py={6}>
+          {/* Theme toggle button at the top */}
+          <Flex justify="flex-end" mb={6}>
+            <Button onClick={toggleColorMode} bg="teal.500" color="white" _hover={{ bg: "teal.600" }}>
+              Toggle Mode
+            </Button>
+          </Flex>
+
+          <Heading as="h1" size="xl" color={accentColor} mb={8}>
+            Energy Dashboard
+          </Heading>
+
+          {/* Widget Grid */}
+          <SimpleGrid
+            columns={{ base: 1, md: 2, lg: 3 }}
+            spacing={6}
+            mb={8}
+          >
             {enabledWidgets.includes('EnergyModeToggle') && (
               <ErrorBoundary>
-                <EnergyModeToggle />
-              </ErrorBoundary>
-            )}
-            {enabledWidgets.includes('BudgetDial') && (
-              <ErrorBoundary>
-                <BudgetDial />
-              </ErrorBoundary>
-            )}
-            {enabledWidgets.includes('ThemeSwitcher') && (
-              <ErrorBoundary>
-                <ThemeSwitcher />
-              </ErrorBoundary>
-            )}
-            {enabledWidgets.includes('SolarOutput') && (
-              <ErrorBoundary>
-                <SolarOutput />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <EnergyModeToggle />
+                </motion.div>
               </ErrorBoundary>
             )}
             {enabledWidgets.includes('DailyForecast') && (
               <ErrorBoundary>
-                <DailyForecast />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <DailyForecast />
+                </motion.div>
               </ErrorBoundary>
             )}
-            {enabledWidgets.includes('WidgetLayout') && (
+            {enabledWidgets.includes('EnergyAvatar') && (  // Assuming EnergyAvatar is Energy Status
               <ErrorBoundary>
-                <WidgetLayout />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <EnergyAvatar />
+                </motion.div>
               </ErrorBoundary>
             )}
-            {enabledWidgets.includes('EnergyAvatar') && (
+
+            {enabledWidgets.includes('BudgetDial') && (
               <ErrorBoundary>
-                <EnergyAvatar />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <BudgetDial />
+                </motion.div>
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('SolarOutput') && (
+              <ErrorBoundary>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <SolarOutput />
+                </motion.div>
+              </ErrorBoundary>
+            )}
+
+            {enabledWidgets.includes('AITipsPanel') && (
+              <ErrorBoundary>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <AITipsPanel />
+                </motion.div>
               </ErrorBoundary>
             )}
             {enabledWidgets.includes('ActivityReport') && (
               <ErrorBoundary>
-                <ActivityReport />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <ActivityReport />
+                </motion.div>
               </ErrorBoundary>
             )}
-            {enabledWidgets.includes('AITipsPanel') && (
+            {enabledWidgets.includes('WidgetLayout') && (
               <ErrorBoundary>
-                <AITipsPanel />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  as={Box}
+                  bg={cardBg}
+                  p={6}
+                  borderRadius="2xl"
+                  boxShadow="md"
+                  _hover={{ boxShadow: "lg" }}
+                >
+                  <WidgetLayout />
+                </motion.div>
               </ErrorBoundary>
             )}
           </SimpleGrid>
-        </ErrorBoundary>
 
-        {/* Energy Usage Card at the bottom */}
-        <Box mt={8}>
-          <ErrorBoundary>
-            <DashboardCard
-              title="Energy Usage"
-              icon={FaBolt}
-              colSpan={1}
-            >
-              <Box h="300px">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={energyData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line 
-                      type="monotone" 
-                      dataKey="usage" 
-                      stroke="#8884d8" 
-                      strokeWidth={2} 
-                      animationDuration={1000}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </Box>
-            </DashboardCard>
-          </ErrorBoundary>
+          {/* Full-width Energy Usage Chart */}
+          <Box w="full" mt={8} bg={cardBg} p={6} borderRadius="2xl" boxShadow="md" _hover={{ boxShadow: "lg" }}>
+            <ErrorBoundary>
+              <DashboardCard title="Energy Usage" icon={FaBolt}>
+                <Box h="400px" w="100%">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={energyData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" />
+                      <XAxis dataKey="time" stroke="#ffffff" />
+                      <YAxis stroke="#ffffff" />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="usage" stroke={accentColor} strokeWidth={3} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </Box>
+              </DashboardCard>
+            </ErrorBoundary>
+          </Box>
         </Box>
-      </Box>
+      </Flex>
     </Box>
   );
 }
@@ -239,6 +291,7 @@ function DashboardContent() {
 function DashboardPage() {
   return (
     <DashboardProvider>
+      <ColorModeScript initialColorMode="dark" />
       <DashboardContent />
     </DashboardProvider>
   );
