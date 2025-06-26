@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api'; // Assuming auth service is still used
 import { useToast } from '@chakra-ui/react';
+import SolarOutput from '../components/SolarOutput';
 
 // Import Chakra UI Components
 import {
@@ -475,6 +476,7 @@ function DashboardPage() {
 
         </VStack>
 
+        <SolarOutput />
 
       </Box>
     </Box>

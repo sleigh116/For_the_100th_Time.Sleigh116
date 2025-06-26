@@ -25,8 +25,7 @@ from flask import Blueprint, url_for, session
 from email_utils import send_welcome_email
 from app import create_app
 from hugging_services import HuggingFaceChatbot
-from app.routes.home import home_bp  # Add this line
-from app.routes.ai import ai_bp  # Correct import path
+from app.routes import register_routes
 
 # Load environment variables (same as support.py)
 load_dotenv()
@@ -60,9 +59,8 @@ CORS(flask_app,
      supports_credentials=True)
 jwt = JWTManager(flask_app)
 
-# Register blueprints
-flask_app.register_blueprint(home_bp)  # Existing blueprint
-flask_app.register_blueprint(ai_bp)    # Register the AI blueprint
+# Register routes using the centralized function
+register_routes(flask_app)
 
 # Database connection helper (PostgreSQL)
 def get_db():
