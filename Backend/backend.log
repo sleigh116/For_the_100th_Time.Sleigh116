@@ -80,3 +80,18 @@
 2025-06-25 20:03:21,325 - INFO - Verifying password: Incoming password length 12, Stored hash length 162
 2025-06-25 20:03:21,529 - ERROR - Password mismatch for email: nathiradebe201@gmail.com - Hash verification failed
 2025-06-25 20:03:21,530 - INFO - 127.0.0.1 - - [25/Jun/2025 20:03:21] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-06-26 12:03:29,018 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-26 12:03:29,018 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-26 12:03:29,020 - INFO -  * Restarting with stat
+2025-06-26 12:03:39,555 - WARNING -  * Debugger is active!
+2025-06-26 12:03:39,562 - INFO -  * Debugger PIN: 240-196-647
+2025-06-26 12:04:40,078 - INFO - 127.0.0.1 - - [26/Jun/2025 12:04:40] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-26 12:04:40,388 - INFO - Attempting login for email: nathiradebe2020@gmail.com
+2025-06-26 12:04:40,533 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
+2025-06-26 12:04:40,989 - INFO - 127.0.0.1 - - [26/Jun/2025 12:04:40] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-26 12:40:15,826 - INFO - 127.0.0.1 - - [26/Jun/2025 12:40:15] "[33mOPTIONS /api/chat HTTP/1.1[0m" 404 -
+2025-06-26 12:50:35,232 - INFO - 127.0.0.1 - - [26/Jun/2025 12:50:35] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-26 12:50:35,557 - INFO - Attempting login for email: nathiradebe2020@gmail.com
+2025-06-26 12:50:35,867 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
+2025-06-26 12:50:36,603 - INFO - 127.0.0.1 - - [26/Jun/2025 12:50:36] "POST /api/auth/login HTTP/1.1" 200 -

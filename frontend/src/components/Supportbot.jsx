@@ -177,26 +177,15 @@ const SupportBot = () => {
   };
 
   return (
-    <Box
-      position="fixed"
-      bottom="24px"
-      right="24px"
-      zIndex="9999"  // Ensure this is high enough; you can try increasing to 10000 if needed
-      width={["95vw", "350px"]}
-      maxWidth="100vw"
-      height="520px"
-      bg="white"
-      borderRadius="2xl"
-      boxShadow="2xl"
-      overflow="hidden"
-      display="flex"
-      flexDirection="column"
-      opacity={isOpen ? 1 : 0}  // Only affects the full chat window
-      transition="opacity 0.3s"
-      visibility="visible"  // Added to force visibility as a debug measure
-    >
-      {!isOpen ? (
-        <>
+    <>
+      {/* Floating Bubble (always visible, but hidden when chat is open) */}
+      {!isOpen && (
+        <Box
+          position="fixed"
+          bottom="24px"
+          right="24px"
+          zIndex="9999"
+        >
           <IconButton
             aria-label="Chat with Langa"
             icon={<FaCommentDots />}
@@ -206,9 +195,26 @@ const SupportBot = () => {
             boxShadow="lg"
             onClick={() => setIsOpen(true)}
           />
-        </>
-      ) : (
-        <>
+        </Box>
+      )}
+
+      {/* Chatbot Card (only visible when open) */}
+      {isOpen && (
+        <Box
+          position="fixed"
+          bottom="24px"
+          right="24px"
+          zIndex="9999"
+          width={["95vw", "350px"]}
+          maxWidth="100vw"
+          height="520px"
+          bg="white"
+          borderRadius="2xl"
+          boxShadow="2xl"
+          overflow="hidden"
+          display="flex"
+          flexDirection="column"
+        >
           <Flex
             align={"center"}
             justify={"space-between"}
@@ -218,7 +224,7 @@ const SupportBot = () => {
             boxShadow={"md"}
           >
             <HStack>
-              <Avatar size="md" border="2px solid white" />
+              <Avatar size="md" border="2px solid white" src={langaImage} />
               <Heading size="md" fontWeight="bold" letterSpacing="wide">
                 Langa
               </Heading>
@@ -254,8 +260,8 @@ const SupportBot = () => {
               }
             }}
           >
-            {messages.map((message) => (
-              <Flex key={message.id} justify={message.sender === 'bot' ? 'flex-start' : 'flex-end'} align="center">
+            {messages.map((message, idx) => (
+              <Flex key={idx} justify={message.sender === 'bot' ? 'flex-start' : 'flex-end'} align="center">
                 {message.sender === 'bot' && <Avatar name="SolarBot" src={langaImage} size="sm" mr={2} />}
                 <Box bg={message.sender === 'bot' ? bgColor : userBgColor} color={textColor} p={3} borderRadius="md">
                   {message.text}
@@ -306,9 +312,9 @@ const SupportBot = () => {
               borderRadius="full"
             />
           </Flex>
-        </>
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 

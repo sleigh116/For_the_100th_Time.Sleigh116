@@ -6,9 +6,9 @@ import {
   Flex,
   Heading,
   Text,
-  VStack,
   Progress,
   useColorModeValue,
+  Badge,
 } from '@chakra-ui/react';
 import { FaArrowLeft, FaSolarPanel, FaCoins, FaTree, FaBolt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -23,8 +23,8 @@ import EnergyAvatar from '../components/widgets/EnergyAvatar';
 import ActivityReport from '../components/widgets/ActivityReport';
 import AITipsPanel from '../components/AITipsPanel';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { LineChart, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Line } from 'recharts';
 import DashboardCard from '../components/DashboardCard';
+import { LineChart, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Line } from 'recharts';
 
 // Comment out or remove these lines:
 // import StatusIndicator from '../components/widgets/StatusIndicator';
@@ -44,19 +44,38 @@ const gridConsumption = 1.5;  // kW
 
 function DashboardContent() {
   const navigate = useNavigate();
-  const { headingColor, currentThemeConfig } = useDashboard();
+  const { headingColor, currentThemeConfig, setEnabledWidgets, enabledWidgets } = useDashboard();
 
   // Color mode values correctly inside component
-  const cardBg = useColorModeValue('white', 'gray.800');
+  const cardBg = useColorModeValue('white', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'whiteAlpha.900');
 
-  // Move mock data either inside component or keep outside if static
+  // Updated energyData to end at 17:00
   const energyData = [
     { time: '00:00', usage: 45 },
+    { time: '01:00', usage: 42 },
+    { time: '02:00', usage: 40 },
+    { time: '03:00', usage: 38 },
+    { time: '04:00', usage: 35 },
+    { time: '05:00', usage: 32 },
     { time: '06:00', usage: 30 },
-    { time: '12:00', usage: 25 },
-    { time: '18:00', usage: 40 }
+    { time: '07:00', usage: 28 },
+    { time: '08:00', usage: 25 },
+    { time: '09:00', usage: 22 },
+    { time: '10:00', usage: 20 },
+    { time: '11:00', usage: 18 },
+    { time: '12:00', usage: 15 },
+    { time: '13:00', usage: 14 },
+    { time: '14:00', usage: 16 },
+    { time: '15:00', usage: 18 },
+    { time: '16:00', usage: 20 },
+    { time: '17:00', usage: 22 },
   ];
+
+  // Default enabled widgets (can be toggled via user interaction)
+  if (!enabledWidgets || enabledWidgets.length === 0) {
+    setEnabledWidgets(['EnergyModeToggle', 'BudgetDial', 'ThemeSwitcher', 'SolarOutput', 'DailyForecast', 'WidgetLayout', 'EnergyAvatar', 'ActivityReport', 'AITipsPanel']);  // Initialize if needed
+  }
 
   return (
     <Box
@@ -66,22 +85,11 @@ function DashboardContent() {
       backgroundPosition="center"
       backgroundAttachment="fixed"
       position="relative"
-      _before={{
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        bg: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 1,
-      }}
     >
       <Box maxW="1400px" mx="auto" px={{ base: 4, md: 6, lg: 8 }}>
-        <Flex justify="space-between" align="center" mb={8}>
+        <Flex justify="flex-end" align="center" mb={8}>
           <Button
             leftIcon={<FaArrowLeft />}
-            variant="link"
             color={textColor}
             onClick={() => navigate('/home')}
           >
@@ -93,14 +101,44 @@ function DashboardContent() {
           Energy Dashboard
         </Heading>
 
-        {/* Dashboard Grid */}
+        {/* Moved cards to the top */}
+        <Box mb={8}>
+          <ErrorBoundary>
+            <DashboardCard
+              title="Financial Overview"
+              icon={FaCoins}
+              colSpan={1}
+            >
+              <Box p={4} bg={cardBg} borderRadius="md">
+                <Text fontWeight="bold" color={textColor}>Monthly Budget</Text>
+                <Text fontSize="2xl" color={textColor}>R{monthlyBudget}</Text>
+                <Progress value={(dailySpend * 30 / monthlyBudget) * 100} size="sm" colorScheme="teal" />
+                <Text fontSize="sm" color={textColor} opacity={0.7}>Daily Average: R{dailySpend}</Text>
+                <Badge colorScheme="teal" mt={2}>Budget Status</Badge>
+              </Box>
+            </DashboardCard>
+          </ErrorBoundary>
+          
+          <ErrorBoundary>
+            <DashboardCard
+              title="Environmental Impact"
+              icon={FaTree}
+              colSpan={1}
+            >
+              <Box p={4} bg={cardBg} borderRadius="md">
+                <Text fontWeight="bold" color={textColor}>Environmental Impact</Text>
+                <Text fontSize="2xl" color={textColor}>CO₂ Saved: {co2Saved}kg</Text>
+                <Text fontSize="sm" color={textColor} opacity={0.7}>Trees Equivalent: {treesEquivalent}</Text>
+                <Badge colorScheme="teal" mt={2}>Impact Status</Badge>
+              </Box>
+            </DashboardCard>
+          </ErrorBoundary>
+        </Box>
+
+        {/* Dashboard Grid with conditional widget rendering */}
         <ErrorBoundary>
-          <SimpleGrid 
-            columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
-            spacing={4}
-            autoRows="minmax(200px, auto)"
-          >
-            {/* System Status Card */}
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={4} autoRows="minmax(200px, auto)">
+            {/* System Status Card - Always render or add to enabled list if needed */}
             <ErrorBoundary>
               <DashboardCard
                 title="System Status"
@@ -112,110 +150,87 @@ function DashboardContent() {
                   <Text color={textColor}>Solar: {solarProduction}kW</Text>
                   <Text color={textColor}>Battery: {batteryLevel}%</Text>
                   <Text color={textColor}>Grid: {gridConsumption}kW</Text>
+                  <Badge colorScheme="teal" mt={2}>System Health</Badge>
                 </Box>
               </DashboardCard>
-            </ErrorBoundary>
-
-            {/* Energy Usage Card */}
-            <ErrorBoundary>
-              <DashboardCard
-                title="Energy Usage"
-                icon={FaBolt}
-                colSpan={1}
-              >
-                <Box h="300px">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={energyData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="time" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line 
-                        type="monotone" 
-                        dataKey="usage" 
-                        stroke="#8884d8" 
-                        strokeWidth={2}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </Box>
-              </DashboardCard>
-            </ErrorBoundary>
-
-            {/* Financial Overview Card */}
-            <ErrorBoundary>
-              <DashboardCard
-                title="Financial Overview"
-                icon={FaCoins}
-                colSpan={1}
-              >
-                <Box p={4} bg={cardBg} borderRadius="md">
-                  <VStack align="stretch" spacing={3}>
-                    <Text fontWeight="bold" color={textColor}>Monthly Budget</Text>
-                    <Text fontSize="2xl" color={textColor}>R{monthlyBudget}</Text>
-                    <Progress value={(dailySpend * 30 / monthlyBudget) * 100} size="sm" colorScheme="blue" />
-                    <Text fontSize="sm" color={textColor} opacity={0.7}>Daily Average: R{dailySpend}</Text>
-                  </VStack>
-                </Box>
-              </DashboardCard>
-            </ErrorBoundary>
-
-            {/* Additional Cards */}
-            <ErrorBoundary>
-              <DashboardCard
-                title="Environmental Impact"
-                icon={FaTree}
-                colSpan={1}
-              >
-                <Box p={4} bg={cardBg} borderRadius="md">
-                  <Text fontWeight="bold" color={textColor}>Environmental Impact</Text>
-                  <Text color={textColor}>CO₂ Saved: {co2Saved}kg</Text>
-                  <Text color={textColor}>Trees Equivalent: {treesEquivalent}</Text>
-                </Box>
-              </DashboardCard>
-            </ErrorBoundary>
-
-            {/* First Row - Key Controls */}
-            <ErrorBoundary>
-              <EnergyModeToggle />
             </ErrorBoundary>
             
-            <ErrorBoundary>
-              <BudgetDial />
-            </ErrorBoundary>
-
-            <ErrorBoundary>
-              <ThemeSwitcher />
-            </ErrorBoundary>
-
-            {/* Second Row - Visualizations */}
-            <ErrorBoundary>
-              <SolarOutput />
-            </ErrorBoundary>
-
-            <ErrorBoundary>
-              <DailyForecast />
-            </ErrorBoundary>
-
-            {/* Third Row - Status & Activity */}
-            <ErrorBoundary>
-              <WidgetLayout />
-            </ErrorBoundary>
-
-            <ErrorBoundary>
-              <EnergyAvatar />
-            </ErrorBoundary>
-
-            <ErrorBoundary>
-              <ActivityReport />
-            </ErrorBoundary>
-
-            {/* Full Width Bottom Row */}
-            <ErrorBoundary>
-              <AITipsPanel />
-            </ErrorBoundary>
+            {enabledWidgets.includes('EnergyModeToggle') && (
+              <ErrorBoundary>
+                <EnergyModeToggle />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('BudgetDial') && (
+              <ErrorBoundary>
+                <BudgetDial />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('ThemeSwitcher') && (
+              <ErrorBoundary>
+                <ThemeSwitcher />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('SolarOutput') && (
+              <ErrorBoundary>
+                <SolarOutput />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('DailyForecast') && (
+              <ErrorBoundary>
+                <DailyForecast />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('WidgetLayout') && (
+              <ErrorBoundary>
+                <WidgetLayout />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('EnergyAvatar') && (
+              <ErrorBoundary>
+                <EnergyAvatar />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('ActivityReport') && (
+              <ErrorBoundary>
+                <ActivityReport />
+              </ErrorBoundary>
+            )}
+            {enabledWidgets.includes('AITipsPanel') && (
+              <ErrorBoundary>
+                <AITipsPanel />
+              </ErrorBoundary>
+            )}
           </SimpleGrid>
         </ErrorBoundary>
+
+        {/* Energy Usage Card at the bottom */}
+        <Box mt={8}>
+          <ErrorBoundary>
+            <DashboardCard
+              title="Energy Usage"
+              icon={FaBolt}
+              colSpan={1}
+            >
+              <Box h="300px">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={energyData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line 
+                      type="monotone" 
+                      dataKey="usage" 
+                      stroke="#8884d8" 
+                      strokeWidth={2} 
+                      animationDuration={1000}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Box>
+            </DashboardCard>
+          </ErrorBoundary>
+        </Box>
       </Box>
     </Box>
   );

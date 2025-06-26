@@ -55,6 +55,9 @@ export const DashboardProvider = ({ children }) => {
     }));
   };
 
+  const [headingColor, setHeadingColor] = useState('...');  // Assuming this exists
+  const [enabledWidgets, setEnabledWidgets] = useState(['EnergyModeToggle', 'BudgetDial', 'ThemeSwitcher', 'SolarOutput', 'DailyForecast', 'WidgetLayout', 'EnergyAvatar', 'ActivityReport', 'AITipsPanel']);  // Initial default array
+
   const value = {
     energyMode,
     currentTheme,
@@ -64,6 +67,10 @@ export const DashboardProvider = ({ children }) => {
     toggleWidget,
     currentModeConfig: energyModes[energyMode],
     currentThemeConfig,
+    headingColor,
+    setHeadingColor,
+    enabledWidgets,
+    setEnabledWidgets,
   };
 
   return (
