@@ -32,6 +32,7 @@ import ForumPage from './pages/ForumPage';
 import ReferPage from './pages/ReferPage';
 import GroupBuying from './pages/GroupBuying';
 import SubscriptionPage from './pages/SubscriptionPage';
+import AISuggestions from './pages/AISuggestions';
 
 // Protected Route component
 const ProtectedRoute = () => {
@@ -77,6 +78,7 @@ function App() {
                 <Route path="/refer" element={<ReferPage />} />
                 <Route path="/group-buying" element={<GroupBuying />} />
                 <Route path="/subscription" element={<SubscriptionPage />} />
+                <Route path="/ai-suggestions" element={<AISuggestions />} />
               </Route>
 
               {/* Fallback route */}

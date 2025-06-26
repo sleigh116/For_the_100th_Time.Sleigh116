@@ -121,3 +121,23 @@
 2025-06-26 13:53:41,764 - INFO - Attempting login for email: nathiradebe2020@gmail.com
 2025-06-26 13:53:42,035 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
 2025-06-26 13:53:42,759 - INFO - 127.0.0.1 - - [26/Jun/2025 13:53:42] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:25:00,630 - INFO - 127.0.0.1 - - [26/Jun/2025 14:25:00] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:25:00,947 - INFO - Attempting login for email: nathiradebe2020@gmail.com
+2025-06-26 14:25:01,010 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
+2025-06-26 14:25:01,211 - INFO - 127.0.0.1 - - [26/Jun/2025 14:25:01] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:25:10,939 - INFO - 127.0.0.1 - - [26/Jun/2025 14:25:10] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:25:10,963 - INFO - Attempting login for email: nathiradebe2020@gmail.com
+2025-06-26 14:25:11,013 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
+2025-06-26 14:25:11,194 - INFO - 127.0.0.1 - - [26/Jun/2025 14:25:11] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:25:26,346 - INFO - 127.0.0.1 - - [26/Jun/2025 14:25:26] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:25:26,660 - INFO - Attempting login for email: nathiradebe2020@gmail.com
+2025-06-26 14:25:26,712 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
+2025-06-26 14:25:26,909 - INFO - 127.0.0.1 - - [26/Jun/2025 14:25:26] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:26:17,543 - INFO - 127.0.0.1 - - [26/Jun/2025 14:26:17] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:26:17,546 - INFO - Attempting login for email: nathiradebe2020@gmail.com
+2025-06-26 14:26:17,599 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
+2025-06-26 14:26:17,771 - INFO - 127.0.0.1 - - [26/Jun/2025 14:26:17] "POST /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:39:46,305 - INFO - 127.0.0.1 - - [26/Jun/2025 14:39:46] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+2025-06-26 14:39:46,617 - INFO - Attempting login for email: nathiradebe2020@gmail.com
+2025-06-26 14:39:46,670 - INFO - Verifying password: Incoming password length 13, Stored hash length 162
+2025-06-26 14:39:46,853 - INFO - 127.0.0.1 - - [26/Jun/2025 14:39:46] "POST /api/auth/login HTTP/1.1" 200 -

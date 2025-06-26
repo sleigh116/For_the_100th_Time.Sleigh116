@@ -4,6 +4,7 @@ import { auth } from '../services/api';
 import { useDashboard } from '../context/DashboardContext';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { motion } from 'framer-motion';
+import { Bot } from 'lucide-react';
 
 // Import the video
 import backgroundVideo from '../assets/videos/Slowed-GridX-Video.mp4';
@@ -184,6 +185,13 @@ function HomePage() {
       description: 'Manage your energy subscription plans',
       path: '/subscription',
       colorScheme: 'blue'
+    },
+    {
+      icon: Bot,
+      title: 'AI Suggestions',
+      description: 'Get smart tips from our AI to save energy and manage finances',
+      path: '/ai-suggestions',
+      colorScheme: 'purple'
     }
     ],
     solarTips: [
