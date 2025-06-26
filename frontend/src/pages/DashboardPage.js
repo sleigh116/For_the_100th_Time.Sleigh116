@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 /* eslint-disable react/jsx-no-undef */
 import React from 'react';
 import {
@@ -8,11 +9,20 @@ import {
   Heading,
   Text,
   ColorModeScript,
-  useColorMode
+  useColorMode,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  VStack,
+  IconButton,
+  useDisclosure
 } from '@chakra-ui/react';
-import { FaBolt, FaHome, FaTachometerAlt, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaBolt, FaTachometerAlt, FaCog, FaSignOutAlt, FaUser, FaWallet, FaComments, FaLightbulb, FaChartBar, FaQuestionCircle, FaBars } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { DashboardProvider, useDashboard } from '../context/DashboardContext';
 import EnergyModeToggle from '../components/widgets/EnergyModeToggle';
 import BudgetDial from '../components/widgets/BudgetDial';
@@ -39,6 +49,7 @@ function DashboardContent() {
   const navigate = useNavigate();
   const { setEnabledWidgets, enabledWidgets } = useDashboard();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();  // For mobile drawer
 
   // Update theme variables to be dynamic based on color mode
   const backgroundColor = colorMode === 'light' ? '#ffffff' : '#1e1e2f';  // Light: white, Dark: dark background
@@ -83,27 +94,107 @@ function DashboardContent() {
       py={6}
     >
       <Flex direction="row" w="full" maxW="1400px" mx="auto">
-        {/* Vertical Sidebar with theme-aware styles */}
+        {/* Mobile Menu Button */}
+        <IconButton
+          aria-label="Open Menu"
+          icon={<FaBars />}
+          display={{ base: 'flex', md: 'none' }}
+          onClick={onOpen}
+          position="fixed"
+          top={4}
+          left={4}
+          zIndex={1000}
+          bg={accentColor}
+          color="white"
+        />
+
+        {/* Sidebar for Desktop */}
         <Box
           as="nav"
-          w={{ base: '60px', md: '200px' }}
-          bg={backgroundColor}  // Use dynamic background color
-          color={textColor}  // Use dynamic text color
+          w={{ base: '0', md: '200px' }}  // Hidden on mobile
+          bg={backgroundColor}
+          color={textColor}
           h="100vh"
-          position="fixed"
+          position={{ md: 'fixed' }}
           left={0}
           p={4}
           borderRightWidth="1px"
-          borderColor={colorMode === 'light' ? 'gray.300' : 'gray.700'}  // Dynamic border color based on mode
+          borderColor={colorMode === 'light' ? 'gray.300' : 'gray.700'}
+          display={{ base: 'none', md: 'block' }}  // Only visible on md and up
         >
-          <Flex direction="column" align="center" gap={6}>
+          <VStack align="stretch" spacing={4}>
             <Text fontSize="lg" fontWeight="bold">Menu</Text>
-            <Button variant="ghost" onClick={() => navigate('/home')} leftIcon={<FaHome />} />
-            <Button variant="ghost" onClick={() => navigate('/dashboard')} leftIcon={<FaTachometerAlt />} />
-            <Button variant="ghost" onClick={() => navigate('/settings')} leftIcon={<FaCog />} />
-            <Button variant="ghost" onClick={() => navigate('/logout')} leftIcon={<FaSignOutAlt />} />
-          </Flex>
+            <NavLink to="/dashboard" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaTachometerAlt />} w="full">Dashboard</Button>
+            </NavLink>
+            <NavLink to="/profile" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaUser />} w="full">Profile</Button>
+            </NavLink>
+            <NavLink to="/expenses" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaWallet />} w="full">Expenses</Button>
+            </NavLink>
+            <NavLink to="/energy" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaBolt />} w="full">Energy Monitor</Button>
+            </NavLink>
+            <NavLink to="/forum" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaComments />} w="full">Forum</Button>
+            </NavLink>
+            <NavLink to="/ai-suggestions" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaLightbulb />} w="full">AI Suggestions</Button>
+            </NavLink>
+            <NavLink to="/analytics" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaChartBar />} w="full">Analytics</Button>
+            </NavLink>
+            <NavLink to="/settings" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaCog />} w="full">Settings</Button>
+            </NavLink>
+            <NavLink to="/help" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })}>
+              <Button variant="ghost" leftIcon={<FaQuestionCircle />} w="full">Help Center</Button>
+            </NavLink>
+            <Button variant="ghost" leftIcon={<FaSignOutAlt />} w="full" onClick={() => navigate('/login')}>Logout</Button>  // Triggers logout and redirect
+          </VStack>
         </Box>
+
+        {/* Drawer for Mobile */}
+        <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="xs">
+          <DrawerOverlay />
+          <DrawerContent bg={backgroundColor} color={textColor}>
+            <DrawerCloseButton />
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody>
+              <VStack align="stretch" spacing={4}>
+                <NavLink to="/dashboard" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaTachometerAlt />} w="full">Dashboard</Button>
+                </NavLink>
+                <NavLink to="/profile" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaUser />} w="full">Profile</Button>
+                </NavLink>
+                <NavLink to="/expenses" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaWallet />} w="full">Expenses</Button>
+                </NavLink>
+                <NavLink to="/energy" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaBolt />} w="full">Energy Monitor</Button>
+                </NavLink>
+                <NavLink to="/forum" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaComments />} w="full">Forum</Button>
+                </NavLink>
+                <NavLink to="/ai-suggestions" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaLightbulb />} w="full">AI Suggestions</Button>
+                </NavLink>
+                <NavLink to="/analytics" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaChartBar />} w="full">Analytics</Button>
+                </NavLink>
+                <NavLink to="/settings" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaCog />} w="full">Settings</Button>
+                </NavLink>
+                <NavLink to="/help" style={({ isActive }) => ({ color: isActive ? accentColor : textColor })} onClick={onClose}>
+                  <Button variant="ghost" leftIcon={<FaQuestionCircle />} w="full">Help Center</Button>
+                </NavLink>
+                <Button variant="ghost" leftIcon={<FaSignOutAlt />} w="full" onClick={() => { navigate('/login'); onClose(); }}>Logout</Button>
+              </VStack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
 
         {/* Main Content with Padding for Sidebar */}
         <Box ml={{ base: 0, md: '200px' }} w="full" px={8} py={6}>
